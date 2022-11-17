@@ -209,20 +209,29 @@ fix(201, 1, 1, 1, 1, 1, 1);
 fix(205, 1, 1, 1, 1, 1, 1);
 
 # define ELEMENTS--------------------------------------------------------------
-ColTransfTag = 1;
+# north post
+postTransfTag = 1;
 vecxz=[0.0, 0.0, 1.0];
-geomTransf('Corotational', ColTransfTag, *vecxz);
-# Define Beam-Column Elements
-numIntgrPts = 2;	# number of Gauss integration points
-beamIntTag = 1;
-beamIntegration("Legendre",  beamIntTag, purlinSecTag, numIntgrPts)
-for i in range (1,EndNode):
-    elemID = i;
-    nodeI = i;
-    nodeJ = i+1;
-    element('dispBeamColumnAsym', elemID, *[nodeI, nodeJ], ColTransfTag, beamIntTag,'-shearCenter', *[y0, z0]);
+geomTransf('Linear', postTransfTag, *vecxz);
+for i in range (1,4):
+    # east side
+    elemID = i+100;
+    nodeI = i+100;
+    nodeJ = i+101;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+    # west side
+    elemID = i+200;
+    nodeI = i+200;
+    nodeJ = i+201;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+end
 
-#element('elasticBeamColumn', 101, 1101, 1201, Abeam, Es, Gs, Jbeam, IbeamY, IbeamZ, beamTransfTag, '-mass', 0.0)
+# south post
+#                            ID   nodeI  nodeJ                            TBD for mass, release can be omitted for fixed BC
+element('elasticBeamColumn', 104, *[105, 106], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+element('elasticBeamColumn', 105, *[106, 107], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+element('elasticBeamColumn', 204, *[205, 206], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+element('elasticBeamColumn', 205, *[206, 207], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
 
 # define loads-----------------------------------------------------------------
 F = 10.0;
