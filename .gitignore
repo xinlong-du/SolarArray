@@ -1,0 +1,10 @@
+
+*.out
+
+*.pyd
+
+*.xlsx
+
+*.zip
+
+*.csv
