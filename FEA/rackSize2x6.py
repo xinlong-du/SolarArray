@@ -250,26 +250,24 @@ element('elasticBeamColumn', 212, *[203, 207], braceSecTag, postTransfTag, 'mass
 # purlins
 for i in range (1,12):
     # perlin # 1
-    elemID = i+300;
-    nodeI = i+300;
-    nodeJ = i+301;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    #                            elemID   nodeI  nodeJ
+    element('elasticBeamColumn', i+300, *[i+300, i+301], postSecTag, postTransfTag, 'mass', 0.0);
     # purlin # 2
-    elemID = i+400;
-    nodeI = i+400;
-    nodeJ = i+401;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    element('elasticBeamColumn', i+400, *[i+400, i+401], postSecTag, postTransfTag, 'mass', 0.0);
     # perlin # 3
-    elemID = i+500;
-    nodeI = i+500;
-    nodeJ = i+501;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    element('elasticBeamColumn', i+500, *[i+500, i+501], postSecTag, postTransfTag, 'mass', 0.0);
     # purlin # 4
-    elemID = i+600;
-    nodeI = i+600;
-    nodeJ = i+601;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
-end
+    element('elasticBeamColumn', i+600, *[i+600, i+601], postSecTag, postTransfTag, 'mass', 0.0);
+
+# modules
+for i in range (1,7):
+    #                    elemID    node1      node2    node3    node4 counter-clockwise
+    element('ShellMITC4',i+700,  *[700+2*i-1, 700+2*i, 300+2*i, 300+2*i-1], moduleSecTag)
+    element('ShellMITC4',i+800,  *[300+2*i-1, 300+2*i, 400+2*i, 400+2*i-1], moduleSecTag)
+    element('ShellMITC4',i+900,  *[400+2*i-1, 400+2*i, 800+2*i, 800+2*i-1], moduleSecTag)
+    element('ShellMITC4',i+1000, *[900+2*i-1, 900+2*i, 500+2*i, 500+2*i-1], moduleSecTag)
+    element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
+    element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
 
 # define loads-----------------------------------------------------------------
 F = 10.0;
