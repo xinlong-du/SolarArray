@@ -17,6 +17,7 @@ wipe();
 model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
 #os.mkdir(dataDir);
+in2m=0.0254; #convert inch to meter
 
 # MATERIAL properties----------------------------------------------------------
 E_mod = 2.0e11;		      #Steel Young's modulus
@@ -61,11 +62,10 @@ Jxx = 8424.0; #torsional moment of inertia of section
 section('Elastic', braceSecTag, E_mod, A, Iz, Iy, G_mod, Jxx);
 
 # SECTION properties for module
-h = 1.2; #depth of module
+h = 1.181*in2m; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, E_mod, nu, h, rho_module)
 
 # define NODES-----------------------------------------------------------------
-in2m=0.0254;
 # east side rack, north post
 node(101, 0.0,           0.0,          0.0)
 node(102, 0.0,           7*in2m,       0.0)
@@ -209,29 +209,67 @@ fix(201, 1, 1, 1, 1, 1, 1);
 fix(205, 1, 1, 1, 1, 1, 1);
 
 # define ELEMENTS--------------------------------------------------------------
-# north post
 postTransfTag = 1;
 vecxz=[0.0, 0.0, 1.0];
 geomTransf('Linear', postTransfTag, *vecxz);
-for i in range (1,4):
-    # east side
-    elemID = i+100;
-    nodeI = i+100;
-    nodeJ = i+101;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
-    # west side
-    elemID = i+200;
-    nodeI = i+200;
-    nodeJ = i+201;
-    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
-end
+#**********transfTag need to be updated for other members except for posts*****
+# east side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
+element('elasticBeamColumn', 101, *[101, 102], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 102, *[102, 103], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 103, *[103, 104], postSecTag, postTransfTag, 'mass', 0.0, '-releasez', 2, 'releasey', 2);
+# east side rack, south post
+element('elasticBeamColumn', 104, *[105, 106], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 105, *[106, 107], postSecTag, postTransfTag, 'mass', 0.0, '-releasez', 2, 'releasey', 2);
+# east side rack, rafter
+element('elasticBeamColumn', 106, *[108, 104], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 107, *[104, 109], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 108, *[109, 110], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 109, *[110, 107], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 110, *[107, 111], rafterSecTag, postTransfTag, 'mass', 0.0);
+# east side rack, brace
+element('elasticBeamColumn', 111, *[102, 106], braceSecTag, postTransfTag, 'mass', 0.0, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 112, *[103, 107], braceSecTag, postTransfTag, 'mass', 0.0, '-releasez', 3, 'releasey', 3);
 
-# south post
-#                            ID   nodeI  nodeJ                            TBD for mass, release can be omitted for fixed BC
-element('elasticBeamColumn', 104, *[105, 106], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
-element('elasticBeamColumn', 105, *[106, 107], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
-element('elasticBeamColumn', 204, *[205, 206], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
-element('elasticBeamColumn', 205, *[206, 207], postSecTag, postTransfTag, 'mass', 0.0,'-releasez', 0, 'releasey', 0);
+# west side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
+element('elasticBeamColumn', 201, *[201, 202], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 202, *[202, 203], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 203, *[203, 204], postSecTag, postTransfTag, 'mass', 0.0, '-releasez', 2, 'releasey', 2);
+# west side rack, south post
+element('elasticBeamColumn', 204, *[205, 206], postSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 205, *[206, 207], postSecTag, postTransfTag, 'mass', 0.0, '-releasez', 2, 'releasey', 2);
+# west side rack, rafter
+element('elasticBeamColumn', 206, *[208, 204], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 207, *[204, 209], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 208, *[209, 210], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 209, *[210, 207], rafterSecTag, postTransfTag, 'mass', 0.0);
+element('elasticBeamColumn', 210, *[207, 211], rafterSecTag, postTransfTag, 'mass', 0.0);
+# west side rack, brace
+element('elasticBeamColumn', 211, *[202, 206], braceSecTag, postTransfTag, 'mass', 0.0, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 212, *[203, 207], braceSecTag, postTransfTag, 'mass', 0.0, '-releasez', 3, 'releasey', 3);
+
+# purlins
+for i in range (1,12):
+    # perlin # 1
+    elemID = i+300;
+    nodeI = i+300;
+    nodeJ = i+301;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    # purlin # 2
+    elemID = i+400;
+    nodeI = i+400;
+    nodeJ = i+401;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    # perlin # 3
+    elemID = i+500;
+    nodeI = i+500;
+    nodeJ = i+501;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+    # purlin # 4
+    elemID = i+600;
+    nodeI = i+600;
+    nodeJ = i+601;
+    element('elasticBeamColumn', elemID, *[nodeI, nodeJ], postSecTag, postTransfTag, 'mass', 0.0);
+end
 
 # define loads-----------------------------------------------------------------
 F = 10.0;
