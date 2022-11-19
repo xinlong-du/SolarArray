@@ -7,10 +7,15 @@
 # set systemTime [clock seconds] 
 # puts "Starting Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
 # set startTime [clock clicks -milliseconds];
-from opensees import *
+from openseespy.opensees import *
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+
+# # visulization
+# import matplotlib
+# #matplotlib qt
+# import vfo.vfo as vfo
 
 # SET UP ----------------------------------------------------------------------
 wipe();
@@ -268,6 +273,11 @@ for i in range (1,7):
     element('ShellMITC4',i+1000, *[900+2*i-1, 900+2*i, 500+2*i, 500+2*i-1], moduleSecTag)
     element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
     element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
+
+# # render the model
+# vfo.createODB(model="solarPanel")
+# vfo.plot_model()
+# vfo.plot_modeshape(modenumber=3)
 
 # define loads-----------------------------------------------------------------
 F = 10.0; 
