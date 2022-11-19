@@ -211,6 +211,9 @@ node(1010, 123.7500*in2m, 20.5312*in2m, 154.4167*in2m)
 node(1011, 123.7500*in2m, 20.5312*in2m, 155.9167*in2m)
 node(1012, 123.7500*in2m, 20.5312*in2m, 197.0000*in2m)
 
+# intersection of external braces
+node(2001, 0.0, 51.6250*in2m, 71.5000*in2m)
+
 # define BOUNDARY CONDITIONS---------------------------------------------------
 fix(101, 1, 1, 1, 1, 1, 1);  
 fix(105, 1, 1, 1, 1, 1, 1);
@@ -278,19 +281,25 @@ for i in range (1,7):
     element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
     element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
 
+# external braces
+element('elasticBeamColumn', 1301, *[103, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 1302, *[104, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 1303, *[203, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
+
 # # render the model
 # vfo.createODB(model="solarPanel")
 # vfo.plot_model()
 # vfo.plot_modeshape(modenumber=3)
 
 # define loads-----------------------------------------------------------------
-F = 10.0; 
+F = 1.0; 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-load(109, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[109], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain'); # how it handles boundary conditions
@@ -307,7 +316,7 @@ integrator('LoadControl', 0.1)
 analysis('Static');	# define type of analysis static or transient
 analyze(100);
 print('Finished')
-wipeAnalysis()
+wipe()
 #------------------------------------------------------------------------------
 # set finishTime [clock clicks -milliseconds];
 # puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
