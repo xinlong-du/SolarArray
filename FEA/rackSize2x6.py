@@ -25,50 +25,54 @@ dataDir = 'Data';
 in2m=0.0254; #convert inch to meter
 
 # MATERIAL properties----------------------------------------------------------
-E_mod = 2.0e11;		      #Steel Young's modulus
+Es = 2.0e11;		      #Steel Young's modulus
 nu = 0.3;                 #Poisson's ratio
-G_mod = E_mod/2./(1+nu);  #Shear modulus
-rho_steel = 7850.0;       #mass density
-rho_module = 7850.0;      #mass density
+Gs = Es/2./(1+nu);        #Shear modulus of steel
+rho_s = 7850.0;           #Steel mass density
+Em = 70.0e9;              #Glass Young's modulus for module
+nu_m = 0.22;              #Glass Poisson's ratio
+rho_m = 2500.0;           #Glass mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-purlinSecTag = 1;
-rafterSecTag = 2;
-postSecTag = 3;
-braceSecTag = 4;
-moduleSecTag = 5;
+# SECTION properties for purlin C-Section 9CS2.5x085 in AISI Manul (2002)
+A_pu = 1.27*in2m**2;      #cross-sectional area
+Iz_pu = 14.7*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 1.0*in2m**4;      #second moment of area about the local y-axis
+Jx_pu = 0.00306*in2m**4;  #torsional moment of inertia of section
+mass_pu = A_pu*rho_s;     #mass per unit length
 
-# SECTION properties for purlin
-A = 100.0;    #cross-sectional area
-Iz = 10000.0; #second moment of area about the local z-axis
-Iy = 10000.0; #second moment of area about the local y-axis
-Jxx = 8424.0; #torsional moment of inertia of section
-section('Elastic', purlinSecTag, E_mod, A, Iz, Iy, G_mod, Jxx);
+# SECTION properties for rafter HAT Section
+A_r = 2.08*in2m**2;       #cross-sectional area
+Iz_r = 15.7*in2m**4       #second moment of area about the local z-axis
+Iy_r = 10.4*in2m**4;      #second moment of area about the local y-axis
+Jx_r = 0.00766*in2m**4;   #torsional moment of inertia of section
+mass_r = A_r*rho_s;       #mass per unit length
+    
+# SECTION properties for post Pipe 2.5x2.5x1/8
+A_po = 1.07*in2m**2;      #cross-sectional area
+Iz_po = 0.998*in2m**4;    #second moment of area about the local z-axis
+Iy_po = 0.998*in2m**4;    #second moment of area about the local y-axis
+Jx_po = 1.61*in2m**4;     #torsional moment of inertia of section
+mass_po = A_po*rho_s;     #mass per unit length
+    
+# SECTION properties for internal brace Pipe 2x2x1/8
+A_ib = 0.84*in2m**2;       #cross-sectional area
+Iz_ib = 0.799*in2m**4;     #second moment of area about the local z-axis
+Iy_ib = 0.799*in2m**4;     #second moment of area about the local y-axis
+Jx_ib = 0.796*in2m**4;     #torsional moment of inertia of section
+mass_ib = A_ib*rho_s;       #mass per unit length
 
-# SECTION properties for rafter
-A = 100.0;    #cross-sectional area
-Iz = 10000.0; #second moment of area about the local z-axis
-Iy = 10000.0; #second moment of area about the local y-axis
-Jxx = 8424.0; #torsional moment of inertia of section
-section('Elastic', rafterSecTag, E_mod, A, Iz, Iy, G_mod, Jxx);
-    
-# SECTION properties for post
-A = 100.0;    #cross-sectional area
-Iz = 10000.0; #second moment of area about the local z-axis
-Iy = 10000.0; #second moment of area about the local y-axis
-Jxx = 8424.0; #torsional moment of inertia of section
-section('Elastic', postSecTag, E_mod, A, Iz, Iy, G_mod, Jxx);
-    
-# SECTION properties for brace
-A = 100.0;    #cross-sectional area
-Iz = 10000.0; #second moment of area about the local z-axis
-Iy = 10000.0; #second moment of area about the local y-axis
-Jxx = 8424.0; #torsional moment of inertia of section
-section('Elastic', braceSecTag, E_mod, A, Iz, Iy, G_mod, Jxx);
+# SECTION properties for external brace Pipe 2x2x1/8
+A_eb = 0.84*in2m**2;       #cross-sectional area
+Iz_eb = 0.799*in2m**4;     #second moment of area about the local z-axis
+Iy_eb = 0.799*in2m**4;     #second moment of area about the local y-axis
+Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
+mass_eb = A_eb*rho_s;       #mass per unit length
 
 # SECTION properties for module
+moduleSecTag = 1;
 h = 1.181*in2m; #depth of module
-section('ElasticMembranePlateSection', moduleSecTag, E_mod, nu, h, rho_module)
+section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
 # east side rack, north post
@@ -219,50 +223,50 @@ vecxz=[1.0, 0.5, 1.0];
 geomTransf('Linear', postTransfTag, *vecxz);
 #**********transfTag need to be updated for other members except for posts*****
 # east side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
-element('elasticBeamColumn', 101, *[101, 102], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 102, *[102, 103], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 103, *[103, 104], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 2, 'releasey', 2);
+element('elasticBeamColumn', 101, *[101, 102], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 102, *[102, 103], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 103, *[103, 104], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
 # east side rack, south post
-element('elasticBeamColumn', 104, *[105, 106], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 105, *[106, 107], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 2, 'releasey', 2);
+element('elasticBeamColumn', 104, *[105, 106], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 105, *[106, 107], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
 # east side rack, rafter
-element('elasticBeamColumn', 106, *[108, 104], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 107, *[104, 109], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 108, *[109, 110], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 109, *[110, 107], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 110, *[107, 111], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, 'mass', 0.0);
-# east side rack, brace
-element('elasticBeamColumn', 111, *[102, 106], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 3, 'releasey', 3);
-element('elasticBeamColumn', 112, *[103, 107], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 106, *[108, 104], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 107, *[104, 109], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 108, *[109, 110], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 109, *[110, 107], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 110, *[107, 111], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+# east side rack, internal brace
+element('elasticBeamColumn', 111, *[102, 106], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, postTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 112, *[103, 107], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, postTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
 
 # west side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
-element('elasticBeamColumn', 201, *[201, 202], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 202, *[202, 203], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 203, *[203, 204], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 2, 'releasey', 2);
+element('elasticBeamColumn', 201, *[201, 202], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 202, *[202, 203], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 203, *[203, 204], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
 # west side rack, south post
-element('elasticBeamColumn', 204, *[205, 206], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 205, *[206, 207], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 2, 'releasey', 2);
+element('elasticBeamColumn', 204, *[205, 206], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+element('elasticBeamColumn', 205, *[206, 207], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
 # west side rack, rafter
-element('elasticBeamColumn', 206, *[208, 204], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 207, *[204, 209], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 208, *[209, 210], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 209, *[210, 207], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-element('elasticBeamColumn', 210, *[207, 211], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
-# west side rack, brace
-element('elasticBeamColumn', 211, *[202, 206], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 3, 'releasey', 3);
-element('elasticBeamColumn', 212, *[203, 207], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 206, *[208, 204], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 207, *[204, 209], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 208, *[209, 210], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 209, *[210, 207], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+element('elasticBeamColumn', 210, *[207, 211], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, postTransfTag, '-mass', mass_r);
+# west side rack, internal brace
+element('elasticBeamColumn', 211, *[202, 206], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, postTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
+element('elasticBeamColumn', 212, *[203, 207], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, postTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
 
 # purlins
 for i in range (1,12):
-    # perlin # 1
+    # purlin # 1
     #                            elemID   nodeI  nodeJ
-    element('elasticBeamColumn', i+300, *[i+300, i+301], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
+    element('elasticBeamColumn', i+300, *[i+300, i+301], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # purlin # 2
-    element('elasticBeamColumn', i+400, *[i+400, i+401], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
+    element('elasticBeamColumn', i+400, *[i+400, i+401], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # perlin # 3
-    element('elasticBeamColumn', i+500, *[i+500, i+501], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
+    element('elasticBeamColumn', i+500, *[i+500, i+501], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # purlin # 4
-    element('elasticBeamColumn', i+600, *[i+600, i+601], A, E_mod, G_mod, Jxx, Iz, Iy, postTransfTag, '-mass', 0.0);
+    element('elasticBeamColumn', i+600, *[i+600, i+601], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
 
 # modules
 for i in range (1,7):
@@ -283,10 +287,10 @@ for i in range (1,7):
 F = 10.0; 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-load(401, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+load(109, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[401], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[109], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain'); # how it handles boundary conditions
@@ -295,15 +299,15 @@ system('BandGeneral');# how to store and solve the system of equations in the an
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Linear');
-integrator('LoadControl', 0.01)
+integrator('LoadControl', 0.1)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
 #integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
 analysis('Static');	# define type of analysis static or transient
-analyze(1000);
+analyze(100);
 print('Finished')
-
+wipeAnalysis()
 #------------------------------------------------------------------------------
 # set finishTime [clock clicks -milliseconds];
 # puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
