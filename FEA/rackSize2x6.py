@@ -10,13 +10,9 @@
 from openseespy.opensees import *
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-import os
 
-# # visulization
-# import matplotlib
-# #matplotlib qt
-# import vfo.vfo as vfo
+# visulization
+import vfo.vfo as vfo
 
 # SET UP ----------------------------------------------------------------------
 wipe();
@@ -292,15 +288,18 @@ element('elasticBeamColumn', 1302, *[104, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_
 element('elasticBeamColumn', 1303, *[203, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
 element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, postTransfTag, '-mass', mass_eb, '-releasez', 3, 'releasey', 3);
 
-# # render the model
-# vfo.createODB(model="solarPanel")
-# vfo.plot_model()
-# vfo.plot_modeshape(modenumber=3)
+# render the model
+#vfo.createODB(model="solarPanel")
+vfo.plot_model()
 
-# eigen analysis
+# eigen analysis---------------------------------------------------------------
 eigenValues = eigen(10);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
+
+vfo.plot_modeshape(modenumber=1, scale=10); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=10); #plot mode shape 2
+vfo.plot_modeshape(modenumber=3, scale=30); #plot mode shape 3
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
