@@ -260,16 +260,20 @@ element('elasticBeamColumn', 211, *[202, 206], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib
 element('elasticBeamColumn', 212, *[203, 207], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, postTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
 
 # purlins
-for i in range (1,12):
+nPurlin1 = [301,302,303,108,304,305,306,307,308,309,208,310,311,312]; #nodes of purlin # 1
+nPurlin2 = [401,402,403,109,404,405,406,407,408,409,209,410,411,412]; #nodes of purlin # 2
+nPurlin3 = [501,502,503,110,504,505,506,507,508,509,210,510,511,512]; #nodes of purlin # 3
+nPurlin4 = [601,602,603,111,604,605,606,607,608,609,211,610,611,612]; #nodes of purlin # 4
+for i in range (0,13):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
-    element('elasticBeamColumn', i+300, *[i+300, i+301], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+300, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # purlin # 2
-    element('elasticBeamColumn', i+400, *[i+400, i+401], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+400, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # perlin # 3
-    element('elasticBeamColumn', i+500, *[i+500, i+501], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+500, *[nPurlin3[i], nPurlin3[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
     # purlin # 4
-    element('elasticBeamColumn', i+600, *[i+600, i+601], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+600, *[nPurlin4[i], nPurlin4[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, postTransfTag, '-mass', mass_pu);
 
 # modules
 for i in range (1,7):
