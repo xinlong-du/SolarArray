@@ -9,6 +9,7 @@
 # set startTime [clock clicks -milliseconds];
 from openseespy.opensees import *
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 import os
 
@@ -295,6 +296,11 @@ element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_
 # vfo.createODB(model="solarPanel")
 # vfo.plot_model()
 # vfo.plot_modeshape(modenumber=3)
+
+# eigen analysis
+eigenValues = eigen(10);
+omega = np.sqrt(eigenValues);
+freq = omega/(2*math.pi);
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
