@@ -1,6 +1,6 @@
 clear;clc;close all;
-windData = readtable('./Data/dataCT/station_matrix_725046.xlsx');
-%windData = readtable('./Data/dataCT/station_matrix_725040.xlsx');
+%windData = readtable('./Data/dataCT/station_matrix_725046.xlsx');
+windData = readtable('./Data/dataCT/station_matrix_725040.xlsx');
 
 %%
 spdRaw=windData.Var3;
@@ -12,6 +12,20 @@ spd=cell2mat(spd);
 methMomentsLognormal(spd);
 methMomentsLognormal(spd-min(spd)+1);
 
+spd2=spd-min(spd)+1;
+% method of moments
+lnSpd=log(spd2);
+lnTheta=mean(lnSpd);
+beta=std(lnSpd);
+% plot
+IM=0:0.5:60;
+Pf=lognpdf(IM,lnTheta,beta);
+figure;
+histogram(spd,30,'Normalization','pdf')
+hold on
+plot(IM-1+min(spd),Pf,'k-','LineWidth',1)
+xlabel('Wind speed (mph)')
+ylabel('PDF')
 %% lognormal: consider wind speeds below the threshold
 totalHours=11*365*24;
 nSmallSpd=totalHours-length(spd);
@@ -33,7 +47,7 @@ dir=cellfun(@str2num,dir,'UniformOutput',false);
 dir=cell2mat(dir);
 
 figure;
-histogram(dir,'Normalization','pdf')
+histogram(dir,36,'Normalization','pdf')
 xlabel('Wind direction (deg)')
 ylabel('PDF')
 xlim([0 360])
