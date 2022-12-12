@@ -1,14 +1,53 @@
+%the current method may be OK. But may need more research on directions
+%with scarce data and locations with hurricanes.
 clear;clc;close all;
 %windData = readtable('./Data/dataCT/station_matrix_725046.xlsx');
 windData = readtable('./Data/dataCT/station_matrix_725040.xlsx');
 
-%%
+%% wind speed
 spdRaw=windData.Var3;
 spd=spdRaw(8:end);
 spd=cellfun(@str2num,spd,'UniformOutput',false);
 spd=cell2mat(spd);
 
+%% wind directions
+dirRaw=windData.Var4;
+dir=dirRaw(8:end);
+dir=cellfun(@str2num,dir,'UniformOutput',false);
+dir=cell2mat(dir);
+dir(4461)=40;
+idx=find(dir==360);
+dir(idx)=0;
+
+hfig=figure;
+histogram(dir,36,'Normalization','pdf')
+xlabel('Wind direction (deg)','FontSize',8,'FontName','Times New Roman')
+ylabel('PDF','FontSize',8,'FontName','Times New Roman')
+xlim([0 350])
+xticks(0:50:350)
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=3.5;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout=strcat('.\Figures\CTdir.');
+print(hfig,[fileout,'tif'],'-r800','-dtiff');
+%% seperate wind speeds with different directions
+spdDir=cell(36,1);
+dirID=unique(dir);
+for i=1:length(dirID)
+    idx=find(dir==dirID(i));
+    spdDir{i}=[spd(idx),dir(idx)]; %data are not enough for some directions
+end
+
+%% fit distribution for wind speeds in each 10 deg
+for i=1:length(dirID)
+    pdfFit(spdDir{i}(:,1),spdDir{i}(1,2))
+end
+
 %% lognormal: do not consider wind speeds below the threshold
+function pdfFit(spd,dir)
 spd2=spd-min(spd)+1;
 % method of moments
 lnSpd=log(spd2);
@@ -17,22 +56,18 @@ beta=std(lnSpd);
 % plot
 IM=0:0.5:60;
 Pf=lognpdf(IM,lnTheta,beta);
-figure;
+hfig=figure;
 histogram(spd,30,'Normalization','pdf')
 hold on
 plot(IM-1+min(spd),Pf,'k-','LineWidth',1)
-xlabel('Wind speed (mph)')
-ylabel('PDF')
-
-%% wind directions
-dirRaw=windData.Var4;
-dir=dirRaw(8:end);
-dir=cellfun(@str2num,dir,'UniformOutput',false);
-dir=cell2mat(dir);
-
-figure;
-histogram(dir,36,'Normalization','pdf')
-xlabel('Wind direction (deg)')
-ylabel('PDF')
-xlim([0 360])
-xticks(0:60:360)
+xlabel('Wind speed (mph)','FontSize',8,'FontName','Times New Roman')
+ylabel('PDF','FontSize',8,'FontName','Times New Roman')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=3.5;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout=strcat('.\Figures\CT',num2str(dir),'.');
+print(hfig,[fileout,'tif'],'-r800','-dtiff');
+end
