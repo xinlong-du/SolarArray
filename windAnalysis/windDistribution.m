@@ -1,9 +1,20 @@
 %the current method may be OK. But may need more research on directions
 %with scarce data and locations with hurricanes.
 clear;clc;close all;
-%windData = readtable('./Data/dataCT/station_matrix_725046.xlsx');
-windData = readtable('./Data/dataCT/station_matrix_725040.xlsx');
 
+% Connecticut
+windDataCT = readtable('./Data/dataCT/station_matrix_725040.xlsx');
+windAnalysis(windDataCT,'CT')
+
+% Sourthen California
+windDataCA = readtable('./Data/final_qc_data/station_matrix_722950.xlsx');
+windAnalysis(windDataCA,'CA')
+
+% Florida
+windDataFL = readtable('./Data/final_qc_data/station_matrix_722020.xlsx');
+windAnalysis(windDataFL,'FL')
+
+function windAnalysis(windData,State)
 %% wind speed
 spdRaw=windData.Var3;
 spd=spdRaw(8:end);
@@ -15,7 +26,7 @@ dirRaw=windData.Var4;
 dir=dirRaw(8:end);
 dir=cellfun(@str2num,dir,'UniformOutput',false);
 dir=cell2mat(dir);
-dir(4461)=40;
+dir=round(dir,-1);
 idx=find(dir==360);
 dir(idx)=0;
 
@@ -31,7 +42,7 @@ figWidth=3.5;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout=strcat('.\Figures\CTdir.');
+fileout=strcat('.\Figures\',State,'dir.');
 print(hfig,[fileout,'tif'],'-r800','-dtiff');
 %% seperate wind speeds with different directions
 spdDir=cell(36,1);
@@ -43,11 +54,12 @@ end
 
 %% fit distribution for wind speeds in each 10 deg
 for i=1:length(dirID)
-    pdfFit(spdDir{i}(:,1),spdDir{i}(1,2))
+    pdfFit(spdDir{i}(:,1),spdDir{i}(1,2),State)
+end
 end
 
 %% lognormal: do not consider wind speeds below the threshold
-function pdfFit(spd,dir)
+function pdfFit(spd,dir,State)
 spd2=spd-min(spd)+1;
 % method of moments
 lnSpd=log(spd2);
@@ -68,6 +80,6 @@ figWidth=3.5;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout=strcat('.\Figures\CT',num2str(dir),'.');
+fileout=strcat('.\Figures\',State,num2str(dir),'.');
 print(hfig,[fileout,'tif'],'-r800','-dtiff');
 end
