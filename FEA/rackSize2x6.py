@@ -29,6 +29,9 @@ rho_s = 7850.0;           #Steel mass density
 Em = 70.0e9;              #Glass Young's modulus for module
 nu_m = 0.22;              #Glass Poisson's ratio
 rho_m = 2500.0;           #Glass mass density
+Emf = 68.3e9;             #Aluminum Young's modules (module frame)
+Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
+rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 9CS2.5x085 in AISI Manul (2002)
@@ -66,9 +69,16 @@ Iy_eb = 0.799*in2m**4;     #second moment of area about the local y-axis
 Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_eb = A_eb*rho_s;      #mass per unit length
 
+# SECTION properties for module frames
+A_mf = 112.6*0.001**2;     #cross-sectional area
+Iz_mf = 12932.0*0.001**4;  #second moment of area about the local z-axis
+Iy_mf = Iz_mf/5.0;         #second moment of area about the local y-axis (temp)
+Jx_mf = Jx_pu/5.0;         #torsional moment of inertia of section (temp)
+mass_mf = A_mf*rho_mf;     #mass per unit length
+
 # SECTION properties for module
 moduleSecTag = 1;
-h = 1.181*in2m; #depth of module
+h = 5.42*0.001; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
@@ -288,7 +298,7 @@ for i in range (0,13):
     # purlin # 4
     element('elasticBeamColumn', i+600, *[nPurlin4[i], nPurlin4[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
-# modules
+# modules and module frames
 for i in range (1,7):
     #                    elemID    node1      node2    node3    node4 counter-clockwise
     element('ShellMITC4',i+700,  *[700+2*i-1, 700+2*i, 300+2*i, 300+2*i-1], moduleSecTag)
@@ -297,6 +307,25 @@ for i in range (1,7):
     element('ShellMITC4',i+1000, *[900+2*i-1, 900+2*i, 500+2*i, 500+2*i-1], moduleSecTag)
     element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
     element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
+    
+    element('elasticBeamColumn', i+1400, *[700+2*i-1, 700+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+1500, *[800+2*i-1, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+1600, *[900+2*i-1, 900+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+1700, *[1000+2*i-1, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    
+    element('elasticBeamColumn', i+1800, *[700+2*i-1, 300+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+1900, *[300+2*i-1, 400+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2000, *[400+2*i-1, 800+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2100, *[900+2*i-1, 500+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2200, *[500+2*i-1, 600+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2300, *[600+2*i-1, 1000+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    
+    element('elasticBeamColumn', i+2400, *[700+2*i, 300+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2500, *[300+2*i, 400+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2600, *[400+2*i, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2700, *[900+2*i, 500+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2800, *[500+2*i, 600+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i+2900, *[600+2*i, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
 
 # external braces
 element('elasticBeamColumn', 1301, *[103, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
@@ -313,12 +342,12 @@ eigenValues = eigen(10);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=30); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=10); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=10); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=10); #plot mode shape 1
-vfo.plot_modeshape(modenumber=5, scale=10); #plot mode shape 2
-vfo.plot_modeshape(modenumber=6, scale=10); #plot mode shape 3
+vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
+vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 1
+vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 3
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
