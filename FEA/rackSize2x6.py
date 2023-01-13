@@ -338,16 +338,23 @@ element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
-eigenValues = eigen(10);
+eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
 vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
 vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
 vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 2
-vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 3
+vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
+vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
+vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
+
+vfo.plot_modeshape(modenumber=7, scale=1); #plot mode shape 7
+vfo.plot_modeshape(modenumber=8, scale=1); #plot mode shape 8
+vfo.plot_modeshape(modenumber=9, scale=1); #plot mode shape 9
+vfo.plot_modeshape(modenumber=10, scale=1); #plot mode shape 10
+vfo.plot_modeshape(modenumber=11, scale=1); #plot mode shape 11
+vfo.plot_modeshape(modenumber=12, scale=1); #plot mode shape 12
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
