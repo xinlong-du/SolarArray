@@ -4,6 +4,29 @@ clear;clc;close all;
 
 % Connecticut
 windDataCT = readtable('./Data/dataCT/station_matrix_725040.xlsx');
+
+spdRaw=windDataCT.Var3;
+spd=spdRaw(8:end);
+spd=cellfun(@str2num,spd,'UniformOutput',false);
+spd=cell2mat(spd);
+
+timeRaw=windDataCT.StationDescription_BRIDGEPORTSIKORSKYMEMORIALA;
+timeDate=timeRaw(8:end);
+time=datetime(timeDate,'InputFormat','M/d/yyyy h:mm:ss a');
+%%
+hfig=figure;
+plot(time,spd,'k.','MarkerSize',5)
+xlabel('Date','FontSize',8,'FontName','Times New Roman')
+ylabel('Wind speed (mph)','FontSize',8,'FontName','Times New Roman')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=4;
+figHeight=2.8;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+figname=('.\Figures\0windSpeeds.');
+print(hfig,[figname,'tif'],'-r500','-dtiff');
+%%
 windAnalysis(windDataCT,'CT')
 
 % Sourthen California
