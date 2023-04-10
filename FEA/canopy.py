@@ -73,7 +73,7 @@ node(1, 0.0,           0.0,              0.0)
 node(2, 0.0,           324.0*in2m,       0.0)
 node(3, 0.0,           648.0*in2m,       0.0)
 
-# top beams
+# rafters (top beams)
 for i in range (0,3):
     node(10001+10000*i, -233.0002*in2m,     324*i*in2m,    55.3912*in2m)
     node(10002+10000*i, -191.3133*in2m,     324*i*in2m,    60.5097*in2m)
@@ -90,18 +90,10 @@ for i in range (0,3):
     node(10013+10000*i,  233.0002*in2m,     324*i*in2m,    112.6088*in2m)
 
 # purlins and modules
-# node(101, -253.8437*in2m,     -110.2500*in2m,     52.8319*in2m)
-# node(102, -253.8437*in2m,      -68.2500*in2m,     52.8319*in2m)
-# node(201, -233.0002*in2m,     -110.2500*in2m,     55.3912*in2m)
-# node(202, -233.0002*in2m,      -68.2500*in2m,     55.3912*in2m)
-# node(301, -191.3133*in2m,     -110.2500*in2m,     60.5097*in2m)
-# node(302, -191.3133*in2m,      -68.2500*in2m,     60.5097*in2m)
-# node(401, -170.4698*in2m,     -110.2500*in2m,     63.0689*in2m)
-# node(402, -170.4698*in2m,      -68.2500*in2m,     63.0689*in2m)
 for i in range (0,6):
     for j in range (0,20):
         node(101+400*i+2*j, (-253.8437+84.8627*i)*in2m,     (-110.2500+43.5*j)*in2m,     (52.8319+10.4198*i)*in2m)
-        node(102+400*i+2*j, (-253.8437+84.8627*i)*in2m,     (-68.2500+43.5*j)*in2m,      (52.8319+10.4198*i)*in2m)
+        node(102+400*i+2*j, (-253.8437+84.8627*i)*in2m,      (-68.2500+43.5*j)*in2m,     (52.8319+10.4198*i)*in2m)
         node(201+400*i+2*j, (-233.0002+84.8627*i)*in2m,     (-110.2500+43.5*j)*in2m,     (55.3912+10.4198*i)*in2m)
         node(202+400*i+2*j, (-233.0002+84.8627*i)*in2m,      (-68.2500+43.5*j)*in2m,     (55.3912+10.4198*i)*in2m)
         node(301+400*i+2*j, (-191.3133+84.8627*i)*in2m,     (-110.2500+43.5*j)*in2m,     (60.5097+10.4198*i)*in2m)
@@ -116,7 +108,7 @@ fix(3, 1, 1, 1, 1, 1, 1);
 
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
-vecxz = [1.0, 0.0, 0.0];
+vecxz = [0.0, 1.0, 0.0];
 geomTransf('Linear', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
@@ -124,10 +116,10 @@ vecxz = [0.0, -1.0, 0.0];
 geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
-vecxz = [0.0 - 88.0, 92.25 - 41.25, 0.0]; #local z' direction (nodes 104 - 107)
+vecxz = [-233.0002-233.0002, 324-324, 55.3912-112.6088]; #local z' direction (nodes 10001 - 10013)
 geomTransf('Linear', purlinTransfTag, *vecxz);
 
-# post                       ID  nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
+# post                       ID  nodeI nodeJ
 element('elasticBeamColumn', 1, *[1, 10007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
 element('elasticBeamColumn', 2, *[2, 20007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
 element('elasticBeamColumn', 3, *[3, 30007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -150,13 +142,13 @@ for i in range (0,12):
 
 for i in range (0,12):
     for j in range (0,42):
-        #                            elemID   nodeI  nodeJ
+        #                            elemID         nodeI          nodeJ
         element('elasticBeamColumn', i*100+400+j, *[nPurlin[i][j], nPurlin[i][j+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 for i in range (0,6):
     for j in range (0,20):
-        #                    elemID    node1      node2    node3    node4 counter-clockwise
+        #                    elemID               node1          node2          node3          node4 counter-clockwise
         element('ShellMITC4',(11*i+1)*10000+j,  *[101+i*400+j*2, 201+i*400+j*2, 202+i*400+j*2, 102+i*400+j*2], moduleSecTag)
         element('ShellMITC4',(11*i+2)*10000+j,  *[201+i*400+j*2, 301+i*400+j*2, 302+i*400+j*2, 202+i*400+j*2], moduleSecTag)
         element('ShellMITC4',(11*i+3)*10000+j,  *[301+i*400+j*2, 401+i*400+j*2, 402+i*400+j*2, 302+i*400+j*2], moduleSecTag)
@@ -179,28 +171,21 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
-
-vfo.plot_modeshape(modenumber=7, scale=1); #plot mode shape 7
-vfo.plot_modeshape(modenumber=8, scale=1); #plot mode shape 8
-vfo.plot_modeshape(modenumber=9, scale=1); #plot mode shape 9
-vfo.plot_modeshape(modenumber=10, scale=1); #plot mode shape 10
-vfo.plot_modeshape(modenumber=11, scale=1); #plot mode shape 11
-vfo.plot_modeshape(modenumber=12, scale=1); #plot mode shape 12
+vfo.plot_modeshape(modenumber=1, scale=500); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=50); #plot mode shape 2
+vfo.plot_modeshape(modenumber=3, scale=50); #plot mode shape 3
+vfo.plot_modeshape(modenumber=4, scale=50); #plot mode shape 4
+vfo.plot_modeshape(modenumber=5, scale=50); #plot mode shape 5
+vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
-F = 1.0; 
+F = 1000.0; 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+load(701, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[701], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain'); # how it handles boundary conditions
@@ -215,7 +200,7 @@ integrator('LoadControl', 0.1)
                                   #Node,  dof, 1st incr, Jd,  min,   max
 #integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
 analysis('Static');	# define type of analysis static or transient
-analyze(100);
+analyze(5);
 print('Finished')
 wipe()
 #------------------------------------------------------------------------------
