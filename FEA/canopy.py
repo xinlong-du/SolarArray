@@ -163,7 +163,7 @@ for i in range (0,6):
         element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # render the model
-#vfo.createODB(model="solarPanel")
+vfo.createODB(model="canopy", loadcase="load_as_mode2", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
@@ -179,13 +179,22 @@ vfo.plot_modeshape(modenumber=5, scale=50); #plot mode shape 5
 vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
-F = 1000.0; 
+nodeTags=[];
+for i in range (1,25):
+    nodeTags=nodeTags+list(range(100*i+1,100*i+41));
+
+nodeEigs=[];
+for i in range (0,len(nodeTags)):
+    nodeEig=nodeEigenvector(nodeTags[i], 2);
+    nodeEigs.append(nodeEig);
+
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-load(701, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+for i in range (0,len(nodeTags)):
+    load(nodeTags[i], *nodeEigs[i]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[701], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/node101Disp.out', '-time', '-node', *[101], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain'); # how it handles boundary conditions
@@ -194,7 +203,7 @@ system('BandGeneral');# how to store and solve the system of equations in the an
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Linear');
-integrator('LoadControl', 0.1)
+integrator('LoadControl', 1000.0)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
@@ -203,6 +212,7 @@ analysis('Static');	# define type of analysis static or transient
 analyze(5);
 print('Finished')
 wipe()
+vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
 #------------------------------------------------------------------------------
 # set finishTime [clock clicks -milliseconds];
 # puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
