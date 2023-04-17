@@ -219,10 +219,15 @@ import openseespy.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt
 
+# element resisting forces
+eleForces1=eleForce(1);
+eleForces2=eleForce(2);
+eleForces3=eleForce(3);
+
 sfacN = 1.e-2
 sfacVy = 5.e-2
 sfacVz = 1.e-1
-sfacMy = 1.e-1
+sfacMy = 5.e-2
 sfacMz = 1.e-2
 sfacT = 1.e-2
 
