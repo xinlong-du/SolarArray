@@ -211,8 +211,43 @@ integrator('LoadControl', 1000.0)
 analysis('Static');	# define type of analysis static or transient
 analyze(5);
 print('Finished')
-wipe()
-vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
+# wipe()
+# vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
+
+#%% plot internal force diagrams
+import openseespy.opensees as ops
+import opsvis as opsv
+import matplotlib.pyplot as plt
+
+sfacN = 1.e-2
+sfacVy = 5.e-2
+sfacVz = 1.e-1
+sfacMy = 1.e-1
+sfacMz = 1.e-2
+sfacT = 1.e-2
+
+# plt.figure()
+nodeTags=[1, 2, 3, 10007, 20007, 30007]#+list(range(10001,10014))+list(range(20001,20014))+list(range(30001,30014));
+eleTags=[1, 2, 3]#+list(range(101,113))+list(range(201,213))+list(range(301,313));
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'N', sfacN, nep=3, dir_plt=0)
+plt.title('Axial force N')
+
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vy', sfacVy, nep=3, dir_plt=0)
+plt.title('Transverse force Vy')
+
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vz', sfacVz, nep=3, dir_plt=0)
+plt.title('Transverse force Vz')
+
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'My', sfacMy, nep=3, dir_plt=0)
+plt.title('Bending moments My')
+
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'Mz', sfacMz, nep=3, dir_plt=0)
+plt.title('Bending moments Mz')
+
+opsv.section_force_diagram_3d(nodeTags, eleTags, 'T', sfacT, nep=3, dir_plt=0)
+plt.title('Torsional moment T')
+
+plt.show()
 #------------------------------------------------------------------------------
 # set finishTime [clock clicks -milliseconds];
 # puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
