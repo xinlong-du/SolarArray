@@ -203,13 +203,13 @@ system('BandGeneral');# how to store and solve the system of equations in the an
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Linear');
-integrator('LoadControl', 1000.0)
+integrator('LoadControl', -1000.0)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
 #integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
 analysis('Static');	# define type of analysis static or transient
-analyze(5);
+analyze(10);
 print('Finished')
 # wipe()
 # vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
@@ -226,7 +226,7 @@ eleForces3=eleForce(3);
 
 sfacN = 1.e-2
 sfacVy = 5.e-2
-sfacVz = 1.e-1
+sfacVz = 1.e-2
 sfacMy = 5.e-2
 sfacMz = 1.e-2
 sfacT = 1.e-2
@@ -236,21 +236,27 @@ nodeTags=[1, 2, 3, 10007, 20007, 30007]#+list(range(10001,10014))+list(range(200
 eleTags=[1, 2, 3]#+list(range(101,113))+list(range(201,213))+list(range(301,313));
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'N', sfacN, nep=3, dir_plt=0)
 plt.title('Axial force N')
+plt.savefig('./Data/canopy_N.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vy', sfacVy, nep=3, dir_plt=0)
 plt.title('Transverse force Vy')
+plt.savefig('./Data/canopy_Vy.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vz', sfacVz, nep=3, dir_plt=0)
 plt.title('Transverse force Vz')
+plt.savefig('./Data/canopy_Vz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'My', sfacMy, nep=3, dir_plt=0)
 plt.title('Bending moments My')
+plt.savefig('./Data/canopy_My.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Mz', sfacMz, nep=3, dir_plt=0)
 plt.title('Bending moments Mz')
+plt.savefig('./Data/canopy_Mz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'T', sfacT, nep=3, dir_plt=0)
 plt.title('Torsional moment T')
+plt.savefig('./Data/canopy_T.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 plt.show()
 #------------------------------------------------------------------------------

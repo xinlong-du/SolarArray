@@ -109,15 +109,15 @@ fix(3, 1, 1, 1, 1, 1, 1);
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
 vecxz = [0.0, 1.0, 0.0];
-geomTransf('Linear', postTransfTag, *vecxz);
+geomTransf('Corotational', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
 vecxz = [0.0, -1.0, 0.0];
-geomTransf('Linear', rafterTransfTag, *vecxz);
+geomTransf('Corotational', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
 vecxz = [-233.0002-233.0002, 324-324, 55.3912-112.6088]; #local z' direction (nodes 10001 - 10013)
-geomTransf('Linear', purlinTransfTag, *vecxz);
+geomTransf('Corotational', purlinTransfTag, *vecxz);
 
 # post                       ID  nodeI nodeJ
 element('elasticBeamColumn', 1, *[1, 10007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -202,14 +202,14 @@ numberer('Plain');	   # renumber dof's to minimize band-width
 system('BandGeneral');# how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
-algorithm('Linear');
+algorithm('Newton');
 integrator('LoadControl', 1000.0)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
 #integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
 analysis('Static');	# define type of analysis static or transient
-analyze(5);
+analyze(10);
 print('Finished')
 # wipe()
 # vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
@@ -226,7 +226,7 @@ eleForces3=eleForce(3);
 
 sfacN = 1.e-2
 sfacVy = 5.e-2
-sfacVz = 1.e-1
+sfacVz = 1.e-2
 sfacMy = 5.e-2
 sfacMz = 1.e-2
 sfacT = 1.e-2
@@ -235,22 +235,28 @@ sfacT = 1.e-2
 nodeTags=[1, 2, 3, 10007, 20007, 30007]#+list(range(10001,10014))+list(range(20001,20014))+list(range(30001,30014));
 eleTags=[1, 2, 3]#+list(range(101,113))+list(range(201,213))+list(range(301,313));
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'N', sfacN, nep=3, dir_plt=0)
-plt.title('Axial force N')
+plt.title('Axial force N (nonlinear)')
+plt.savefig('./Data/canopyNL_N.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vy', sfacVy, nep=3, dir_plt=0)
-plt.title('Transverse force Vy')
+plt.title('Transverse force Vy (nonlinear)')
+plt.savefig('./Data/canopyNL_Vy.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vz', sfacVz, nep=3, dir_plt=0)
-plt.title('Transverse force Vz')
+plt.title('Transverse force Vz (nonlinear)')
+plt.savefig('./Data/canopyNL_Vz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'My', sfacMy, nep=3, dir_plt=0)
-plt.title('Bending moments My')
+plt.title('Bending moments My (nonlinear)')
+plt.savefig('./Data/canopyNL_My.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Mz', sfacMz, nep=3, dir_plt=0)
-plt.title('Bending moments Mz')
+plt.title('Bending moments Mz (nonlinear)')
+plt.savefig('./Data/canopyNL_Mz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'T', sfacT, nep=3, dir_plt=0)
-plt.title('Torsional moment T')
+plt.title('Torsional moment T (nonlinear)')
+plt.savefig('./Data/canopyNL_T.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 plt.show()
 #------------------------------------------------------------------------------
