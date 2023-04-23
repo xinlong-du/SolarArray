@@ -171,12 +171,12 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=500); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=50); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=50); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=50); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=50); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
+# vfo.plot_modeshape(modenumber=1, scale=500); #plot mode shape 1
+# vfo.plot_modeshape(modenumber=2, scale=50); #plot mode shape 2
+# vfo.plot_modeshape(modenumber=3, scale=50); #plot mode shape 3
+# vfo.plot_modeshape(modenumber=4, scale=50); #plot mode shape 4
+# vfo.plot_modeshape(modenumber=5, scale=50); #plot mode shape 5
+# vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
 nodeTags=[];
@@ -203,7 +203,11 @@ system('BandGeneral');# how to store and solve the system of equations in the an
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Linear');
-integrator('LoadControl', -1000.0)
+if nodeEigs[0][0]<0:
+    loadFactor=-100;
+else:
+    loadFactor=100;
+integrator('LoadControl', loadFactor)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
@@ -227,12 +231,22 @@ eleForces2Local=eleResponse(2, 'localForces')
 eleForces3Local=eleResponse(3, 'localForces')
 
 # element resisting forces for rafters
+eleForces101=eleForce(101);
+eleForces101Local=eleResponse(101, 'localForces')
 eleForces102=eleForce(102);
 eleForces102Local=eleResponse(102, 'localForces')
 
 # element resisting forces for purlins
 eleForces504=eleForce(504);
 eleForces504Local=eleResponse(504, 'localForces')
+eleForces505=eleForce(505);
+eleForces505Local=eleResponse(505, 'localForces')
+
+# nodal forces in connections
+nodeForcesGlobalRafter10002=np.array(eleForces101[6:12])+np.array(eleForces102[0:6]);
+nodeForcesGlobalPurlin10002=np.array(eleForces504[6:12])+np.array(eleForces505[0:6]);
+nodeForcesLocalRafter10002=np.array(eleForces101Local[6:12])+np.array(eleForces102Local[0:6]);
+nodeForcesLocalPurlin10002=np.array(eleForces504Local[6:12])+np.array(eleForces505Local[0:6]);
 
 #%% plot internal force diagrams
 import openseespy.opensees as ops
