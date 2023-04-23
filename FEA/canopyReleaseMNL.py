@@ -153,14 +153,14 @@ for i in range (0,6):
         element('ShellMITC4',(11*i+2)*10000+j,  *[201+i*400+j*2, 301+i*400+j*2, 302+i*400+j*2, 202+i*400+j*2], moduleSecTag)
         element('ShellMITC4',(11*i+3)*10000+j,  *[301+i*400+j*2, 401+i*400+j*2, 402+i*400+j*2, 302+i*400+j*2], moduleSecTag)
     
-        element('elasticBeamColumn', (11*i+4)*10000+j, *[101+i*400+j*2, 201+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+5)*10000+j, *[201+i*400+j*2, 301+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+6)*10000+j, *[301+i*400+j*2, 401+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+7)*10000+j, *[401+i*400+j*2, 402+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+8)*10000+j, *[402+i*400+j*2, 302+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+9)*10000+j, *[302+i*400+j*2, 202+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+10)*10000+j, *[202+i*400+j*2, 102+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+4)*10000+j, *[101+i*400+j*2, 201+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+5)*10000+j, *[201+i*400+j*2, 301+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+6)*10000+j, *[301+i*400+j*2, 401+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+7)*10000+j, *[401+i*400+j*2, 402+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+8)*10000+j, *[402+i*400+j*2, 302+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+9)*10000+j, *[302+i*400+j*2, 202+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+10)*10000+j, *[202+i*400+j*2, 102+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
+        element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf, '-releasez', 3);
 
 # render the model
 vfo.createODB(model="canopy", loadcase="load_as_mode2", Nmodes=6, deltaT=1)
@@ -251,27 +251,27 @@ nodeTags=[1, 2, 3, 10007, 20007, 30007]#+list(range(10001,10014))+list(range(200
 eleTags=[1, 2, 3]#+list(range(101,113))+list(range(201,213))+list(range(301,313));
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'N', sfacN, nep=3, dir_plt=0)
 plt.title('Axial force N (nonlinear)')
-plt.savefig('./Data/canopyNL_N.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_N.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vy', sfacVy, nep=3, dir_plt=0)
 plt.title('Transverse force Vy (nonlinear)')
-plt.savefig('./Data/canopyNL_Vy.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_Vy.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vz', sfacVz, nep=3, dir_plt=0)
 plt.title('Transverse force Vz (nonlinear)')
-plt.savefig('./Data/canopyNL_Vz.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_Vz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'My', sfacMy, nep=3, dir_plt=0)
 plt.title('Bending moments My (nonlinear)')
-plt.savefig('./Data/canopyNL_My.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_My.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'Mz', sfacMz, nep=3, dir_plt=0)
 plt.title('Bending moments Mz (nonlinear)')
-plt.savefig('./Data/canopyNL_Mz.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_Mz.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 opsv.section_force_diagram_3d(nodeTags, eleTags, 'T', sfacT, nep=3, dir_plt=0)
 plt.title('Torsional moment T (nonlinear)')
-plt.savefig('./Data/canopyNL_T.tif', transparent=False, bbox_inches='tight', dpi=400)
+plt.savefig('./Data/ReleaseMcanopyNL_T.tif', transparent=False, bbox_inches='tight', dpi=400)
 
 plt.show()
 #------------------------------------------------------------------------------
