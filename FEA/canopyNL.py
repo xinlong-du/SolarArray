@@ -214,15 +214,30 @@ print('Finished')
 # wipe()
 # vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
 
+#%% output element forces
+# element resisting forces for columns
+allNodeTags=getNodeTags();
+alleleTags=getEleTags();
+
+eleForces1=eleForce(1);
+eleForces2=eleForce(2);
+eleForces3=eleForce(3);
+eleForces1Local=eleResponse(1, 'localForces')
+eleForces2Local=eleResponse(2, 'localForces')
+eleForces3Local=eleResponse(3, 'localForces')
+
+# element resisting forces for rafters
+eleForces102=eleForce(102);
+eleForces102Local=eleResponse(102, 'localForces')
+
+# element resisting forces for purlins
+eleForces504=eleForce(504);
+eleForces504Local=eleResponse(504, 'localForces')
+
 #%% plot internal force diagrams
 import openseespy.opensees as ops
 import opsvis as opsv
 import matplotlib.pyplot as plt
-
-# element resisting forces
-eleForces1=eleForce(1);
-eleForces2=eleForce(2);
-eleForces3=eleForce(3);
 
 sfacN = 1.e-2
 sfacVy = 5.e-2
