@@ -163,7 +163,7 @@ for i in range (0,6):
         element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # render the model
-vfo.createODB(model="canopyNL", loadcase="load_as_mode2", Nmodes=6, deltaT=1)
+vfo.createODB(model="canopyNL", loadcase="loadSouthernCali", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
@@ -183,15 +183,18 @@ nodeTags=[];
 for i in range (1,25):
     nodeTags=nodeTags+list(range(100*i+1,100*i+41));
 
-nodeEigs=[];
-for i in range (0,len(nodeTags)):
-    nodeEig=nodeEigenvector(nodeTags[i], 2);
-    nodeEigs.append(nodeEig);
+pNW=1121.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
+pNL=210.3*0.1;  #N/m2
+fNW=pNW*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
+fNL=pNL*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
+f6NW=[fNW*math.sin(7/180*math.pi),0.0,-fNW*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NL=[fNL*math.sin(7/180*math.pi),0.0,-fNL*math.cos(7/180*math.pi),0.0,0.0,0.0];
 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-for i in range (0,len(nodeTags)):
-    load(nodeTags[i], *nodeEigs[i]);
+for i in range (0,480):
+    load(nodeTags[i], *f6NW);
+    load(nodeTags[i+480],*f6NL)
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/node101Disp.out', '-time', '-node', *[101], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
@@ -203,10 +206,8 @@ system('BandGeneral');# how to store and solve the system of equations in the an
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Newton');
-if nodeEigs[0][0]<0:
-    loadFactor=-100;
-else:
-    loadFactor=100;
+
+loadFactor=1;
 integrator('LoadControl', loadFactor)
 #integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
@@ -215,81 +216,28 @@ integrator('LoadControl', loadFactor)
 analysis('Static');	# define type of analysis static or transient
 analyze(10);
 print('Finished')
-# wipe()
-# vfo.plot_deformedshape(model="canopy", loadcase="load_as_mode2", scale=50)
 
 #%% output element forces
 # element resisting forces for columns
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
 
-eleForces1=eleForce(1);
-eleForces2=eleForce(2);
-eleForces3=eleForce(3);
-eleForces1Local=eleResponse(1, 'localForces')
-eleForces2Local=eleResponse(2, 'localForces')
-eleForces3Local=eleResponse(3, 'localForces')
-
 # element resisting forces for rafters
 eleForces101=eleForce(101);
 eleForces101Local=eleResponse(101, 'localForces')
-eleForces102=eleForce(102);
-eleForces102Local=eleResponse(102, 'localForces')
 
 # element resisting forces for purlins
-eleForces504=eleForce(504);
-eleForces504Local=eleResponse(504, 'localForces')
-eleForces505=eleForce(505);
-eleForces505Local=eleResponse(505, 'localForces')
+eleForces404=eleForce(404);
+eleForces404Local=eleResponse(404, 'localForces')
+eleForces405=eleForce(405);
+eleForces405Local=eleResponse(405, 'localForces')
 
 # nodal forces in connections
-nodeForcesGlobalRafter10002=np.array(eleForces101[6:12])+np.array(eleForces102[0:6]);
-nodeForcesGlobalPurlin10002=np.array(eleForces504[6:12])+np.array(eleForces505[0:6]);
-nodeForcesLocalRafter10002=np.array(eleForces101Local[6:12])+np.array(eleForces102Local[0:6]);
-nodeForcesLocalPurlin10002=np.array(eleForces504Local[6:12])+np.array(eleForces505Local[0:6]);
+nodeForcesGlobalRafter10001=np.array(eleForces101[0:6]);
+nodeForcesGlobalPurlin10001=np.array(eleForces404[6:12])+np.array(eleForces405[0:6]);
+nodeForcesLocalRafter10001=np.array(eleForces101Local[0:6]);
+nodeForcesLocalPurlin10001=np.array(eleForces404Local[6:12])+np.array(eleForces405Local[0:6]);
 
-#%% plot internal force diagrams
-import openseespy.opensees as ops
-import opsvis as opsv
-import matplotlib.pyplot as plt
-
-sfacN = 1.e-2
-sfacVy = 5.e-2
-sfacVz = 1.e-2
-sfacMy = 5.e-2
-sfacMz = 1.e-2
-sfacT = 1.e-2
-
-# plt.figure()
-nodeTags=[1, 2, 3, 10007, 20007, 30007]#+list(range(10001,10014))+list(range(20001,20014))+list(range(30001,30014));
-eleTags=[1, 2, 3]#+list(range(101,113))+list(range(201,213))+list(range(301,313));
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'N', sfacN, nep=3, dir_plt=0)
-plt.title('Axial force N (nonlinear)')
-plt.savefig('./Data/canopyNL_N.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vy', sfacVy, nep=3, dir_plt=0)
-plt.title('Transverse force Vy (nonlinear)')
-plt.savefig('./Data/canopyNL_Vy.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'Vz', sfacVz, nep=3, dir_plt=0)
-plt.title('Transverse force Vz (nonlinear)')
-plt.savefig('./Data/canopyNL_Vz.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'My', sfacMy, nep=3, dir_plt=0)
-plt.title('Bending moments My (nonlinear)')
-plt.savefig('./Data/canopyNL_My.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'Mz', sfacMz, nep=3, dir_plt=0)
-plt.title('Bending moments Mz (nonlinear)')
-plt.savefig('./Data/canopyNL_Mz.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-opsv.section_force_diagram_3d(nodeTags, eleTags, 'T', sfacT, nep=3, dir_plt=0)
-plt.title('Torsional moment T (nonlinear)')
-plt.savefig('./Data/canopyNL_T.tif', transparent=False, bbox_inches='tight', dpi=400)
-
-plt.show()
-#------------------------------------------------------------------------------
-# set finishTime [clock clicks -milliseconds];
-# puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
-# set systemTime [clock seconds] 
-# puts "Finished Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
+#%%
+wipe()
+vfo.plot_deformedshape(model="canopy", loadcase="loadSouthernCali", scale=5)
