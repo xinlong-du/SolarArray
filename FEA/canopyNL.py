@@ -225,18 +225,37 @@ alleleTags=getEleTags();
 # element resisting forces for rafters
 eleForces101=eleForce(101);
 eleForces101Local=eleResponse(101, 'localForces')
+eleForces102=eleForce(102);
+eleForces102Local=eleResponse(102, 'localForces')
 
 # element resisting forces for purlins
 eleForces404=eleForce(404);
 eleForces404Local=eleResponse(404, 'localForces')
 eleForces405=eleForce(405);
 eleForces405Local=eleResponse(405, 'localForces')
+eleForces504=eleForce(504);
+eleForces504Local=eleResponse(504, 'localForces')
+eleForces505=eleForce(505);
+eleForces505Local=eleResponse(505, 'localForces')
 
 # nodal forces in connections
 nodeForcesGlobalRafter10001=np.array(eleForces101[0:6]);
 nodeForcesGlobalPurlin10001=np.array(eleForces404[6:12])+np.array(eleForces405[0:6]);
 nodeForcesLocalRafter10001=np.array(eleForces101Local[0:6]);
 nodeForcesLocalPurlin10001=np.array(eleForces404Local[6:12])+np.array(eleForces405Local[0:6]);
+nodeForcesGlobalRafter10002=np.array(eleForces101[6:12])+np.array(eleForces102[0:6]);
+nodeForcesGlobalPurlin10002=np.array(eleForces504[6:12])+np.array(eleForces505[0:6]);
+nodeForcesLocalRafter10002=np.array(eleForces101Local[6:12])+np.array(eleForces102Local[0:6]);
+nodeForcesLocalPurlin10002=np.array(eleForces504Local[6:12])+np.array(eleForces505Local[0:6]);
+
+# forces on bolts
+Fbx10001=abs(nodeForcesLocalPurlin10001[0])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*2/2.5;
+Fby10001=abs(nodeForcesLocalPurlin10001[1])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*1.5/2.5;
+Tb10001=abs(nodeForcesLocalPurlin10001[2])/4+abs(nodeForcesLocalPurlin10001[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10001[4])/2/3/0.0254;
+
+Fbx10002=abs(nodeForcesLocalPurlin10002[0])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*2/2.5;
+Fby10002=abs(nodeForcesLocalPurlin10002[1])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*1.5/2.5;
+Tb10002=abs(nodeForcesLocalPurlin10002[2])/4+abs(nodeForcesLocalPurlin10002[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10002[4])/2/3/0.0254;
 
 #%%
 wipe()
