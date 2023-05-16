@@ -183,8 +183,8 @@ nodeTags=[];
 for i in range (1,25):
     nodeTags=nodeTags+list(range(100*i+1,100*i+41));
 
-pNW=1121.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
-pNL=210.3*0.1;  #N/m2
+pNW=1086.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
+pNL=203.7*0.1;  #N/m2
 fNW=pNW*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
 fNL=pNL*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
 f6NW=[fNW*math.sin(7/180*math.pi),0.0,-fNW*math.cos(7/180*math.pi),0.0,0.0,0.0];
@@ -221,6 +221,10 @@ print('Finished')
 # element resisting forces for columns
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
+
+# displacements of node of interest
+nodeDisp10001=nodeDisp(10001);
+nodeDisp10002=nodeDisp(10002);
 
 # element resisting forces for rafters
 eleForces101=eleForce(101);
