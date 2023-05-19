@@ -225,6 +225,13 @@ alleleTags=getEleTags();
 # displacements of node of interest
 nodeDisp10001=nodeDisp(10001);
 nodeDisp10002=nodeDisp(10002);
+nodeDisp20001=nodeDisp(20001);
+nodeDisp20002=nodeDisp(20002);
+nodeDisp30001=nodeDisp(30001);
+nodeDisp30002=nodeDisp(30002);
+nodeDisp10011=nodeDisp(10011);
+nodeDisp20012=nodeDisp(20012);
+nodeDisp30013=nodeDisp(30013);
 
 # element resisting forces for rafters
 eleForces101=eleForce(101);
