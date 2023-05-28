@@ -179,39 +179,28 @@ for i in range (0,4):
         element('elasticBeamColumn', i*100+501+j+24, *[nPurlin[i][j+24], nPurlin[i][j+1+24]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
-for i in range (1,7):
-    #                    elemID    node1      node2    node3    node4 counter-clockwise
-    element('ShellMITC4',i+700,  *[700+2*i-1, 700+2*i, 300+2*i, 300+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+800,  *[300+2*i-1, 300+2*i, 400+2*i, 400+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+900,  *[400+2*i-1, 400+2*i, 800+2*i, 800+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1000, *[900+2*i-1, 900+2*i, 500+2*i, 500+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
+for i in range (0,2):
+    for j in range (0,22):
+        #                    elemID               node1          node2          node3          node4 counter-clockwise
+        element('ShellMITC4',(11*i+1)*1000+j+1,  *[501+i*400+j*2, 601+i*400+j*2, 602+i*400+j*2, 502+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(11*i+2)*1000+j+1,  *[601+i*400+j*2, 701+i*400+j*2, 702+i*400+j*2, 602+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(11*i+3)*1000+j+1,  *[701+i*400+j*2, 801+i*400+j*2, 802+i*400+j*2, 702+i*400+j*2], moduleSecTag)
     
-    element('elasticBeamColumn', i+1400, *[700+2*i-1, 700+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1500, *[800+2*i-1, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1600, *[900+2*i-1, 900+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1700, *[1000+2*i-1, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    
-    element('elasticBeamColumn', i+1800, *[700+2*i-1, 300+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1900, *[300+2*i-1, 400+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2000, *[400+2*i-1, 800+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2100, *[900+2*i-1, 500+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2200, *[500+2*i-1, 600+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2300, *[600+2*i-1, 1000+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    
-    element('elasticBeamColumn', i+2400, *[700+2*i, 300+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2500, *[300+2*i, 400+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2600, *[400+2*i, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2700, *[900+2*i, 500+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2800, *[500+2*i, 600+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2900, *[600+2*i, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+4)*1000+j+1,  *[501+i*400+j*2, 601+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+5)*1000+j+1,  *[601+i*400+j*2, 701+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+6)*1000+j+1,  *[701+i*400+j*2, 801+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+7)*1000+j+1,  *[801+i*400+j*2, 802+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+8)*1000+j+1,  *[802+i*400+j*2, 702+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+9)*1000+j+1,  *[702+i*400+j*2, 602+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+10)*1000+j+1, *[602+i*400+j*2, 502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (11*i+11)*1000+j+1, *[502+i*400+j*2, 501+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # external braces
-element('elasticBeamColumn', 1301, *[103, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1302, *[104, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1303, *[203, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+for i in range(0,2):
+    element('elasticBeamColumn', 23000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 23000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 23000+1000*i+3, *[(i+3)*100+3, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 23000+1000*i+4, *[(i+3)*100+4, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 # render the model
 #vfo.createODB(model="solarPanel")
