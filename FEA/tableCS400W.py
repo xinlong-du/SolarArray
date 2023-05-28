@@ -1,8 +1,7 @@
 # -----------------------------------------------------------------------------
 # Solar PV table (two 2x11 CS-400W)
 # Units: m, N, kg, s, N/m2, kg/m3
-# Xinlong Du, 2022
-#
+# Xinlong Du, 2023
 # -----------------------------------------------------------------------------
 from openseespy.opensees import *
 import numpy as np
@@ -211,19 +210,19 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
+vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
+vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
+vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
 
-vfo.plot_modeshape(modenumber=7, scale=1); #plot mode shape 7
-vfo.plot_modeshape(modenumber=8, scale=1); #plot mode shape 8
-vfo.plot_modeshape(modenumber=9, scale=1); #plot mode shape 9
-vfo.plot_modeshape(modenumber=10, scale=1); #plot mode shape 10
-vfo.plot_modeshape(modenumber=11, scale=1); #plot mode shape 11
-vfo.plot_modeshape(modenumber=12, scale=1); #plot mode shape 12
+vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
+vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
+vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
+vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
+vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
+vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
@@ -232,17 +231,15 @@ pattern('Plain', 1, 1);
 load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
-constraints('Plain'); # how it handles boundary conditions
+constraints('Plain');  # how it handles boundary conditions
 numberer('Plain');	   # renumber dof's to minimize band-width 
-system('BandGeneral');# how to store and solve the system of equations in the analysis
+system('BandGeneral'); # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
-#algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
 algorithm('Linear');
 integrator('LoadControl', 0.1)
-#integrator ArcLength 0.05 1.0; #arclength alpha
 #Dincr = -0.01; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
 #integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
@@ -250,8 +247,3 @@ analysis('Static');	# define type of analysis static or transient
 analyze(100);
 print('Finished')
 wipe()
-#------------------------------------------------------------------------------
-# set finishTime [clock clicks -milliseconds];
-# puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
-# set systemTime [clock seconds] 
-# puts "Finished Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
