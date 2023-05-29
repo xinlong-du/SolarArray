@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Solar PV table (two 2x11 CS-400W)
+# Solar PV table (one 2x11 CS-400W)
 # Units: m, N, kg, s, N/m2, kg/m3
 # Xinlong Du, 2023
 # -----------------------------------------------------------------------------
@@ -78,8 +78,8 @@ h = 5.42*0.001; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
-yRack=[0.0, 265.3600*in2m, 464.8600*in2m, 730.2200*in2m];
-for i in range(1,5):
+yRack=[0.0, 265.3600*in2m];
+for i in range(1,3):
     # north post
     node(100*i+1,             0.0, yRack[i-1],          0.0)
     node(100*i+2,             0.0, yRack[i-1],       7*in2m)
@@ -97,7 +97,7 @@ for i in range(1,5):
 
 # purlins and modules
 for i in range (0,2):
-    for j in range (0,22):
+    for j in range (0,11):
         node(501+400*i+2*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
         node(502+400*i+2*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
         node(601+400*i+2*j, (-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
@@ -109,17 +109,12 @@ for i in range (0,2):
 
 # intersection of external braces
 node(1301, 0.0, 132.6800*in2m, 51.6250*in2m)
-node(1302, 0.0, 597.5400*in2m, 51.6250*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
 fix(101, 1, 1, 1, 1, 1, 1);  
 fix(105, 1, 1, 1, 1, 1, 1);
 fix(201, 1, 1, 1, 1, 1, 1);  
 fix(205, 1, 1, 1, 1, 1, 1);
-fix(301, 1, 1, 1, 1, 1, 1);  
-fix(305, 1, 1, 1, 1, 1, 1);
-fix(401, 1, 1, 1, 1, 1, 1);  
-fix(405, 1, 1, 1, 1, 1, 1);
 
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
@@ -142,7 +137,7 @@ ebTransfTag = 5;
 vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', ebTransfTag, *vecxz);
 
-for i in range(0,4):
+for i in range(0,2):
     # north post                 ID           nodeI      nodeJ                            TBD for mass, release can be omitted for fixed BC
     element('elasticBeamColumn', 101+100*i, *[101+100*i, 102+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
     element('elasticBeamColumn', 102+100*i, *[102+100*i, 103+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -175,11 +170,10 @@ for i in range (0,4):
     for j in range (0,23):
         #                            elemID         nodeI          nodeJ
         element('elasticBeamColumn', i*100+501+j, *[nPurlin[i][j], nPurlin[i][j+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
-        element('elasticBeamColumn', i*100+501+j+24, *[nPurlin[i][j+24], nPurlin[i][j+1+24]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 for i in range (0,2):
-    for j in range (0,22):
+    for j in range (0,11):
         #                    elemID               node1          node2          node3          node4 counter-clockwise
         element('ShellMITC4',(11*i+1)*1000+j+1,  *[501+i*400+j*2, 601+i*400+j*2, 602+i*400+j*2, 502+i*400+j*2], moduleSecTag)
         element('ShellMITC4',(11*i+2)*1000+j+1,  *[601+i*400+j*2, 701+i*400+j*2, 702+i*400+j*2, 602+i*400+j*2], moduleSecTag)
@@ -198,8 +192,6 @@ for i in range (0,2):
 for i in range(0,2):
     element('elasticBeamColumn', 23000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
     element('elasticBeamColumn', 23000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 23000+1000*i+3, *[(i+3)*100+3, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 23000+1000*i+4, *[(i+3)*100+4, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 # render the model
 #vfo.createODB(model="solarPanel")
