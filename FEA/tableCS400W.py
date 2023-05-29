@@ -205,27 +205,51 @@ for i in range(0,2):
 #vfo.createODB(model="solarPanel")
 vfo.plot_model()
 
-# eigen analysis---------------------------------------------------------------
+# eigen ANALYSIS---------------------------------------------------------------
 eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
+# vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+# vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+# vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
+# vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
+# vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+# vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
 
-vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
-vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
-vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
-vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
-vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
-vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
+# vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
+# vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
+# vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
+# vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
+# vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
+# vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
 
-# define loads-----------------------------------------------------------------
-F = 1.0; 
+#%% load wind tunnel test DATA
+import h5py
+filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
+
+with h5py.File(filename, "r") as f:
+    # get the key of interest; may or may NOT be a group
+    a_group_key = list(f.keys())[0]
+    # get the object names in the group and returns as a list
+    objNames = list(f[a_group_key])
+    # preferred methods to get dataset values
+    Cp = f[a_group_key]['Row1'][()]  # returns as a numpy array
+    dtNorm = f[a_group_key]['dtNorm'][()]
+
+#%% define LOADS---------------------------------------------------------------
+L=169.25*in2m;
+U=27.0;
+dt=dtNorm*L/U;
+rho_air=1.226;
+p=0.5*rho_air*U*U*Cp;
+x=L*np.array([0.125/2+0.25/2,0.25,0.25,0.25/2+0.125/2]);
+y=L*np.array([0.125/2+0.5/2,0.5/2+0.75/2,0.75/2+1/2,1/2+1.25/2,1.25/2+1/2,1/2+0.75/2,0.75/2+0.125/2]);
+A_trib=np.outer(x, y);
+A_trib=np.reshape(A_trib,(1,28),order='F');
+#A_trib=np.repeat(A_trib,np.shape(p)[0],axis=0);
+Force=np.multiply(p,A_trib);
+
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
 load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
