@@ -249,10 +249,11 @@ A_trib=np.outer(x, y);
 A_trib=np.reshape(A_trib,(1,28),order='F');
 #A_trib=np.repeat(A_trib,np.shape(p)[0],axis=0);
 Force=np.multiply(p,A_trib);
-
-timeSeries('Linear',1);
-pattern('Plain', 1, 1);
-load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+Force=Force.T.tolist()
+for i in range(0,28):
+    timeSeries('Path',i,'-dt',dt,'-values',*Force[i],'-prependZero');
+    pattern('Plain',i,i);
+    load(801, *[math.sin(30/180*math.pi), 0.0, -math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
