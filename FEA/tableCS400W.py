@@ -276,19 +276,17 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+allNodeTags=getNodeTags();
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801Transient.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
-numberer('Plain');	   # renumber dof's to minimize band-width 
-system('BandGeneral'); # how to store and solve the system of equations in the analysis
+numberer('RCM');	   # renumber dof's to minimize band-width 
+system('UmfPack');     # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
-algorithm('Linear');
-integrator('LoadControl', 0.1)
-#Dincr = -0.01; #-0.00002
-                                  #Node,  dof, 1st incr, Jd,  min,   max
-#integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
-analysis('Static');	# define type of analysis static or transient
-analyze(100);
+algorithm('KrylovNewton');
+integrator('Newmark', 0.5, 0.25);
+analysis('Transient'); # define type of analysis static or transient
+ok = analyze(100, 0.02);
 print('Finished')
 wipe()
