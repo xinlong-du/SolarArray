@@ -202,7 +202,7 @@ for i in range(0,2):
     element('elasticBeamColumn', 23000+1000*i+4, *[(i+3)*100+4, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 # render the model
-#vfo.createODB(model="solarPanel")
+vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen ANALYSIS---------------------------------------------------------------
@@ -287,6 +287,10 @@ test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieve
 algorithm('KrylovNewton');
 integrator('Newmark', 0.5, 0.25);
 analysis('Transient'); # define type of analysis static or transient
-ok = analyze(100, 0.02);
+ok = analyze(1000, 0.02);
 print('Finished')
 wipe()
+#%%
+#import matplotlib
+vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=5)
+#ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
