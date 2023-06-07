@@ -30,38 +30,38 @@ Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
 rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-# SECTION properties for purlin C-Section 9CS2.5x085 in AISI Manul (2002)
-A_pu = 1.27*in2m**2;      #cross-sectional area
-Iz_pu = 14.7*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 1.0*in2m**4;      #second moment of area about the local y-axis
-Jx_pu = 0.00306*in2m**4;  #torsional moment of inertia of section
+# SECTION properties for purlin C-Section 9CS2.5x070 in AISI Manual (2002)
+A_pu = 1.05*in2m**2;      #cross-sectional area
+Iz_pu = 12.2*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.828*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00171*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
-# SECTION properties for rafter HAT Section
-A_r = 2.08*in2m**2;       #cross-sectional area
-Iz_r = 15.7*in2m**4       #second moment of area about the local z-axis
-Iy_r = 10.4*in2m**4;      #second moment of area about the local y-axis
-Jx_r = 0.00766*in2m**4;   #torsional moment of inertia of section
+# SECTION properties for rafter HAT Section 6HU6x075 in AISI Manual (2002)
+A_r = 1.44*in2m**2;       #cross-sectional area
+Iz_r = 10.4*in2m**4       #second moment of area about the local z-axis
+Iy_r = 6.8*in2m**4;       #second moment of area about the local y-axis
+Jx_r = 0.00269*in2m**4;   #torsional moment of inertia of section
 mass_r = A_r*rho_s;       #mass per unit length
     
-# SECTION properties for post Pipe 2.5x2.5x1/8
-A_po = 1.07*in2m**2;      #cross-sectional area
-Iz_po = 0.998*in2m**4;    #second moment of area about the local z-axis
-Iy_po = 0.998*in2m**4;    #second moment of area about the local y-axis
-Jx_po = 1.61*in2m**4;     #torsional moment of inertia of section
+# SECTION properties for post Pipe 2.25x2.25x1/8 (https://www.engineersedge.com/standard_material/aisc-steel-tube.htm)
+A_po = 0.956*in2m**2;     #cross-sectional area
+Iz_po = 0.712*in2m**4;    #second moment of area about the local z-axis
+Iy_po = 0.712*in2m**4;    #second moment of area about the local y-axis
+Jx_po = 1.15*in2m**4;     #torsional moment of inertia of section
 mass_po = A_po*rho_s;     #mass per unit length
     
 # SECTION properties for internal brace Pipe 2x2x1/8
-A_ib = 0.84*in2m**2;       #cross-sectional area
-Iz_ib = 0.799*in2m**4;     #second moment of area about the local z-axis
-Iy_ib = 0.799*in2m**4;     #second moment of area about the local y-axis
+A_ib = 0.84*in2m**2;      #cross-sectional area
+Iz_ib = 0.486*in2m**4;     #second moment of area about the local z-axis
+Iy_ib = 0.486*in2m**4;     #second moment of area about the local y-axis
 Jx_ib = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_ib = A_ib*rho_s;      #mass per unit length
 
 # SECTION properties for external brace Pipe 2x2x1/8
-A_eb = 0.84*in2m**2;       #cross-sectional area
-Iz_eb = 0.799*in2m**4;     #second moment of area about the local z-axis
-Iy_eb = 0.799*in2m**4;     #second moment of area about the local y-axis
+A_eb = 0.84*in2m**2;      #cross-sectional area
+Iz_eb = 0.486*in2m**4;     #second moment of area about the local z-axis
+Iy_eb = 0.486*in2m**4;     #second moment of area about the local y-axis
 Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_eb = A_eb*rho_s;      #mass per unit length
 
@@ -210,7 +210,7 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-# vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
 # vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
 # vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
 # vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
