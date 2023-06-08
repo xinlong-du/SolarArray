@@ -30,46 +30,47 @@ Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
 rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-# SECTION properties for purlin C-Section 9CS2.5x085 in AISI Manul (2002)
-A_pu = 1.27*in2m**2;      #cross-sectional area
-Iz_pu = 14.7*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 1.0*in2m**4;      #second moment of area about the local y-axis
-Jx_pu = 0.00306*in2m**4;  #torsional moment of inertia of section
+# SECTION properties for purlin C-Section 9CS2.5x059 in AISI Manual (2002)
+A_pu = 0.881*in2m**2;     #cross-sectional area
+Iz_pu = 10.3*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.698*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00102*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
-# SECTION properties for rafter HAT Section
-A_r = 2.08*in2m**2;       #cross-sectional area
-Iz_r = 15.7*in2m**4       #second moment of area about the local z-axis
-Iy_r = 10.4*in2m**4;      #second moment of area about the local y-axis
-Jx_r = 0.00766*in2m**4;   #torsional moment of inertia of section
+# SECTION properties for rafter HAT Section 6HU3x060 in AISI Manual (2002)
+A_r = 0.954*in2m**2;      #cross-sectional area
+Iz_r = 1.92*in2m**4       #second moment of area about the local z-axis
+Iy_r = 4.15*in2m**4;      #second moment of area about the local y-axis
+Jx_r = 0.00115*in2m**4;   #torsional moment of inertia of section
 mass_r = A_r*rho_s;       #mass per unit length
     
-# SECTION properties for post Pipe 2.5x2.5x1/8
-A_po = 1.07*in2m**2;      #cross-sectional area
-Iz_po = 0.998*in2m**4;    #second moment of area about the local z-axis
-Iy_po = 0.998*in2m**4;    #second moment of area about the local y-axis
-Jx_po = 1.61*in2m**4;     #torsional moment of inertia of section
+# SECTION properties for post Pipe 2.25x2.25x1/8 (https://www.engineersedge.com/standard_material/aisc-steel-tube.htm)
+A_po = 0.956*in2m**2;     #cross-sectional area
+Iz_po = 0.712*in2m**4;    #second moment of area about the local z-axis
+Iy_po = 0.712*in2m**4;    #second moment of area about the local y-axis
+Jx_po = 1.15*in2m**4;     #torsional moment of inertia of section
 mass_po = A_po*rho_s;     #mass per unit length
     
 # SECTION properties for internal brace Pipe 2x2x1/8
-A_ib = 0.84*in2m**2;       #cross-sectional area
-Iz_ib = 0.799*in2m**4;     #second moment of area about the local z-axis
-Iy_ib = 0.799*in2m**4;     #second moment of area about the local y-axis
+A_ib = 0.84*in2m**2;      #cross-sectional area
+Iz_ib = 0.486*in2m**4;     #second moment of area about the local z-axis
+Iy_ib = 0.486*in2m**4;     #second moment of area about the local y-axis
 Jx_ib = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_ib = A_ib*rho_s;      #mass per unit length
 
 # SECTION properties for external brace Pipe 2x2x1/8
-A_eb = 0.84*in2m**2;       #cross-sectional area
-Iz_eb = 0.799*in2m**4;     #second moment of area about the local z-axis
-Iy_eb = 0.799*in2m**4;     #second moment of area about the local y-axis
+A_eb = 0.84*in2m**2;      #cross-sectional area
+Iz_eb = 0.486*in2m**4;     #second moment of area about the local z-axis
+Iy_eb = 0.486*in2m**4;     #second moment of area about the local y-axis
 Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_eb = A_eb*rho_s;      #mass per unit length
 
 # SECTION properties for module frames
-A_mf = 112.6*0.001**2;     #cross-sectional area
-Iz_mf = 12932.0*0.001**4;  #second moment of area about the local z-axis
-Iy_mf = Iz_mf/5.0;         #second moment of area about the local y-axis (temp)
-Jx_mf = Jx_pu/5.0;         #torsional moment of inertia of section (temp)
+A_mf = 168.07*0.001**2;    #cross-sectional area
+Iz_mf = 21828.0*0.001**4;  #second moment of area about the local z-axis
+Iy_mf = 9841.7*0.001**4;   #second moment of area about the local y-axis
+#torsional moment of inertia of section: hollow section     + open section
+Jx_mf = (4*319.8657*319.8657*(1.37+1.67+1.67+1.42)/4/74.21+11.96*2.01**3/3+4.96*1.36**3/3+17.86*1.42**3/3)*0.001**4;
 mass_mf = A_mf*rho_mf;     #mass per unit length
 
 # SECTION properties for module
@@ -94,6 +95,7 @@ for i in range(1,3):
     node(100*i+9,   -31.0077*in2m, yRack[i-1], 74.2796*in2m)
     node(100*i+10,  -69.2423*in2m, yRack[i-1], 52.1209*in2m)
     node(100*i+11, -105.5808*in2m, yRack[i-1], 31.0611*in2m)
+    node(100*i+12,       -88*in2m, yRack[i-1],      11*in2m)
 
 # purlins and modules
 for i in range (0,2):
@@ -122,7 +124,7 @@ vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
-vecxz = [0.0, -1.0, 0.0];
+vecxz = [0.0, 0.0, -1.0];
 geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
@@ -144,7 +146,8 @@ for i in range(0,2):
     element('elasticBeamColumn', 103+100*i, *[103+100*i, 104+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
     # east side rack, south post
     element('elasticBeamColumn', 104+100*i, *[105+100*i, 106+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-    element('elasticBeamColumn', 105+100*i, *[106+100*i, 107+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
+    element('elasticBeamColumn', 113+100*i, *[106+100*i, 112+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+    element('elasticBeamColumn', 105+100*i, *[112+100*i, 107+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
     # east side rack, rafter
     element('elasticBeamColumn', 106+100*i, *[108+100*i, 104+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
     element('elasticBeamColumn', 107+100*i, *[104+100*i, 109+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
@@ -153,7 +156,7 @@ for i in range(0,2):
     element('elasticBeamColumn', 110+100*i, *[107+100*i, 111+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
     # east side rack, internal brace
     element('elasticBeamColumn', 111+100*i, *[102+100*i, 106+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-    element('elasticBeamColumn', 112+100*i, *[103+100*i, 107+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
+    element('elasticBeamColumn', 112+100*i, *[104+100*i, 112+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
 
 # purlins
 nPurlin=[[0]*48]*4; #nodes of purlins
@@ -193,6 +196,8 @@ for i in range(0,2):
     element('elasticBeamColumn', 23000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
     element('elasticBeamColumn', 23000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
+allNodeTags=getNodeTags();
+alleleTags=getEleTags();
 # render the model
 #vfo.createODB(model="solarPanel")
 vfo.plot_model()
@@ -209,12 +214,12 @@ vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
 vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
 vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
 
-vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
-vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
-vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
-vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
-vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
-vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
+# vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
+# vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
+# vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
+# vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
+# vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
+# vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 

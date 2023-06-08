@@ -94,6 +94,7 @@ for i in range(1,5):
     node(100*i+9,   -31.0077*in2m, yRack[i-1], 74.2796*in2m)
     node(100*i+10,  -69.2423*in2m, yRack[i-1], 52.1209*in2m)
     node(100*i+11, -105.5808*in2m, yRack[i-1], 31.0611*in2m)
+    node(100*i+12,       -88*in2m, yRack[i-1],      11*in2m)
 
 # purlins and modules
 for i in range (0,2):
@@ -149,7 +150,8 @@ for i in range(0,4):
     element('elasticBeamColumn', 103+100*i, *[103+100*i, 104+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
     # east side rack, south post
     element('elasticBeamColumn', 104+100*i, *[105+100*i, 106+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-    element('elasticBeamColumn', 105+100*i, *[106+100*i, 107+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
+    element('elasticBeamColumn', 113+100*i, *[106+100*i, 112+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
+    element('elasticBeamColumn', 105+100*i, *[112+100*i, 107+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
     # east side rack, rafter
     element('elasticBeamColumn', 106+100*i, *[108+100*i, 104+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
     element('elasticBeamColumn', 107+100*i, *[104+100*i, 109+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
@@ -158,7 +160,7 @@ for i in range(0,4):
     element('elasticBeamColumn', 110+100*i, *[107+100*i, 111+100*i], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
     # east side rack, internal brace
     element('elasticBeamColumn', 111+100*i, *[102+100*i, 106+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-    element('elasticBeamColumn', 112+100*i, *[103+100*i, 107+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
+    element('elasticBeamColumn', 112+100*i, *[104+100*i, 112+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
 
 # purlins
 nPurlin=[[0]*48]*4; #nodes of purlins
@@ -211,11 +213,11 @@ omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
 vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
-# vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
-# vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
-# vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
-# vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
-# vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
+vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
+vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
+vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
 
 # vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
 # vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
