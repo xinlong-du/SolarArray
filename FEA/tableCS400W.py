@@ -30,18 +30,18 @@ Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
 rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-# SECTION properties for purlin C-Section 9CS2.5x070 in AISI Manual (2002)
-A_pu = 1.05*in2m**2;      #cross-sectional area
-Iz_pu = 12.2*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 0.828*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.00171*in2m**4;  #torsional moment of inertia of section
+# SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
+A_pu = 0.822*in2m**2;     #cross-sectional area
+Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
-# SECTION properties for rafter HAT Section 6HU6x075 in AISI Manual (2002)
-A_r = 1.44*in2m**2;       #cross-sectional area
-Iz_r = 10.4*in2m**4       #second moment of area about the local z-axis
-Iy_r = 6.8*in2m**4;       #second moment of area about the local y-axis
-Jx_r = 0.00269*in2m**4;   #torsional moment of inertia of section
+# SECTION properties for rafter HAT Section 6HU3x060 in AISI Manual (2002)
+A_r = 0.954*in2m**2;      #cross-sectional area
+Iz_r = 1.92*in2m**4       #second moment of area about the local z-axis
+Iy_r = 4.15*in2m**4;      #second moment of area about the local y-axis
+Jx_r = 0.00115*in2m**4;   #torsional moment of inertia of section
 mass_r = A_r*rho_s;       #mass per unit length
     
 # SECTION properties for post Pipe 2.25x2.25x1/8 (https://www.engineersedge.com/standard_material/aisc-steel-tube.htm)
@@ -66,10 +66,11 @@ Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
 mass_eb = A_eb*rho_s;      #mass per unit length
 
 # SECTION properties for module frames
-A_mf = 112.6*0.001**2;     #cross-sectional area
-Iz_mf = 12932.0*0.001**4;  #second moment of area about the local z-axis
-Iy_mf = Iz_mf/5.0;         #second moment of area about the local y-axis (temp)
-Jx_mf = Jx_pu/5.0;         #torsional moment of inertia of section (temp)
+A_mf = 168.07*0.001**2;    #cross-sectional area
+Iz_mf = 21828.0*0.001**4;  #second moment of area about the local z-axis
+Iy_mf = 9841.7*0.001**4;   #second moment of area about the local y-axis
+#torsional moment of inertia of section: hollow section     + open section
+Jx_mf = (4*319.8657*319.8657*(1.37+1.67+1.67+1.42)/4/74.21+11.96*2.01**3/3+4.96*1.36**3/3+17.86*1.42**3/3)*0.001**4;
 mass_mf = A_mf*rho_mf;     #mass per unit length
 
 # SECTION properties for module
@@ -128,7 +129,7 @@ vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
-vecxz = [0.0, -1.0, 0.0];
+vecxz = [0.0, 0.0, -1.0];
 geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
