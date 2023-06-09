@@ -282,7 +282,7 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801Transient.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801Transient.out', '-time', '-node', *[1113], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Wele813and814.out', '-time', '-ele', *[813,814], 'localForces');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
@@ -302,9 +302,15 @@ eleForces813=eleForce(813);
 eleForces813Local=eleResponse(813, 'localForces')
 eleForces814=eleForce(814);
 eleForces814Local=eleResponse(814, 'localForces')
+nodeForces1113=np.array(eleForces813Local[6:12])+np.array(eleForces814Local[0:6]);
 
 wipe()
-#%%
+#%%----------------------------------------------------------------------------
 #import matplotlib
 vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=5)
 #ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
+
+#%% calculate time series of forces on joints----------------------------------
+file_name = './Data/tableCS400Wele813and814.out'
+eleForces813and814 = np.loadtxt(file_name)
+nodeForces=eleForces813and814[:,7:13]+eleForces813and814[:,13:19];
