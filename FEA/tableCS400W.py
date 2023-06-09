@@ -287,6 +287,9 @@ for i in range(0,28):
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnode1113.out', '-time', '-node', *[1113], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Wele813and814.out', '-time', '-ele', *[813,814], 'localForces');
 
+# define DAMPING
+rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
+
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
 numberer('RCM');	   # renumber dof's to minimize band-width 
