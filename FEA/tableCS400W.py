@@ -6,6 +6,8 @@
 from openseespy.opensees import *
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 # visulization
 import vfo.vfo as vfo
@@ -281,8 +283,8 @@ for i in range(0,28):
     for j in nodesTapIn[27-i]:
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
-# Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801Transient.out', '-time', '-node', *[1113], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+# define RECORDERS ------------------------------------------------------------
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnode1113.out', '-time', '-node', *[1113], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Wele813and814.out', '-time', '-ele', *[813,814], 'localForces');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
@@ -302,15 +304,84 @@ eleForces813=eleForce(813);
 eleForces813Local=eleResponse(813, 'localForces')
 eleForces814=eleForce(814);
 eleForces814Local=eleResponse(814, 'localForces')
-nodeForces1113=np.array(eleForces813Local[6:12])+np.array(eleForces814Local[0:6]);
+nodeForces1113end=np.array(eleForces813Local[6:12])+np.array(eleForces814Local[0:6]);
 
 wipe()
-#%%----------------------------------------------------------------------------
-#import matplotlib
+#%% defomed shape and animation------------------------------------------------
 vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=5)
 #ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
 
 #%% calculate time series of forces on joints----------------------------------
 file_name = './Data/tableCS400Wele813and814.out'
 eleForces813and814 = np.loadtxt(file_name)
-nodeForces=eleForces813and814[:,7:13]+eleForces813and814[:,13:19];
+nodeForces1113=eleForces813and814[:,7:13]+eleForces813and814[:,13:19];
+
+file_name = './Data/tableCS400Wnode1113.out'
+nodeDisp1113 = np.loadtxt(file_name)
+
+#%% Plots----------------------------------------------------------------------
+big_fig_size = (6,10);
+plt_line_width = 0.5; 
+fig_font_size = 8;
+
+# plot forces between purlin and mudule at joint 1113 (local system of purlin)
+fig = plt.figure(figsize=big_fig_size)
+ax0 = fig.add_subplot(611)
+ax1 = fig.add_subplot(612)
+ax2 = fig.add_subplot(613)
+ax3 = fig.add_subplot(614)
+ax4 = fig.add_subplot(615)
+ax5 = fig.add_subplot(616)
+plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+ax0.tick_params(direction="in")
+ax1.tick_params(direction="in")
+ax2.tick_params(direction="in")
+ax3.tick_params(direction="in")
+ax4.tick_params(direction="in")
+ax5.tick_params(direction="in")
+ax0.plot(eleForces813and814[:,0],nodeForces1113[:,0]*0.0002248, linewidth=plt_line_width)
+ax1.plot(eleForces813and814[:,0],nodeForces1113[:,1]*0.0002248, linewidth=plt_line_width)
+ax2.plot(eleForces813and814[:,0],nodeForces1113[:,2]*0.0002248, linewidth=plt_line_width)
+ax3.plot(eleForces813and814[:,0],nodeForces1113[:,3]*0.0007375623, linewidth=plt_line_width)
+ax4.plot(eleForces813and814[:,0],nodeForces1113[:,4]*0.0007375623, linewidth=plt_line_width)
+ax5.plot(eleForces813and814[:,0],nodeForces1113[:,5]*0.0007375623, linewidth=plt_line_width)
+ax0.set_ylabel('Fx (kips)',fontsize=fig_font_size)
+ax1.set_ylabel('Fy (kips)',fontsize=fig_font_size)
+ax2.set_ylabel('Fz (kips)',fontsize=fig_font_size)
+ax3.set_ylabel('Mx (kips*ft)',fontsize=fig_font_size)
+ax4.set_ylabel('My (kips*ft)',fontsize=fig_font_size)
+ax5.set_ylabel('Mz (kips*ft)',fontsize=fig_font_size)
+ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeForces1113.tif', transparent=False, bbox_inches='tight', dpi=200)
+
+# plot displacements at joint 1113 (global system)
+fig = plt.figure(figsize=big_fig_size)
+ax0 = fig.add_subplot(611)
+ax1 = fig.add_subplot(612)
+ax2 = fig.add_subplot(613)
+ax3 = fig.add_subplot(614)
+ax4 = fig.add_subplot(615)
+ax5 = fig.add_subplot(616)
+plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+ax0.tick_params(direction="in")
+ax1.tick_params(direction="in")
+ax2.tick_params(direction="in")
+ax3.tick_params(direction="in")
+ax4.tick_params(direction="in")
+ax5.tick_params(direction="in")
+ax0.plot(nodeDisp1113[:,0],nodeDisp1113[:,1]*39.3701, linewidth=plt_line_width)
+ax1.plot(nodeDisp1113[:,0],nodeDisp1113[:,2]*39.3701, linewidth=plt_line_width)
+ax2.plot(nodeDisp1113[:,0],nodeDisp1113[:,3]*39.3701, linewidth=plt_line_width)
+ax3.plot(nodeDisp1113[:,0],nodeDisp1113[:,4], linewidth=plt_line_width)
+ax4.plot(nodeDisp1113[:,0],nodeDisp1113[:,5], linewidth=plt_line_width)
+ax5.plot(nodeDisp1113[:,0],nodeDisp1113[:,6], linewidth=plt_line_width)
+ax0.set_ylabel('dX (in)',fontsize=fig_font_size)
+ax1.set_ylabel('dY (in)',fontsize=fig_font_size)
+ax2.set_ylabel('dZ (in)',fontsize=fig_font_size)
+ax3.set_ylabel('rX (rad)',fontsize=fig_font_size)
+ax4.set_ylabel('rY (rad)',fontsize=fig_font_size)
+ax5.set_ylabel('rZ (rad)',fontsize=fig_font_size)
+ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeDisp1113.tif', transparent=False, bbox_inches='tight', dpi=200)
