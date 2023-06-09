@@ -204,6 +204,9 @@ for i in range(0,2):
     element('elasticBeamColumn', 23000+1000*i+3, *[(i+3)*100+3, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
     element('elasticBeamColumn', 23000+1000*i+4, *[(i+3)*100+4, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
+allNodeTags=getNodeTags();
+alleleTags=getEleTags();
+
 # render the model
 vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
 vfo.plot_model()
@@ -213,12 +216,12 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
+# vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+# vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+# vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
+# vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
+# vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+# vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
 
 # vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
 # vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
@@ -279,8 +282,8 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-allNodeTags=getNodeTags();
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnode801Transient.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Element', '-file', f'{dataDir}/tableCS400Wele813and814.out', '-time', '-ele', *[813,814], 'localForces');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -292,6 +295,14 @@ integrator('Newmark', 0.5, 0.25);
 analysis('Transient'); # define type of analysis static or transient
 ok = analyze(1000, 0.02);
 print('Finished')
+
+#%% output forces on joints at the last time step, used for verification-------
+# element resisting forces for purlins
+eleForces813=eleForce(813);
+eleForces813Local=eleResponse(813, 'localForces')
+eleForces814=eleForce(814);
+eleForces814Local=eleResponse(814, 'localForces')
+
 wipe()
 #%%
 #import matplotlib
