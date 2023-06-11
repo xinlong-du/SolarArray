@@ -117,7 +117,7 @@ vecxz = [0.0, -1.0, 0.0];
 geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
-vecxz = [-233.0002-233.0002, 324-324, 55.3912-112.6088]; #local z' direction (nodes 10001 - 10013)
+vecxz = [233.0002-(-233.0002), 324.0-324.0, 112.6088-55.3912]; #local z' direction (nodes 20013 - 20001)
 geomTransf('Linear', purlinTransfTag, *vecxz);
 
 # post                       ID  nodeI nodeJ
@@ -254,39 +254,51 @@ nodeDisp20012=nodeDisp(20012);
 nodeDisp30013=nodeDisp(30013);
 
 # element resisting forces for rafters
-eleForces101=eleForce(101);
-eleForces101Local=eleResponse(101, 'localForces')
-eleForces102=eleForce(102);
-eleForces102Local=eleResponse(102, 'localForces')
+efGloba101=eleForce(101);
+efLocal101=eleResponse(101, 'localForces')
+efGloba102=eleForce(102);
+efLocal102=eleResponse(102, 'localForces')
 
 # element resisting forces for purlins
-eleForces404=eleForce(404);
-eleForces404Local=eleResponse(404, 'localForces')
-eleForces405=eleForce(405);
-eleForces405Local=eleResponse(405, 'localForces')
-eleForces504=eleForce(504);
-eleForces504Local=eleResponse(504, 'localForces')
-eleForces505=eleForce(505);
-eleForces505Local=eleResponse(505, 'localForces')
+efGloba404=eleForce(404);
+efLocal404=eleResponse(404, 'localForces')
+efGloba405=eleForce(405);
+efLocal405=eleResponse(405, 'localForces')
+efGloba504=eleForce(504);
+efLocal504=eleResponse(504, 'localForces')
+efGloba505=eleForce(505);
+efLocal505=eleResponse(505, 'localForces')
 
 # nodal forces in connections
-nodeForcesGlobalRafter10001=np.array(eleForces101[0:6]);
-nodeForcesGlobalPurlin10001=np.array(eleForces404[6:12])+np.array(eleForces405[0:6]);
-nodeForcesLocalRafter10001=np.array(eleForces101Local[0:6]);
-nodeForcesLocalPurlin10001=np.array(eleForces404Local[6:12])+np.array(eleForces405Local[0:6]);
-nodeForcesGlobalRafter10002=np.array(eleForces101[6:12])+np.array(eleForces102[0:6]);
-nodeForcesGlobalPurlin10002=np.array(eleForces504[6:12])+np.array(eleForces505[0:6]);
-nodeForcesLocalRafter10002=np.array(eleForces101Local[6:12])+np.array(eleForces102Local[0:6]);
-nodeForcesLocalPurlin10002=np.array(eleForces504Local[6:12])+np.array(eleForces505Local[0:6]);
+nfGlobaRafter10001=np.array(efGloba101[0:6]);
+nfGlobaPurlin10001=np.array(efGloba404[6:12])+np.array(efGloba405[0:6]);
+nfLocalRafter10001=np.array(efLocal101[0:6]);
+nfLocalPurlin10001=np.array(efLocal404[6:12])+np.array(efLocal405[0:6]);
+nfGlobaRafter10002=np.array(efGloba101[6:12])+np.array(efGloba102[0:6]);
+nfGlobaPurlin10002=np.array(efGloba504[6:12])+np.array(efGloba505[0:6]);
+nfLocalRafter10002=np.array(efLocal101[6:12])+np.array(efLocal102[0:6]);
+nfLocalPurlin10002=np.array(efLocal504[6:12])+np.array(efLocal505[0:6]);
 
 # forces on bolts
-Fbx10001=abs(nodeForcesLocalPurlin10001[0])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*2/2.5;
-Fby10001=abs(nodeForcesLocalPurlin10001[1])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*1.5/2.5;
-Tb10001=abs(nodeForcesLocalPurlin10001[2])/4+abs(nodeForcesLocalPurlin10001[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10001[4])/2/3/0.0254;
+Fbx10001=abs(nfLocalPurlin10001[0])/4+abs(nfLocalPurlin10001[5])/4/0.0635*2/2.5;
+if nfLocalPurlin10001[1]>0:
+    Fby10001=abs(nfLocalPurlin10001[5])/4/0.0635*1.5/2.5;
+else:
+    Fby10001=abs(nfLocalPurlin10001[1])/4+abs(nfLocalPurlin10001[5])/4/0.0635*1.5/2.5;
+if nfLocalPurlin10001[2]>0:
+    Fbt10001=abs(nfLocalPurlin10001[3])/2/4/0.0254+abs(nfLocalPurlin10001[4])/2/3/0.0254;
+else:
+    Fbt10001=abs(nfLocalPurlin10001[2])/4+abs(nfLocalPurlin10001[3])/2/4/0.0254+abs(nfLocalPurlin10001[4])/2/3/0.0254;
 
-Fbx10002=abs(nodeForcesLocalPurlin10002[0])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*2/2.5;
-Fby10002=abs(nodeForcesLocalPurlin10002[1])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*1.5/2.5;
-Tb10002=abs(nodeForcesLocalPurlin10002[2])/4+abs(nodeForcesLocalPurlin10002[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10002[4])/2/3/0.0254;
+Fbx10002=abs(nfLocalPurlin10002[0])/4+abs(nfLocalPurlin10002[5])/4/0.0635*2/2.5;
+if nfLocalPurlin10002[1]>0:
+    Fby10002=abs(nfLocalPurlin10002[5])/4/0.0635*1.5/2.5;
+else:
+    Fby10002=abs(nfLocalPurlin10002[1])/4+abs(nfLocalPurlin10002[5])/4/0.0635*1.5/2.5;
+if nfLocalPurlin10002[2]>0:
+    Fbt10002=abs(nfLocalPurlin10002[3])/2/4/0.0254+abs(nfLocalPurlin10002[4])/2/3/0.0254;
+else:
+    Fbt10002=abs(nfLocalPurlin10002[2])/4+abs(nfLocalPurlin10002[3])/2/4/0.0254+abs(nfLocalPurlin10002[4])/2/3/0.0254;
 
 #%%
 wipe()
