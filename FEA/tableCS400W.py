@@ -12,7 +12,7 @@ import matplotlib as mpl
 # visulization
 import vfo.vfo as vfo
 
-# SET UP ----------------------------------------------------------------------
+#%% SET UP ----------------------------------------------------------------------
 wipe();
 model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
@@ -321,13 +321,14 @@ nodeForces1113=eleForces813and814[:,7:13]+eleForces813and814[:,13:19];
 
 file_name = './Data/tableCS400Wnode1113.out'
 nodeDisp1113 = np.loadtxt(file_name)
+nodeDisp1113Localy=nodeDisp1113[:,3]*math.cos(30/180*math.pi)-nodeDisp1113[:,1]*math.sin(30/180*math.pi)
 
 #%% Plots----------------------------------------------------------------------
 big_fig_size = (6,10);
 plt_line_width = 0.5; 
 fig_font_size = 8;
 
-# plot forces between purlin and mudule at joint 1113 (local system of purlin)
+#%% plot forces between purlin and mudule at joint 1113 (local system of purlin)
 fig = plt.figure(figsize=big_fig_size)
 ax0 = fig.add_subplot(611)
 ax1 = fig.add_subplot(612)
@@ -388,3 +389,14 @@ ax4.set_ylabel('rY (rad)',fontsize=fig_font_size)
 ax5.set_ylabel('rZ (rad)',fontsize=fig_font_size)
 ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
 plt.savefig('./Data/nodeDisp1113.tif', transparent=False, bbox_inches='tight', dpi=200)
+
+#%% plot y displacements at joint 1113 (local system)
+fig = plt.figure(figsize=(6,3))
+ax = fig.add_axes([0, 0, 1, 1])
+plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+ax.tick_params(direction="in")
+ax.plot(nodeDisp1113[:,0],nodeDisp1113Localy*39.3701, linewidth=plt_line_width)
+ax.set_ylabel('Disp. normal to module plane (in)',fontsize=fig_font_size)
+ax.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeDisp1113Localy.tif', transparent=False, bbox_inches='tight', dpi=200)
