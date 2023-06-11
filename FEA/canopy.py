@@ -56,10 +56,11 @@ Jx_po = 105.0*in2m**4;    #torsional moment of inertia of section
 mass_po = A_po*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
-A_mf = 112.6*0.001**2;     #cross-sectional area
-Iz_mf = 12932.0*0.001**4;  #second moment of area about the local z-axis
-Iy_mf = Iz_mf/5.0;         #second moment of area about the local y-axis (temp)
-Jx_mf = Jx_pu/5.0;         #torsional moment of inertia of section (temp)
+A_mf = 168.07*0.001**2;    #cross-sectional area
+Iz_mf = 21828.0*0.001**4;  #second moment of area about the local z-axis
+Iy_mf = 9841.7*0.001**4;   #second moment of area about the local y-axis
+#torsional moment of inertia of section: hollow section     + open section
+Jx_mf = (4*319.8657*319.8657*(1.37+1.67+1.67+1.42)/4/74.21+11.96*2.01**3/3+4.96*1.36**3/3+17.86*1.42**3/3)*0.001**4;
 mass_mf = A_mf*rho_mf;     #mass per unit length
 
 # SECTION properties for module
@@ -179,22 +180,41 @@ freq = omega/(2*math.pi);
 # vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
-nodeTags=[];
-for i in range (1,25):
-    nodeTags=nodeTags+list(range(100*i+1,100*i+41));
+nodeTagsNWed=[];
+for i in range (0,3):
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+1301,400*i+1341));
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+1601,400*i+1641));
+nodeTagsNWin=[];
+for i in range (0,3):
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+1401,400*i+1441));
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+1501,400*i+1541));
+nodeTagsNLed=[];
+for i in range (0,3):
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+101,400*i+141));
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+401,400*i+441));
+nodeTagsNLin=[];
+for i in range (0,3):
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+201,400*i+241));
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+301,400*i+341));
 
 pNW=1086.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
 pNL=203.7*0.1;  #N/m2
-fNW=pNW*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
-fNL=pNL*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
-f6NW=[fNW*math.sin(7/180*math.pi),0.0,-fNW*math.cos(7/180*math.pi),0.0,0.0,0.0];
-f6NL=[fNL*math.sin(7/180*math.pi),0.0,-fNL*math.cos(7/180*math.pi),0.0,0.0,0.0];
+fNWed=pNW*21.0/2*in2m*42.0*in2m/2.0; #/2.0 accounts for 2 nodes on edge (e.g., nodes 101 and 102)
+fNWin=pNW*(21.0/2+42.0/2)*in2m*42.0*in2m/2.0;
+fNLed=pNL*21.0/2*in2m*42.0*in2m/2.0;
+fNLin=pNL*(21.0/2+42.0/2)*in2m*42.0*in2m/2.0;
+f6NWed=[fNWed*math.sin(7/180*math.pi),0.0,-fNWed*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NWin=[fNWin*math.sin(7/180*math.pi),0.0,-fNWin*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NLed=[fNLed*math.sin(7/180*math.pi),0.0,-fNLed*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NLin=[fNLin*math.sin(7/180*math.pi),0.0,-fNLin*math.cos(7/180*math.pi),0.0,0.0,0.0];
 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-for i in range (0,480):
-    load(nodeTags[i], *f6NW);
-    load(nodeTags[i+480],*f6NL)
+for i in range (0,240):
+    load(nodeTagsNWed[i],*f6NWed);
+    load(nodeTagsNWin[i],*f6NWin);
+    load(nodeTagsNLed[i],*f6NLed);
+    load(nodeTagsNLin[i],*f6NLin);
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/node101Disp.out', '-time', '-node', *[101], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
