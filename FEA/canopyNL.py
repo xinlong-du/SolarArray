@@ -56,10 +56,11 @@ Jx_po = 105.0*in2m**4;    #torsional moment of inertia of section
 mass_po = A_po*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
-A_mf = 112.6*0.001**2;     #cross-sectional area
-Iz_mf = 12932.0*0.001**4;  #second moment of area about the local z-axis
-Iy_mf = Iz_mf/5.0;         #second moment of area about the local y-axis (temp)
-Jx_mf = Jx_pu/5.0;         #torsional moment of inertia of section (temp)
+A_mf = 168.07*0.001**2;    #cross-sectional area
+Iz_mf = 21828.0*0.001**4;  #second moment of area about the local z-axis
+Iy_mf = 9841.7*0.001**4;   #second moment of area about the local y-axis
+#torsional moment of inertia of section: hollow section     + open section
+Jx_mf = (4*319.8657*319.8657*(1.37+1.67+1.67+1.42)/4/74.21+11.96*2.01**3/3+4.96*1.36**3/3+17.86*1.42**3/3)*0.001**4;
 mass_mf = A_mf*rho_mf;     #mass per unit length
 
 # SECTION properties for module
@@ -109,15 +110,15 @@ fix(3, 1, 1, 1, 1, 1, 1);
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
 vecxz = [0.0, 1.0, 0.0];
-geomTransf('Corotational', postTransfTag, *vecxz);
+geomTransf('Linear', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
 vecxz = [0.0, -1.0, 0.0];
-geomTransf('Corotational', rafterTransfTag, *vecxz);
+geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
-vecxz = [-233.0002-233.0002, 324-324, 55.3912-112.6088]; #local z' direction (nodes 10001 - 10013)
-geomTransf('Corotational', purlinTransfTag, *vecxz);
+vecxz = [233.0002-(-233.0002), 324.0-324.0, 112.6088-55.3912]; #local z' direction (nodes 20013 - 20001)
+geomTransf('Linear', purlinTransfTag, *vecxz);
 
 # post                       ID  nodeI nodeJ
 element('elasticBeamColumn', 1, *[1, 10007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -163,7 +164,7 @@ for i in range (0,6):
         element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # render the model
-vfo.createODB(model="canopyNL", loadcase="loadSouthernCali", Nmodes=6, deltaT=1)
+vfo.createODB(model="canopy", loadcase="loadSouthernCali", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
@@ -179,22 +180,44 @@ freq = omega/(2*math.pi);
 # vfo.plot_modeshape(modenumber=6, scale=50); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
-nodeTags=[];
-for i in range (1,25):
-    nodeTags=nodeTags+list(range(100*i+1,100*i+41));
+nodeTagsNWed=[];
+nodeTagsNWin=[];
+nodeTagsNLed=[];
+nodeTagsNLin=[];
+for i in range (0,3):
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+101,400*i+141));
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+401,400*i+441));
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+201,400*i+241));
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+301,400*i+341));
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+1301,400*i+1341));
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+1601,400*i+1641));
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+1401,400*i+1441));
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+1501,400*i+1541));
 
-pNW=1086.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
+# load case A
+pNW=815.0*0.1;  #N/m2, 0.1 is used to account for 10 steps in analyze(10)
 pNL=203.7*0.1;  #N/m2
-fNW=pNW*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
-fNL=pNL*511.5/2*in2m*868.5*in2m/(len(nodeTags)/2);
-f6NW=[fNW*math.sin(7/180*math.pi),0.0,-fNW*math.cos(7/180*math.pi),0.0,0.0,0.0];
-f6NL=[fNL*math.sin(7/180*math.pi),0.0,-fNL*math.cos(7/180*math.pi),0.0,0.0,0.0];
+
+# load case B
+# pNW=-747.1*0.1; #N/m2, 0.1 is used to account for 10 steps in analyze(10)
+# pNL= -67.9*0.1; #N/m2
+
+fNWed=pNW*21.0/2*in2m*42.0*in2m/2.0; #/2.0 accounts for 2 nodes on edge (e.g., nodes 101 and 102)
+fNWin=pNW*(21.0/2+42.0/2)*in2m*42.0*in2m/2.0;
+fNLed=pNL*21.0/2*in2m*42.0*in2m/2.0;
+fNLin=pNL*(21.0/2+42.0/2)*in2m*42.0*in2m/2.0;
+f6NWed=[fNWed*math.sin(7/180*math.pi),0.0,-fNWed*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NWin=[fNWin*math.sin(7/180*math.pi),0.0,-fNWin*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NLed=[fNLed*math.sin(7/180*math.pi),0.0,-fNLed*math.cos(7/180*math.pi),0.0,0.0,0.0];
+f6NLin=[fNLin*math.sin(7/180*math.pi),0.0,-fNLin*math.cos(7/180*math.pi),0.0,0.0,0.0];
 
 timeSeries('Linear',1);
 pattern('Plain', 1, 1);
-for i in range (0,480):
-    load(nodeTags[i], *f6NW);
-    load(nodeTags[i+480],*f6NL)
+for i in range (0,240):
+    load(nodeTagsNWed[i],*f6NWed);
+    load(nodeTagsNWin[i],*f6NWin);
+    load(nodeTagsNLed[i],*f6NLed);
+    load(nodeTagsNLin[i],*f6NLin);
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/node101Disp.out', '-time', '-node', *[101], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
@@ -205,7 +228,7 @@ numberer('Plain');	   # renumber dof's to minimize band-width
 system('BandGeneral');# how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
-algorithm('Newton');
+algorithm('Linear');
 
 loadFactor=1;
 integrator('LoadControl', loadFactor)
@@ -234,39 +257,51 @@ nodeDisp20012=nodeDisp(20012);
 nodeDisp30013=nodeDisp(30013);
 
 # element resisting forces for rafters
-eleForces101=eleForce(101);
-eleForces101Local=eleResponse(101, 'localForces')
-eleForces102=eleForce(102);
-eleForces102Local=eleResponse(102, 'localForces')
+efGloba101=eleForce(101);
+efLocal101=eleResponse(101, 'localForces')
+efGloba102=eleForce(102);
+efLocal102=eleResponse(102, 'localForces')
 
 # element resisting forces for purlins
-eleForces404=eleForce(404);
-eleForces404Local=eleResponse(404, 'localForces')
-eleForces405=eleForce(405);
-eleForces405Local=eleResponse(405, 'localForces')
-eleForces504=eleForce(504);
-eleForces504Local=eleResponse(504, 'localForces')
-eleForces505=eleForce(505);
-eleForces505Local=eleResponse(505, 'localForces')
+efGloba404=eleForce(404);
+efLocal404=eleResponse(404, 'localForces')
+efGloba405=eleForce(405);
+efLocal405=eleResponse(405, 'localForces')
+efGloba504=eleForce(504);
+efLocal504=eleResponse(504, 'localForces')
+efGloba505=eleForce(505);
+efLocal505=eleResponse(505, 'localForces')
 
 # nodal forces in connections
-nodeForcesGlobalRafter10001=np.array(eleForces101[0:6]);
-nodeForcesGlobalPurlin10001=np.array(eleForces404[6:12])+np.array(eleForces405[0:6]);
-nodeForcesLocalRafter10001=np.array(eleForces101Local[0:6]);
-nodeForcesLocalPurlin10001=np.array(eleForces404Local[6:12])+np.array(eleForces405Local[0:6]);
-nodeForcesGlobalRafter10002=np.array(eleForces101[6:12])+np.array(eleForces102[0:6]);
-nodeForcesGlobalPurlin10002=np.array(eleForces504[6:12])+np.array(eleForces505[0:6]);
-nodeForcesLocalRafter10002=np.array(eleForces101Local[6:12])+np.array(eleForces102Local[0:6]);
-nodeForcesLocalPurlin10002=np.array(eleForces504Local[6:12])+np.array(eleForces505Local[0:6]);
+nfGlobaRafter10001=np.array(efGloba101[0:6]);
+nfGlobaPurlin10001=np.array(efGloba404[6:12])+np.array(efGloba405[0:6]);
+nfLocalRafter10001=np.array(efLocal101[0:6]);
+nfLocalPurlin10001=np.array(efLocal404[6:12])+np.array(efLocal405[0:6]);
+nfGlobaRafter10002=np.array(efGloba101[6:12])+np.array(efGloba102[0:6]);
+nfGlobaPurlin10002=np.array(efGloba504[6:12])+np.array(efGloba505[0:6]);
+nfLocalRafter10002=np.array(efLocal101[6:12])+np.array(efLocal102[0:6]);
+nfLocalPurlin10002=np.array(efLocal504[6:12])+np.array(efLocal505[0:6]);
 
 # forces on bolts
-Fbx10001=abs(nodeForcesLocalPurlin10001[0])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*2/2.5;
-Fby10001=abs(nodeForcesLocalPurlin10001[1])/4+abs(nodeForcesLocalPurlin10001[5])/4/0.0635*1.5/2.5;
-Tb10001=abs(nodeForcesLocalPurlin10001[2])/4+abs(nodeForcesLocalPurlin10001[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10001[4])/2/3/0.0254;
+Fbx10001=abs(nfLocalPurlin10001[0])/4+abs(nfLocalPurlin10001[5])/4/0.0635*2/2.5;
+if nfLocalPurlin10001[1]>0:
+    Fby10001=abs(nfLocalPurlin10001[5])/4/0.0635*1.5/2.5;
+else:
+    Fby10001=abs(nfLocalPurlin10001[1])/4+abs(nfLocalPurlin10001[5])/4/0.0635*1.5/2.5;
+if nfLocalPurlin10001[2]>0:
+    Fbt10001=abs(nfLocalPurlin10001[3])/2/4/0.0254+abs(nfLocalPurlin10001[4])/2/3/0.0254;
+else:
+    Fbt10001=abs(nfLocalPurlin10001[2])/4+abs(nfLocalPurlin10001[3])/2/4/0.0254+abs(nfLocalPurlin10001[4])/2/3/0.0254;
 
-Fbx10002=abs(nodeForcesLocalPurlin10002[0])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*2/2.5;
-Fby10002=abs(nodeForcesLocalPurlin10002[1])/4+abs(nodeForcesLocalPurlin10002[5])/4/0.0635*1.5/2.5;
-Tb10002=abs(nodeForcesLocalPurlin10002[2])/4+abs(nodeForcesLocalPurlin10002[3])/2/4/0.0254+abs(nodeForcesLocalPurlin10002[4])/2/3/0.0254;
+Fbx10002=abs(nfLocalPurlin10002[0])/4+abs(nfLocalPurlin10002[5])/4/0.0635*2/2.5;
+if nfLocalPurlin10002[1]>0:
+    Fby10002=abs(nfLocalPurlin10002[5])/4/0.0635*1.5/2.5;
+else:
+    Fby10002=abs(nfLocalPurlin10002[1])/4+abs(nfLocalPurlin10002[5])/4/0.0635*1.5/2.5;
+if nfLocalPurlin10002[2]>0:
+    Fbt10002=abs(nfLocalPurlin10002[3])/2/4/0.0254+abs(nfLocalPurlin10002[4])/2/3/0.0254;
+else:
+    Fbt10002=abs(nfLocalPurlin10002[2])/4+abs(nfLocalPurlin10002[3])/2/4/0.0254+abs(nfLocalPurlin10002[4])/2/3/0.0254;
 
 #%%
 wipe()
