@@ -181,24 +181,27 @@ freq = omega/(2*math.pi);
 
 # define loads-----------------------------------------------------------------
 nodeTagsNWed=[];
-for i in range (0,3):
-    nodeTagsNWed=nodeTagsNWed+list(range(400*i+1301,400*i+1341));
-    nodeTagsNWed=nodeTagsNWed+list(range(400*i+1601,400*i+1641));
 nodeTagsNWin=[];
-for i in range (0,3):
-    nodeTagsNWin=nodeTagsNWin+list(range(400*i+1401,400*i+1441));
-    nodeTagsNWin=nodeTagsNWin+list(range(400*i+1501,400*i+1541));
 nodeTagsNLed=[];
-for i in range (0,3):
-    nodeTagsNLed=nodeTagsNLed+list(range(400*i+101,400*i+141));
-    nodeTagsNLed=nodeTagsNLed+list(range(400*i+401,400*i+441));
 nodeTagsNLin=[];
 for i in range (0,3):
-    nodeTagsNLin=nodeTagsNLin+list(range(400*i+201,400*i+241));
-    nodeTagsNLin=nodeTagsNLin+list(range(400*i+301,400*i+341));
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+101,400*i+141));
+    nodeTagsNWed=nodeTagsNWed+list(range(400*i+401,400*i+441));
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+201,400*i+241));
+    nodeTagsNWin=nodeTagsNWin+list(range(400*i+301,400*i+341));
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+1301,400*i+1341));
+    nodeTagsNLed=nodeTagsNLed+list(range(400*i+1601,400*i+1641));
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+1401,400*i+1441));
+    nodeTagsNLin=nodeTagsNLin+list(range(400*i+1501,400*i+1541));
 
-pNW=1086.6*0.1; #N/m2 0.1 is used to account for 10 steps in analyze(10)
+# load case A
+pNW=815.0*0.1;  #N/m2, 0.1 is used to account for 10 steps in analyze(10)
 pNL=203.7*0.1;  #N/m2
+
+# load case B
+# pNW=-747.1*0.1; #N/m2, 0.1 is used to account for 10 steps in analyze(10)
+# pNL= -67.9*0.1; #N/m2
+
 fNWed=pNW*21.0/2*in2m*42.0*in2m/2.0; #/2.0 accounts for 2 nodes on edge (e.g., nodes 101 and 102)
 fNWin=pNW*(21.0/2+42.0/2)*in2m*42.0*in2m/2.0;
 fNLed=pNL*21.0/2*in2m*42.0*in2m/2.0;
