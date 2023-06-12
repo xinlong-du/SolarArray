@@ -110,15 +110,15 @@ fix(3, 1, 1, 1, 1, 1, 1);
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
 vecxz = [0.0, 1.0, 0.0];
-geomTransf('Linear', postTransfTag, *vecxz);
+geomTransf('Corotational', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
 vecxz = [0.0, -1.0, 0.0];
-geomTransf('Linear', rafterTransfTag, *vecxz);
+geomTransf('Corotational', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
 vecxz = [233.0002-(-233.0002), 324.0-324.0, 112.6088-55.3912]; #local z' direction (nodes 20013 - 20001)
-geomTransf('Linear', purlinTransfTag, *vecxz);
+geomTransf('Corotational', purlinTransfTag, *vecxz);
 
 # post                       ID  nodeI nodeJ
 element('elasticBeamColumn', 1, *[1, 10007], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -164,7 +164,7 @@ for i in range (0,6):
         element('elasticBeamColumn', (11*i+11)*10000+j, *[102+i*400+j*2, 101+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # render the model
-vfo.createODB(model="canopy", loadcase="loadSouthernCali", Nmodes=6, deltaT=1)
+vfo.createODB(model="canopyNL", loadcase="loadSouthernCali", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
@@ -228,7 +228,7 @@ numberer('Plain');	   # renumber dof's to minimize band-width
 system('BandGeneral');# how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 #algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
-algorithm('Linear');
+algorithm('Newton');
 
 loadFactor=1;
 integrator('LoadControl', loadFactor)
