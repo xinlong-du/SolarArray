@@ -107,6 +107,8 @@ for i in range (0,2):
         node(702+400*i+2*j,  (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
         node(801+400*i+2*j,  (-51.0730+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
         node(802+400*i+2*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
+        node(1401+400*i+2*j, (-87.4115+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
+        node(1402+400*i+2*j, (-87.4115+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
 
 # intersection of external braces
 node(1301, 0.0, 132.6800*in2m, 51.6250*in2m)
@@ -176,23 +178,26 @@ for i in range (0,4):
 for i in range (0,2):
     for j in range (0,11):
         #                    elemID               node1          node2          node3          node4 counter-clockwise
-        element('ShellMITC4',(11*i+1)*1000+j+1,  *[501+i*400+j*2, 601+i*400+j*2, 602+i*400+j*2, 502+i*400+j*2], moduleSecTag)
-        element('ShellMITC4',(11*i+2)*1000+j+1,  *[601+i*400+j*2, 701+i*400+j*2, 702+i*400+j*2, 602+i*400+j*2], moduleSecTag)
-        element('ShellMITC4',(11*i+3)*1000+j+1,  *[701+i*400+j*2, 801+i*400+j*2, 802+i*400+j*2, 702+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(14*i+1)*1000+j+1,  *[501+i*400+j*2,  601+i*400+j*2,  602+i*400+j*2,  502+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(14*i+2)*1000+j+1,  *[601+i*400+j*2, 1401+i*400+j*2, 1402+i*400+j*2,  602+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(14*i+3)*1000+j+1,  *[1401+i*400+j*2, 701+i*400+j*2,  702+i*400+j*2, 1402+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(14*i+4)*1000+j+1,  *[701+i*400+j*2,  801+i*400+j*2,  802+i*400+j*2,  702+i*400+j*2], moduleSecTag)
     
-        element('elasticBeamColumn', (11*i+4)*1000+j+1,  *[501+i*400+j*2, 601+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+5)*1000+j+1,  *[601+i*400+j*2, 701+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+6)*1000+j+1,  *[701+i*400+j*2, 801+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+7)*1000+j+1,  *[801+i*400+j*2, 802+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+8)*1000+j+1,  *[802+i*400+j*2, 702+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+9)*1000+j+1,  *[702+i*400+j*2, 602+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+10)*1000+j+1, *[602+i*400+j*2, 502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (11*i+11)*1000+j+1, *[502+i*400+j*2, 501+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+5)*1000+j+1,  *[801+i*400+j*2,  701+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+6)*1000+j+1,  *[701+i*400+j*2, 1401+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+7)*1000+j+1,  *[1401+i*400+j*2, 601+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+8)*1000+j+1,  *[601+i*400+j*2,  501+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+9)*1000+j+1,  *[802+i*400+j*2,  702+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+10)*1000+j+1, *[702+i*400+j*2, 1402+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+11)*1000+j+1, *[1402+i*400+j*2, 602+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+12)*1000+j+1, *[602+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+13)*1000+j+1, *[801+i*400+j*2,  802+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (14*i+14)*1000+j+1, *[501+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # external braces
 for i in range(0,2):
-    element('elasticBeamColumn', 23000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 23000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 29000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 29000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
