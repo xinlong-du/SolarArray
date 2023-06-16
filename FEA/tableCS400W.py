@@ -262,13 +262,13 @@ A_trib=np.reshape(A_trib,(1,28),order='F');
 Force=np.multiply(p,A_trib);
 Force=Force.T.tolist()
 
-nodesTapEd=[[1201,1202,1203],[901,902,903],[801,802,803],[501,502,503],
-            list(range(1204,1209)),list(range(904,909)),list(range(804,809)),list(range(504,509)),
-            list(range(1209,1216)),list(range(909,916)),list(range(809,816)),list(range(509,516)),
-            list(range(1216,1225)),list(range(916,925)),list(range(816,825)),list(range(516,525)),
-            list(range(1225,1234)),list(range(925,934)),list(range(825,834)),list(range(525,534)),
-            list(range(1234,1241)),list(range(934,941)),list(range(834,841)),list(range(534,541)),
-            list(range(1241,1245)),list(range(941,945)),list(range(841,845)),list(range(541,545))];
+nodesTapEd=[[1201,1202,1203,1801,1802,1803],[1801,1802,1803,901,902,903],[801,802,803,1401,1402,1403],[1401,1402,1403,501,502,503],
+            list(range(1204,1209))+list(range(1804,1809)),list(range(1804,1809))+list(range(904,909)),list(range(804,809))+list(range(1404,1409)),list(range(1404,1409))+list(range(504,509)),
+            list(range(1209,1216))+list(range(1809,1816)),list(range(1809,1816))+list(range(909,916)),list(range(809,816))+list(range(1409,1416)),list(range(1409,1416))+list(range(509,516)),
+            list(range(1216,1225))+list(range(1816,1825)),list(range(1816,1825))+list(range(916,925)),list(range(816,825))+list(range(1416,1425)),list(range(1416,1425))+list(range(516,525)),
+            list(range(1225,1234))+list(range(1825,1834)),list(range(1825,1834))+list(range(925,934)),list(range(825,834))+list(range(1425,1434)),list(range(1425,1434))+list(range(525,534)),
+            list(range(1234,1241))+list(range(1834,1841)),list(range(1834,1841))+list(range(934,941)),list(range(834,841))+list(range(1434,1441)),list(range(1434,1441))+list(range(534,541)),
+            list(range(1241,1245))+list(range(1841,1845)),list(range(1841,1845))+list(range(941,945)),list(range(841,845))+list(range(1441,1445)),list(range(1441,1445))+list(range(541,545))];
 nodesTapIn=[[1101,1102,1103],[1001,1002,1003],[701,702,703],[601,602,603],
             list(range(1104,1109)),list(range(1004,1009)),list(range(704,709)),list(range(604,609)),
             list(range(1109,1116)),list(range(1009,1016)),list(range(709,716)),list(range(609,616)),
@@ -282,7 +282,7 @@ for i in range(0,28):
     fact=0.25/len(nodesTapEd[27-i]);
     for j in nodesTapEd[27-i]:
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-    fact=0.75/len(nodesTapIn[27-i]);
+    fact=0.5/len(nodesTapIn[27-i]);
     for j in nodesTapIn[27-i]:
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
