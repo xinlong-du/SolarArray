@@ -287,8 +287,9 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/tableCS400Wnode1113.out', '-time', '-node', *[1113], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-recorder('Element', '-file', f'{dataDir}/tableCS400Wele813and814.out', '-time', '-ele', *[813,814], 'localForces');
+nodesRec=[911,912,913,914,1011,1012,1013,1014,1111,1112,1113,1114,1211,1212,1213,1214,1811,1812,1813,1814];
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodesRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *[712,713,714,812,813,814], 'localForces');
 
 # define DAMPING
 rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -318,14 +319,21 @@ vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=5)
 #ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
 
 #%% calculate time series of forces on joints----------------------------------
-file_name = './Data/tableCS400Wele813and814.out'
-eleForces813and814 = np.loadtxt(file_name)
-nodeForces1113=eleForces813and814[:,7:13]+eleForces813and814[:,13:19];
-
-file_name = './Data/tableCS400Wnode1113.out'
-nodeDisp1113 = np.loadtxt(file_name)
-nodeDisp1113Localy=nodeDisp1113[:,3]*math.cos(30/180*math.pi)-nodeDisp1113[:,1]*math.sin(30/180*math.pi)
-
+file_name = './Data/tableCS400Weles.out'
+eleForces = np.loadtxt(file_name)
+nodeForces1113=eleForces[:,55:61]+eleForces[:,61:67];
+#%% calculate time series of dispalcements-------------------------------------
+file_name = './Data/tableCS400Wnodes.out'
+nodeDisps = np.loadtxt(file_name)
+nodeDisp1013=nodeDisps[:,6*6+1:7*6+1];
+nodeDisp1113=nodeDisps[:,10*6+1:11*6+1];
+nodeDisp1813=nodeDisps[:,18*6+1:19*6+1];
+nodeDisp1013Localy=nodeDisp1013[:,2]*math.cos(30/180*math.pi)-nodeDisp1013[:,0]*math.sin(30/180*math.pi)
+nodeDisp1113Localy=nodeDisp1113[:,2]*math.cos(30/180*math.pi)-nodeDisp1113[:,0]*math.sin(30/180*math.pi)
+nodeDisp1813Localy=nodeDisp1813[:,2]*math.cos(30/180*math.pi)-nodeDisp1813[:,0]*math.sin(30/180*math.pi)
+node1013m1113Localy=nodeDisp1013Localy-nodeDisp1113Localy;
+node1813m1013Localy=nodeDisp1813Localy-nodeDisp1013Localy;
+node1813m1113Localy=nodeDisp1813Localy-nodeDisp1113Localy;
 #%% Plots----------------------------------------------------------------------
 big_fig_size = (6,10);
 plt_line_width = 0.5; 
@@ -347,12 +355,12 @@ ax2.tick_params(direction="in")
 ax3.tick_params(direction="in")
 ax4.tick_params(direction="in")
 ax5.tick_params(direction="in")
-ax0.plot(eleForces813and814[:,0],nodeForces1113[:,0]*0.0002248, linewidth=plt_line_width)
-ax1.plot(eleForces813and814[:,0],nodeForces1113[:,1]*0.0002248, linewidth=plt_line_width)
-ax2.plot(eleForces813and814[:,0],nodeForces1113[:,2]*0.0002248, linewidth=plt_line_width)
-ax3.plot(eleForces813and814[:,0],nodeForces1113[:,3]*0.0007375623, linewidth=plt_line_width)
-ax4.plot(eleForces813and814[:,0],nodeForces1113[:,4]*0.0007375623, linewidth=plt_line_width)
-ax5.plot(eleForces813and814[:,0],nodeForces1113[:,5]*0.0007375623, linewidth=plt_line_width)
+ax0.plot(eleForces[:,0],nodeForces1113[:,0]*0.0002248, linewidth=plt_line_width)
+ax1.plot(eleForces[:,0],nodeForces1113[:,1]*0.0002248, linewidth=plt_line_width)
+ax2.plot(eleForces[:,0],nodeForces1113[:,2]*0.0002248, linewidth=plt_line_width)
+ax3.plot(eleForces[:,0],nodeForces1113[:,3]*0.0007375623, linewidth=plt_line_width)
+ax4.plot(eleForces[:,0],nodeForces1113[:,4]*0.0007375623, linewidth=plt_line_width)
+ax5.plot(eleForces[:,0],nodeForces1113[:,5]*0.0007375623, linewidth=plt_line_width)
 ax0.set_ylabel('Fx (kips)',fontsize=fig_font_size)
 ax1.set_ylabel('Fy (kips)',fontsize=fig_font_size)
 ax2.set_ylabel('Fz (kips)',fontsize=fig_font_size)
@@ -378,12 +386,12 @@ ax2.tick_params(direction="in")
 ax3.tick_params(direction="in")
 ax4.tick_params(direction="in")
 ax5.tick_params(direction="in")
-ax0.plot(nodeDisp1113[:,0],nodeDisp1113[:,1]*39.3701, linewidth=plt_line_width)
-ax1.plot(nodeDisp1113[:,0],nodeDisp1113[:,2]*39.3701, linewidth=plt_line_width)
-ax2.plot(nodeDisp1113[:,0],nodeDisp1113[:,3]*39.3701, linewidth=plt_line_width)
-ax3.plot(nodeDisp1113[:,0],nodeDisp1113[:,4], linewidth=plt_line_width)
-ax4.plot(nodeDisp1113[:,0],nodeDisp1113[:,5], linewidth=plt_line_width)
-ax5.plot(nodeDisp1113[:,0],nodeDisp1113[:,6], linewidth=plt_line_width)
+ax0.plot(nodeDisps[:,0],nodeDisp1113[:,0]*39.3701, linewidth=plt_line_width)
+ax1.plot(nodeDisps[:,0],nodeDisp1113[:,1]*39.3701, linewidth=plt_line_width)
+ax2.plot(nodeDisps[:,0],nodeDisp1113[:,2]*39.3701, linewidth=plt_line_width)
+ax3.plot(nodeDisps[:,0],nodeDisp1113[:,3], linewidth=plt_line_width)
+ax4.plot(nodeDisps[:,0],nodeDisp1113[:,4], linewidth=plt_line_width)
+ax5.plot(nodeDisps[:,0],nodeDisp1113[:,5], linewidth=plt_line_width)
 ax0.set_ylabel('dX (in)',fontsize=fig_font_size)
 ax1.set_ylabel('dY (in)',fontsize=fig_font_size)
 ax2.set_ylabel('dZ (in)',fontsize=fig_font_size)
@@ -394,12 +402,32 @@ ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
 plt.savefig('./Data/nodeDisp1113.tif', transparent=False, bbox_inches='tight', dpi=200)
 
 #%% plot y displacements at joint 1113 (local system)
-fig = plt.figure(figsize=(6,3))
-ax = fig.add_axes([0, 0, 1, 1])
+fig = plt.figure(figsize=(6,10))
+ax0 = fig.add_subplot(611)
+ax1 = fig.add_subplot(612)
+ax2 = fig.add_subplot(613)
+ax3 = fig.add_subplot(614)
+ax4 = fig.add_subplot(615)
+ax5 = fig.add_subplot(616)
 plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
-ax.tick_params(direction="in")
-ax.plot(nodeDisp1113[:,0],nodeDisp1113Localy*39.3701, linewidth=plt_line_width)
-ax.set_ylabel('Disp. normal to module plane (in)',fontsize=fig_font_size)
-ax.set_xlabel('Time (s)',fontsize=fig_font_size)
-plt.savefig('./Data/nodeDisp1113Localy.tif', transparent=False, bbox_inches='tight', dpi=200)
+ax0.tick_params(direction="in")
+ax1.tick_params(direction="in")
+ax2.tick_params(direction="in")
+ax3.tick_params(direction="in")
+ax4.tick_params(direction="in")
+ax5.tick_params(direction="in")
+ax0.plot(nodeDisps[:,0],nodeDisp1013Localy*39.3701, linewidth=plt_line_width)
+ax1.plot(nodeDisps[:,0],nodeDisp1813Localy*39.3701, linewidth=plt_line_width)
+ax2.plot(nodeDisps[:,0],nodeDisp1113Localy*39.3701, linewidth=plt_line_width)
+ax3.plot(nodeDisps[:,0],node1813m1013Localy*39.3701, linewidth=plt_line_width)
+ax4.plot(nodeDisps[:,0],node1813m1113Localy*39.3701, linewidth=plt_line_width)
+ax5.plot(nodeDisps[:,0],node1013m1113Localy*39.3701, linewidth=plt_line_width)
+ax0.set_ylabel('N1013 (in)',fontsize=fig_font_size)
+ax1.set_ylabel('N1813 (in)',fontsize=fig_font_size)
+ax2.set_ylabel('N1113 (in)',fontsize=fig_font_size)
+ax3.set_ylabel('N1813 - N1013 (in)',fontsize=fig_font_size)
+ax4.set_ylabel('N1813 - N1113 (in)',fontsize=fig_font_size)
+ax5.set_ylabel('N1013 - N1113 (in)',fontsize=fig_font_size)
+ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeDisp1013to1113Localy.tif', transparent=False, bbox_inches='tight', dpi=200)
