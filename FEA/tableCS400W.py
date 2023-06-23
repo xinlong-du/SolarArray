@@ -287,9 +287,10 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # define RECORDERS ------------------------------------------------------------
-nodesRec=[911,912,913,914,1011,1012,1013,1014,1111,1112,1113,1114,1211,1212,1213,1214,1811,1812,1813,1814];
-recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodesRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *[712,713,714,812,813,814], 'localForces');
+nodeRec=list(range(1001,1023))+list(range(1101,1123))+list(range(1801,1823));
+eleRec=list(range(701,724))+list(range(801,824));
+recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
 
 # define DAMPING
 rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -321,13 +322,15 @@ vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=5)
 #%% calculate time series of forces on joints----------------------------------
 file_name = './Data/tableCS400Weles.out'
 eleForces = np.loadtxt(file_name)
-nodeForces1113=eleForces[:,55:61]+eleForces[:,61:67];
+ef813=eleForces[:,35*12+1:36*12+1];
+ef814=eleForces[:,36*12+1:37*12+1];
+nf1113=ef813[:,6:12]+ef814[:,0:6];
 #%% calculate time series of dispalcements-------------------------------------
 file_name = './Data/tableCS400Wnodes.out'
 nodeDisps = np.loadtxt(file_name)
-nodeDisp1013=nodeDisps[:,6*6+1:7*6+1];
-nodeDisp1113=nodeDisps[:,10*6+1:11*6+1];
-nodeDisp1813=nodeDisps[:,18*6+1:19*6+1];
+nodeDisp1013=nodeDisps[:,12*6+1:13*6+1];
+nodeDisp1113=nodeDisps[:,34*6+1:35*6+1];
+nodeDisp1813=nodeDisps[:,56*6+1:57*6+1];
 nodeDisp1013Localy=nodeDisp1013[:,2]*math.cos(30/180*math.pi)-nodeDisp1013[:,0]*math.sin(30/180*math.pi)
 nodeDisp1113Localy=nodeDisp1113[:,2]*math.cos(30/180*math.pi)-nodeDisp1113[:,0]*math.sin(30/180*math.pi)
 nodeDisp1813Localy=nodeDisp1813[:,2]*math.cos(30/180*math.pi)-nodeDisp1813[:,0]*math.sin(30/180*math.pi)
