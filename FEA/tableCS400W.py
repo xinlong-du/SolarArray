@@ -313,10 +313,33 @@ ef813endLoc=eleResponse(813, 'localForces')
 ef814end=eleForce(814);
 ef814endLoc=eleResponse(814, 'localForces')
 nf1113end=np.array(ef813endLoc[6:12])+np.array(ef814endLoc[0:6]);
+
 # nodal displacement
+nd1001end=nodeDisp(1001);
+nd1101end=nodeDisp(1101);
+nd1801end=nodeDisp(1801);
+nd1002end=nodeDisp(1002);
+nd1102end=nodeDisp(1102);
+nd1802end=nodeDisp(1802);
+nd1003end=nodeDisp(1003);
+nd1103end=nodeDisp(1103);
+nd1803end=nodeDisp(1803);
+nd1004end=nodeDisp(1004);
+nd1104end=nodeDisp(1104);
+nd1804end=nodeDisp(1804);
+
+nd1011end=nodeDisp(1011);
+nd1111end=nodeDisp(1111);
+nd1811end=nodeDisp(1811);
+nd1012end=nodeDisp(1012);
+nd1112end=nodeDisp(1112);
+nd1812end=nodeDisp(1812);
 nd1013end=nodeDisp(1013);
 nd1113end=nodeDisp(1113);
 nd1813end=nodeDisp(1813);
+nd1014end=nodeDisp(1014);
+nd1114end=nodeDisp(1114);
+nd1814end=nodeDisp(1814);
 
 wipe()
 #%% defomed shape and animation------------------------------------------------
@@ -333,12 +356,58 @@ nf1113=ef813[:,6:12]+ef814[:,0:6];
 #%% calculate time series of dispalcements-------------------------------------
 file_name = './Data/tableCS400Wnodes.out'
 nodeDisps = np.loadtxt(file_name)
-nd1013=nodeDisps[:,12*6+1:13*6+1];
-nd1113=nodeDisps[:,34*6+1:35*6+1];
-nd1813=nodeDisps[:,56*6+1:57*6+1];
+nd1001=nodeDisps[:,nodeRec.index(1001)*6+1:(nodeRec.index(1001)+1)*6+1];
+nd1101=nodeDisps[:,nodeRec.index(1101)*6+1:(nodeRec.index(1101)+1)*6+1];
+nd1801=nodeDisps[:,nodeRec.index(1801)*6+1:(nodeRec.index(1801)+1)*6+1];
+nd1002=nodeDisps[:,nodeRec.index(1002)*6+1:(nodeRec.index(1002)+1)*6+1];
+nd1102=nodeDisps[:,nodeRec.index(1102)*6+1:(nodeRec.index(1102)+1)*6+1];
+nd1802=nodeDisps[:,nodeRec.index(1802)*6+1:(nodeRec.index(1802)+1)*6+1];
+nd1003=nodeDisps[:,nodeRec.index(1003)*6+1:(nodeRec.index(1003)+1)*6+1];
+nd1103=nodeDisps[:,nodeRec.index(1103)*6+1:(nodeRec.index(1103)+1)*6+1];
+nd1803=nodeDisps[:,nodeRec.index(1803)*6+1:(nodeRec.index(1803)+1)*6+1];
+nd1004=nodeDisps[:,nodeRec.index(1004)*6+1:(nodeRec.index(1004)+1)*6+1];
+nd1104=nodeDisps[:,nodeRec.index(1104)*6+1:(nodeRec.index(1104)+1)*6+1];
+nd1804=nodeDisps[:,nodeRec.index(1804)*6+1:(nodeRec.index(1804)+1)*6+1];
+
+nd1011=nodeDisps[:,nodeRec.index(1011)*6+1:(nodeRec.index(1011)+1)*6+1];
+nd1111=nodeDisps[:,nodeRec.index(1111)*6+1:(nodeRec.index(1111)+1)*6+1];
+nd1811=nodeDisps[:,nodeRec.index(1811)*6+1:(nodeRec.index(1811)+1)*6+1];
+nd1012=nodeDisps[:,nodeRec.index(1012)*6+1:(nodeRec.index(1012)+1)*6+1];
+nd1112=nodeDisps[:,nodeRec.index(1112)*6+1:(nodeRec.index(1112)+1)*6+1];
+nd1812=nodeDisps[:,nodeRec.index(1812)*6+1:(nodeRec.index(1812)+1)*6+1];
+nd1013=nodeDisps[:,nodeRec.index(1013)*6+1:(nodeRec.index(1013)+1)*6+1];
+nd1113=nodeDisps[:,nodeRec.index(1113)*6+1:(nodeRec.index(1113)+1)*6+1];
+nd1813=nodeDisps[:,nodeRec.index(1813)*6+1:(nodeRec.index(1813)+1)*6+1];
+nd1014=nodeDisps[:,nodeRec.index(1014)*6+1:(nodeRec.index(1014)+1)*6+1];
+nd1114=nodeDisps[:,nodeRec.index(1114)*6+1:(nodeRec.index(1114)+1)*6+1];
+nd1814=nodeDisps[:,nodeRec.index(1814)*6+1:(nodeRec.index(1814)+1)*6+1];
+
+nd1001LocY=nd1001[:,2]*math.cos(30/180*math.pi)-nd1001[:,0]*math.sin(30/180*math.pi);
+nd1101LocY=nd1101[:,2]*math.cos(30/180*math.pi)-nd1101[:,0]*math.sin(30/180*math.pi);
+nd1801LocY=nd1801[:,2]*math.cos(30/180*math.pi)-nd1801[:,0]*math.sin(30/180*math.pi);
+nd1002LocY=nd1002[:,2]*math.cos(30/180*math.pi)-nd1002[:,0]*math.sin(30/180*math.pi);
+nd1102LocY=nd1102[:,2]*math.cos(30/180*math.pi)-nd1102[:,0]*math.sin(30/180*math.pi);
+nd1802LocY=nd1802[:,2]*math.cos(30/180*math.pi)-nd1802[:,0]*math.sin(30/180*math.pi);
+nd1003LocY=nd1003[:,2]*math.cos(30/180*math.pi)-nd1003[:,0]*math.sin(30/180*math.pi);
+nd1103LocY=nd1103[:,2]*math.cos(30/180*math.pi)-nd1103[:,0]*math.sin(30/180*math.pi);
+nd1803LocY=nd1803[:,2]*math.cos(30/180*math.pi)-nd1803[:,0]*math.sin(30/180*math.pi);
+nd1004LocY=nd1004[:,2]*math.cos(30/180*math.pi)-nd1004[:,0]*math.sin(30/180*math.pi);
+nd1104LocY=nd1104[:,2]*math.cos(30/180*math.pi)-nd1104[:,0]*math.sin(30/180*math.pi);
+nd1804LocY=nd1804[:,2]*math.cos(30/180*math.pi)-nd1804[:,0]*math.sin(30/180*math.pi);
+
+nd1011LocY=nd1011[:,2]*math.cos(30/180*math.pi)-nd1011[:,0]*math.sin(30/180*math.pi);
+nd1111LocY=nd1111[:,2]*math.cos(30/180*math.pi)-nd1111[:,0]*math.sin(30/180*math.pi);
+nd1811LocY=nd1811[:,2]*math.cos(30/180*math.pi)-nd1811[:,0]*math.sin(30/180*math.pi);
+nd1012LocY=nd1012[:,2]*math.cos(30/180*math.pi)-nd1012[:,0]*math.sin(30/180*math.pi);
+nd1112LocY=nd1112[:,2]*math.cos(30/180*math.pi)-nd1112[:,0]*math.sin(30/180*math.pi);
+nd1812LocY=nd1812[:,2]*math.cos(30/180*math.pi)-nd1812[:,0]*math.sin(30/180*math.pi);
 nd1013LocY=nd1013[:,2]*math.cos(30/180*math.pi)-nd1013[:,0]*math.sin(30/180*math.pi);
 nd1113LocY=nd1113[:,2]*math.cos(30/180*math.pi)-nd1113[:,0]*math.sin(30/180*math.pi);
 nd1813LocY=nd1813[:,2]*math.cos(30/180*math.pi)-nd1813[:,0]*math.sin(30/180*math.pi);
+nd1014LocY=nd1014[:,2]*math.cos(30/180*math.pi)-nd1014[:,0]*math.sin(30/180*math.pi);
+nd1114LocY=nd1114[:,2]*math.cos(30/180*math.pi)-nd1114[:,0]*math.sin(30/180*math.pi);
+nd1814LocY=nd1814[:,2]*math.cos(30/180*math.pi)-nd1814[:,0]*math.sin(30/180*math.pi);
+
 nd1013m1113LocY=nd1013LocY-nd1113LocY;
 nd1813m1013LocY=nd1813LocY-nd1013LocY;
 nd1813m1113LocY=nd1813LocY-nd1113LocY;
