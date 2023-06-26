@@ -79,7 +79,7 @@ mass_mf = A_mf*rho_mf;     #mass per unit length
 
 # SECTION properties for module
 moduleSecTag = 1;
-h = 5.42*0.001; #depth of module
+h = 4.96*0.001; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
