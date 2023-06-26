@@ -6,11 +6,13 @@
 from openseespy.opensees import *
 import numpy as np
 import math
-import matplotlib.pyplot as plt
-import matplotlib as mpl
 
 # visulization
 import vfo.vfo as vfo
+
+from plotFunctions import localForcePlot
+from plotFunctions import globalDispPlot
+from plotFunctions import localYdispPlot
 
 #%% SET UP ----------------------------------------------------------------------
 wipe();
@@ -408,6 +410,8 @@ nd1014LocY=nd1014[:,2]*math.cos(30/180*math.pi)-nd1014[:,0]*math.sin(30/180*math
 nd1114LocY=nd1114[:,2]*math.cos(30/180*math.pi)-nd1114[:,0]*math.sin(30/180*math.pi);
 nd1814LocY=nd1814[:,2]*math.cos(30/180*math.pi)-nd1814[:,0]*math.sin(30/180*math.pi);
 
-nd1013m1113LocY=nd1013LocY-nd1113LocY;
-nd1813m1013LocY=nd1813LocY-nd1013LocY;
-nd1813m1113LocY=nd1813LocY-nd1113LocY;
+#%% plots
+timeVec=nodeDisps[:,0];
+localForcePlot(nodeDisps[:,0],nf1113,'1113')
+globalDispPlot(timeVec,nd1113,'1113')
+localYdispPlot(timeVec,nd1013LocY,nd1813LocY,nd1113LocY,'1013','1813','1113')
