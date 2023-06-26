@@ -414,4 +414,78 @@ nd1814LocY=nd1814[:,2]*math.cos(30/180*math.pi)-nd1814[:,0]*math.sin(30/180*math
 timeVec=nodeDisps[:,0];
 localForcePlot(nodeDisps[:,0],nf1113,'1113')
 globalDispPlot(timeVec,nd1113,'1113')
+
+localYdispPlot(timeVec,nd1001LocY,nd1801LocY,nd1101LocY,'1001','1801','1101')
+localYdispPlot(timeVec,nd1002LocY,nd1802LocY,nd1102LocY,'1002','1802','1102')
+localYdispPlot(timeVec,nd1003LocY,nd1803LocY,nd1103LocY,'1003','1803','1103')
+localYdispPlot(timeVec,nd1004LocY,nd1804LocY,nd1104LocY,'1004','1804','1104')
+localYdispPlot(timeVec,nd1011LocY,nd1811LocY,nd1111LocY,'1011','1811','1111')
+localYdispPlot(timeVec,nd1012LocY,nd1812LocY,nd1112LocY,'1012','1812','1112')
 localYdispPlot(timeVec,nd1013LocY,nd1813LocY,nd1113LocY,'1013','1813','1113')
+localYdispPlot(timeVec,nd1014LocY,nd1814LocY,nd1114LocY,'1014','1814','1114')
+
+#%% temporary, modify this after simplify the storage of nodal displacements
+import matplotlib.pyplot as plt
+big_fig_size = (6,10);
+plt_line_width = 0.5; 
+fig_font_size = 8;
+
+fig = plt.figure(figsize=(6,10))
+ax0 = fig.add_subplot(611)
+ax1 = fig.add_subplot(612)
+ax2 = fig.add_subplot(613)
+ax3 = fig.add_subplot(614)
+ax4 = fig.add_subplot(615)
+ax5 = fig.add_subplot(616)
+plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+ax0.tick_params(direction="in")
+ax1.tick_params(direction="in")
+ax2.tick_params(direction="in")
+ax3.tick_params(direction="in")
+ax4.tick_params(direction="in")
+ax5.tick_params(direction="in")
+ax0.plot(timeVec,(nd1012LocY-nd1011LocY)*39.3701, linewidth=plt_line_width)
+ax1.plot(timeVec,(nd1812LocY-nd1811LocY)*39.3701, linewidth=plt_line_width)
+ax2.plot(timeVec,(nd1112LocY-nd1111LocY)*39.3701, linewidth=plt_line_width)
+ax3.plot(timeVec,(nd1013LocY-nd1014LocY)*39.3701, linewidth=plt_line_width)
+ax4.plot(timeVec,(nd1813LocY-nd1814LocY)*39.3701, linewidth=plt_line_width)
+ax5.plot(timeVec,(nd1113LocY-nd1114LocY)*39.3701, linewidth=plt_line_width)
+ax0.set_ylabel('N1012 - N1011 (in)',fontsize=fig_font_size)
+ax1.set_ylabel('N1812 - N1811 (in)',fontsize=fig_font_size)
+ax2.set_ylabel('N1112 - N1111 (in)',fontsize=fig_font_size)
+ax3.set_ylabel('N1013 - N1014 (in)',fontsize=fig_font_size)
+ax4.set_ylabel('N1813 - N1814 (in)',fontsize=fig_font_size)
+ax5.set_ylabel('N1113 - N1114 (in)',fontsize=fig_font_size)
+ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeDispHorMidLocY.tif', transparent=False, bbox_inches='tight', dpi=100)
+
+fig = plt.figure(figsize=(6,10))
+ax0 = fig.add_subplot(611)
+ax1 = fig.add_subplot(612)
+ax2 = fig.add_subplot(613)
+ax3 = fig.add_subplot(614)
+ax4 = fig.add_subplot(615)
+ax5 = fig.add_subplot(616)
+plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+ax0.tick_params(direction="in")
+ax1.tick_params(direction="in")
+ax2.tick_params(direction="in")
+ax3.tick_params(direction="in")
+ax4.tick_params(direction="in")
+ax5.tick_params(direction="in")
+ax0.plot(timeVec,(nd1002LocY-nd1001LocY)*39.3701, linewidth=plt_line_width)
+ax1.plot(timeVec,(nd1802LocY-nd1801LocY)*39.3701, linewidth=plt_line_width)
+ax2.plot(timeVec,(nd1102LocY-nd1101LocY)*39.3701, linewidth=plt_line_width)
+ax3.plot(timeVec,(nd1003LocY-nd1004LocY)*39.3701, linewidth=plt_line_width)
+ax4.plot(timeVec,(nd1803LocY-nd1804LocY)*39.3701, linewidth=plt_line_width)
+ax5.plot(timeVec,(nd1103LocY-nd1104LocY)*39.3701, linewidth=plt_line_width)
+ax0.set_ylabel('N1002 - N1001 (in)',fontsize=fig_font_size)
+ax1.set_ylabel('N1802 - N1801 (in)',fontsize=fig_font_size)
+ax2.set_ylabel('N1102 - N1101 (in)',fontsize=fig_font_size)
+ax3.set_ylabel('N1003 - N1004 (in)',fontsize=fig_font_size)
+ax4.set_ylabel('N1803 - N1804 (in)',fontsize=fig_font_size)
+ax5.set_ylabel('N1103 - N1104 (in)',fontsize=fig_font_size)
+ax5.set_xlabel('Time (s)',fontsize=fig_font_size)
+plt.savefig('./Data/nodeDispHorEdgeLocY.tif', transparent=False, bbox_inches='tight', dpi=100)
