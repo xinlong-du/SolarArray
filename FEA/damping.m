@@ -11,36 +11,85 @@ files(1:3)=[];
 
 %% select data
 seleFiles={'17(182657)', '17(182747)', '17(183334)', '18(110257)', '18(111123)', '18(111419)'};
-% startTime=[70, 70, 41, 691, 704, 704];
-for i=3
+seleData=cell(6,1);
+for i=1:length(seleFiles)
     acc=readtable(strcat(dataDir,'Vib2017-08- ',seleFiles{i},'.csv'));
-    [time,dX,dY,dZ]=plotAcc(acc,strcat(seleFiles{i},'.csv'));
+    seleData{i}=acc;
+    time=acc.Var1; %unit: second
+    accX=acc.Var2; %unit: g
+    accY=acc.Var3;
+    accZ=acc.Var4;
+    plotAcc(time,accX,accY,accZ,strcat(seleFiles{i},'.csv'));
 end
 
-%% calculate damping ratio
+%% calculate damping ratio 17(182657)
+time=seleData{1}.Var1;
+accZ=seleData{1}.Var4;
 figure
-plot(time,dZ)
+plot(time,accZ)
 
-n=6; %number of cycles
-pp1=0.00909-(-0.00971);
-pp6=0.003917-(-0.001333);
-dampingRatio=1/2/pi/6*log(pp1/pp6);
+n=4; %number of cycles
+pp1=0.008318-(-0.01203);
+ppn=0.006067-(-0.004601);
+dampingRatio1=1/(2*pi*n)*log(pp1/ppn);
+
+%% calculate damping ratio 17(182747)
+time=seleData{2}.Var1;
+accZ=seleData{2}.Var4;
+figure
+plot(time,accZ)
+
+n=5; %number of cycles
+pp1=0.0088-(-0.007823);
+ppn=0.00543-(-0.002988);
+dampingRatio2=1/(2*pi*n)*log(pp1/ppn);
+
+%% calculate damping ratio 17(183334)
+time=seleData{3}.Var1;
+accZ=seleData{3}.Var4;
+figure
+plot(time,accZ)
+
+n=4; %number of cycles
+pp1=0.5919-(-0.4969);
+ppn=0.1652-(-0.1339);
+dampingRatio3=1/(2*pi*n)*log(pp1/ppn);
+
+%% calculate damping ratio 18(110257)
+time=seleData{4}.Var1;
+accZ=seleData{4}.Var4;
+figure
+plot(time,accZ)
+
+n=4; %number of cycles
+pp1=0.1574-(-0.1204);
+ppn=0.04195-(-0.04712);
+dampingRatio4=1/(2*pi*n)*log(pp1/ppn);
+
+%% calculate damping ratio 18(111123)
+time=seleData{5}.Var1;
+accZ=seleData{5}.Var4;
+figure
+plot(time,accZ)
+
+n=10; %number of cycles
+pp1=0.02417-(-0.02038);
+ppn=0.007971-(-0.006178);
+dampingRatio5=1/(2*pi*n)*log(pp1/ppn);
+
+%% calculate damping ratio 18(111419)
+time=seleData{6}.Var1;
+accY=seleData{6}.Var3;
+figure
+plot(time,accY)
+
+n=8; %number of cycles
+pp1=0.09457-(-0.06537);
+ppn=0.009734-(-0.00889);
+dampingRatio6=1/(2*pi*n)*log(pp1/ppn);
 
 %%
-function [time,dX,dY,dZ]=plotAcc(acc,fileName)
-time=acc.Var1; %unit: second
-accX=acc.Var2; %unit: g
-accY=acc.Var3;
-accZ=acc.Var4;
-
-vX=cumtrapz(time,accX*9.81);
-vY=cumtrapz(time,accY*9.81);
-vZ=cumtrapz(time,accZ*9.81);
-
-dX=cumtrapz(time,vX);
-dY=cumtrapz(time,vY);
-dZ=cumtrapz(time,vZ);
-
+function plotAcc(time,accX,accY,accZ,fileName)
 hfig=figure;
 subplot(3,1,1)
 plot(time,accX)
@@ -59,48 +108,6 @@ figWidth=7;
 figHeight=9;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout=strcat('.\dampingOutput\',fileName(1:end-4),'1acc.');
-print(hfig,[fileout,'tif'],'-r300','-dtiff');
-
-hfig=figure;
-subplot(3,1,1)
-plot(time,vX)
-xlabel('Time (s)')
-ylabel('X velocity (m/s)')
-subplot(3,1,2)
-plot(time,vY)
-xlabel('Time (s)')
-ylabel('Y velocity (m/s)')
-subplot(3,1,3)
-plot(time,vZ)
-xlabel('Time (s)')
-ylabel('Z velocity (m/s)')
-% save figure
-figWidth=7;
-figHeight=9;
-set(hfig,'PaperUnits','inches');
-set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout=strcat('.\dampingOutput\',fileName(1:end-4),'2vel.');
-print(hfig,[fileout,'tif'],'-r300','-dtiff');
-
-hfig=figure;
-subplot(3,1,1)
-plot(time,dX)
-xlabel('Time (s)')
-ylabel('X displacement (m)')
-subplot(3,1,2)
-plot(time,dY)
-xlabel('Time (s)')
-ylabel('Y displacement (m)')
-subplot(3,1,3)
-plot(time,dZ)
-xlabel('Time (s)')
-ylabel('Z displacement (m)')
-% save figure
-figWidth=7;
-figHeight=9;
-set(hfig,'PaperUnits','inches');
-set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout=strcat('.\dampingOutput\',fileName(1:end-4),'3disp.');
+fileout=strcat('.\dampingOutput\',fileName(1:end-4),'.');
 print(hfig,[fileout,'tif'],'-r300','-dtiff');
 end
