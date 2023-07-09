@@ -507,3 +507,204 @@ mdb.models['Model-1'].parts['purlin'].HoleBlindFromEdges(depth=1.5, diameter=
 mdb.models['Model-1'].rootAssembly.regenerate()
 # Save by xinlo on 2023_07_08-18.11.38; build 2017 2016_09_27-14.54.59 126836
 # Save by xinlo on 2023_07_08-18.12.40; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['clamp'].features['Cut circular hole-1'].setValues(
+    diameter=6.0)
+mdb.models['Model-1'].parts['clamp'].regenerate()
+mdb.models['Model-1'].parts['purlin'].features['Cut circular hole-1'].setValues(
+    diameter=6.0)
+mdb.models['Model-1'].parts['purlin'].regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=30.0)
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(11.5, 0.0))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='bolt', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['bolt'].BaseSolidExtrude(depth=4.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=1.63, name='__profile__', 
+    sheetSize=65.36, transform=
+    mdb.models['Model-1'].parts['bolt'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0], 
+    sketchOrientation=RIGHT, origin=(0.0, 0.0, 4.0)))
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(3.0, 0.0))
+mdb.models['Model-1'].parts['bolt'].SolidExtrude(depth=22.5, 
+    flipExtrudeDirection=OFF, sketch=
+    mdb.models['Model-1'].sketches['__profile__'], sketchOrientation=RIGHT, 
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], sketchPlaneSide=
+    SIDE1, sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=1.97, name='__profile__', 
+    sheetSize=78.95, transform=
+    mdb.models['Model-1'].parts['bolt'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0], 
+    sketchOrientation=RIGHT, origin=(0.0, 0.0, 26.5)))
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(11.5, 0.0))
+mdb.models['Model-1'].parts['bolt'].SolidExtrude(depth=4.0, 
+    flipExtrudeDirection=OFF, sketch=
+    mdb.models['Model-1'].sketches['__profile__'], sketchOrientation=RIGHT, 
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], sketchPlaneSide=
+    SIDE1, sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'])
+mdb.models['Model-1'].sketches['__edit__'].HorizontalDimension(textPoint=(
+    6.67731094360352, -2.13617324829102), value=5.75, vertex1=
+    mdb.models['Model-1'].sketches['__edit__'].vertices[0], vertex2=
+    mdb.models['Model-1'].sketches['__edit__'].vertices[1])
+mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'].setValues(
+    sketch=mdb.models['Model-1'].sketches['__edit__'])
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].parts['bolt'].regenerate()
+mdb.models['Model-1'].ConstrainedSketch(name='__edit__', objectToCopy=
+    mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'].sketch)
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__edit__'], 
+    upToFeature=
+    mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'])
+mdb.models['Model-1'].sketches['__edit__'].ObliqueDimension(textPoint=(
+    18.3492851257324, 4.53985261917114), value=11.5, vertex1=
+    mdb.models['Model-1'].sketches['__edit__'].vertices[0], vertex2=
+    mdb.models['Model-1'].sketches['__edit__'].vertices[1])
+mdb.models['Model-1'].sketches['__edit__'].dimensions[1].setValues(value=5.75)
+mdb.models['Model-1'].parts['bolt'].features['Solid extrude-1'].setValues(
+    sketch=mdb.models['Model-1'].sketches['__edit__'])
+del mdb.models['Model-1'].sketches['__edit__']
+mdb.models['Model-1'].parts['bolt'].regenerate()
+del mdb.models['Model-1'].parts['bolt']
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=30.0)
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(5.75, 0.0))
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='bolt', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['bolt'].BaseSolidExtrude(depth=4.0, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=0.83, name='__profile__', 
+    sheetSize=33.4, transform=
+    mdb.models['Model-1'].parts['bolt'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0], 
+    sketchOrientation=RIGHT, origin=(0.0, 0.0, 4.0)))
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(3.0, 0.0))
+mdb.models['Model-1'].parts['bolt'].SolidExtrude(depth=22.5, 
+    flipExtrudeDirection=OFF, sketch=
+    mdb.models['Model-1'].sketches['__profile__'], sketchOrientation=RIGHT, 
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], sketchPlaneSide=
+    SIDE1, sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].ConstrainedSketch(gridSpacing=1.38, name='__profile__', 
+    sheetSize=55.47, transform=
+    mdb.models['Model-1'].parts['bolt'].MakeSketchTransform(
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], 
+    sketchPlaneSide=SIDE1, 
+    sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0], 
+    sketchOrientation=RIGHT, origin=(0.0, 0.0, 26.5)))
+mdb.models['Model-1'].parts['bolt'].projectReferencesOntoSketch(filter=
+    COPLANAR_EDGES, sketch=mdb.models['Model-1'].sketches['__profile__'])
+mdb.models['Model-1'].sketches['__profile__'].CircleByCenterPerimeter(center=(
+    0.0, 0.0), point1=(5.75, 0.0))
+mdb.models['Model-1'].parts['bolt'].SolidExtrude(depth=4.0, 
+    flipExtrudeDirection=OFF, sketch=
+    mdb.models['Model-1'].sketches['__profile__'], sketchOrientation=RIGHT, 
+    sketchPlane=mdb.models['Model-1'].parts['bolt'].faces[1], sketchPlaneSide=
+    SIDE1, sketchUpEdge=mdb.models['Model-1'].parts['bolt'].edges[0])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='bolt-1', part=
+    mdb.models['Model-1'].parts['bolt'])
+mdb.models['Model-1'].rootAssembly.rotate(angle=90.0, axisDirection=(1.0, 0.0, 
+    0.0), axisPoint=(0.0, 0.0, 0.0), instanceList=('bolt-1', ))
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('bolt-1', ), vector=
+    (0.0, 0.0, 10.0))
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('bolt-1', ), vector=
+    (87.3, 121.0, 20.0))
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('bolt-1', ), vector=
+    (0.0, 4.0, 0.0))
+# Save by xinlo on 2023_07_08-22.46.43; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].Material(name='steel')
+mdb.models['Model-1'].materials['steel'].Elastic(table=((200000.0, 0.3), ))
+mdb.models['Model-1'].Material(name='aluminum')
+mdb.models['Model-1'].materials['aluminum'].Elastic(table=((68300.0, 0.33), ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='steel', name='steel', 
+    thickness=None)
+mdb.models['Model-1'].HomogeneousSolidSection(material='aluminum', name=
+    'aluminum', thickness=None)
+mdb.models['Model-1'].parts['bolt'].SectionAssignment(offset=0.0, offsetField=
+    '', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['bolt'].cells.getSequenceFromMask(mask=(
+    '[#1 ]', ), )), sectionName='aluminum', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].parts['clamp'].SectionAssignment(offset=0.0, offsetField=
+    '', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(mask=(
+    '[#1 ]', ), )), sectionName='aluminum', thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].parts['moduleFrame'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask(
+    mask=('[#3 ]', ), )), sectionName='aluminum', thicknessAssignment=
+    FROM_SECTION)
+mdb.models['Model-1'].parts['purlin'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1'].parts['purlin'].cells.getSequenceFromMask(
+    mask=('[#1 ]', ), )), sectionName='steel', thicknessAssignment=
+    FROM_SECTION)
+# Save by xinlo on 2023_07_08-23.05.52; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by xinlo on 2023_07_08-23.12.55; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_08-23.12.58; build 2017 2016_09_27-14.54.59 126836
