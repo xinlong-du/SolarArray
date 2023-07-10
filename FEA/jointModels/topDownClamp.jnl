@@ -947,3 +947,515 @@ mdb.models['Model-1'].BoltLoad(boltMethod=APPLY_FORCE, createStepName=
     mdb.models['Model-1'].rootAssembly.surfaces['boltCut'])
 # Save by xinlo on 2023_07_09-19.10.23; build 2017 2016_09_27-14.54.59 126836
 # Save by xinlo on 2023_07_09-19.12.43; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.DatumPointByOffset(point=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].edges[17], MIDDLE)
+    , vector=(0.0, 101.6, 0.0))
+del mdb.models['Model-1'].rootAssembly.features['Datum pt-1']
+mdb.models['Model-1'].rootAssembly.DatumPointByOffset(point=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].edges[17], MIDDLE)
+    , vector=(0.0, 101.6, 0.0))
+mdb.models['Model-1'].rootAssembly.DatumPointByOffset(point=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].InterestingPoint(
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].edges[11], MIDDLE)
+    , vector=(0.0, 101.6, 0.0))
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.datums[17])
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.datums[18])
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].vertices[16])
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].vertices[10])
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].vertices[48])
+mdb.models['Model-1'].rootAssembly.ReferencePoint(point=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].vertices[54])
+mdb.models['Model-1'].rootAssembly.Surface(name='purlinEnd1', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].faces.getSequenceFromMask(
+    ('[#400018c0 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[19], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'purlinCoupling1', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['purlinEnd1'], u1=ON, u2=ON, 
+    u3=ON, ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].rootAssembly.Surface(name='purlinEnd2', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].faces.getSequenceFromMask(
+    ('[#20006018 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[20], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'purlinCoupling2', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['purlinEnd2'], u1=ON, u2=ON, 
+    u3=ON, ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].rootAssembly.Surface(name='mfEnd3', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].faces.getSequenceFromMask(
+    ('[#91060 #8 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[21], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'mfCoupling3', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfEnd3'], u1=ON, u2=ON, u3=ON, 
+    ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].constraints.changeKey(fromName='mfCoupling3', toName=
+    'mfCoupling1')
+mdb.models['Model-1'].rootAssembly.surfaces.changeKey(fromName='mfEnd3', 
+    toName='mfEnd1')
+mdb.models['Model-1'].constraints['mfCoupling1'].setValues(surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfEnd1'])
+mdb.models['Model-1'].rootAssembly.Surface(name='mfEnd2', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].faces.getSequenceFromMask(
+    ('[#44418 #10 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[22], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'mfCoupling2', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfEnd2'], u1=ON, u2=ON, u3=ON, 
+    ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].rootAssembly.Surface(name='mfCoupling3', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].faces.getSequenceFromMask(
+    ('[#0 #910300 #100 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[23], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'mfCoupling3', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfCoupling3'], u1=ON, u2=ON, 
+    u3=ON, ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].rootAssembly.Surface(name='mfEnd4', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].faces.getSequenceFromMask(
+    ('[#0 #1088c00 #200 ]', ), ))
+mdb.models['Model-1'].Coupling(controlPoint=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[24], )), couplingType=
+    KINEMATIC, influenceRadius=WHOLE_SURFACE, localCsys=None, name=
+    'mfCoupling4', surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfEnd4'], u1=ON, u2=ON, u3=ON, 
+    ur1=ON, ur2=ON, ur3=ON)
+mdb.models['Model-1'].rootAssembly.surfaces.changeKey(fromName='mfCoupling3', 
+    toName='mfEnd3')
+mdb.models['Model-1'].constraints['mfCoupling3'].setValues(surface=
+    mdb.models['Model-1'].rootAssembly.surfaces['mfEnd3'])
+# Save by xinlo on 2023_07_09-23.42.42; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='purlinEnd1', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[19], )))
+mdb.models['Model-1'].boundaryConditions['purlinEnd1'].setValues(region=Region(
+    referencePoints=(mdb.models['Model-1'].rootAssembly.referencePoints[19], 
+    mdb.models['Model-1'].rootAssembly.referencePoints[20], )))
+mdb.models['Model-1'].boundaryConditions['purlinEnd1'].setValues(region=Region(
+    referencePoints=(mdb.models['Model-1'].rootAssembly.referencePoints[19], 
+    )))
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='purlinEnd2', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[20], )))
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName=
+    'cyclicLoading', distributionType=UNIFORM, fieldName='', fixed=OFF, 
+    localCsys=None, name='mfEnd1', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[21], )), u1=UNSET, u2=
+    5.0, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName=
+    'cyclicLoading', distributionType=UNIFORM, fieldName='', fixed=OFF, 
+    localCsys=None, name='mfEnd2', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[23], )), u1=UNSET, u2=
+    -5.0, u3=UNSET, ur1=UNSET, ur2=UNSET, ur3=UNSET)
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='mfEnd3', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[22], )))
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='mfEnd4', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[24], )))
+# Save by xinlo on 2023_07_09-23.51.03; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['bolt'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['bolt'].cells.getSequenceFromMask(('[#7 ]', ), 
+    ), ))
+mdb.models['Model-1'].parts['bolt'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.6)
+mdb.models['Model-1'].parts['bolt'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#7f ]', 
+    ), ), ))
+mdb.models['Model-1'].parts['clamp'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=3.0)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#fff ]', ), ), ))
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=4.0)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['purlin'].cells.getSequenceFromMask(('[#1f ]', 
+    ), ), ))
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=10.0)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].parts['bolt'].deleteMesh()
+mdb.models['Model-1'].parts['bolt'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['bolt'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh(regions=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#40 ]', 
+    ), ))
+mdb.models['Model-1'].parts['clamp'].seedEdgeByNumber(constraint=FINER, edges=
+    mdb.models['Model-1'].parts['clamp'].edges.getSequenceFromMask((
+    '[#200000 ]', ), ), number=4)
+mdb.models['Model-1'].parts['clamp'].deleteMesh()
+mdb.models['Model-1'].parts['clamp'].seedEdgeByNumber(constraint=FINER, edges=
+    mdb.models['Model-1'].parts['clamp'].edges.getSequenceFromMask((
+    '[#200020 #940900 ]', ), ), number=4)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh()
+mdb.models['Model-1'].parts['clamp'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.5)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.5)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by xinlo on 2023_07_10-00.03.50; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].boundaryConditions['mfEnd1'].setValues(u2=1.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd2'].setValues(u2=-1.0)
+# Save by xinlo on 2023_07_10-00.18.56; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='Job20230710topDownClamp', 
+    nodalOutputPrecision=SINGLE, numCpus=4, numDomains=4, numGPUs=0, queue=None
+    , resultsFormat=ODB, scratch='', type=ANALYSIS, userSubroutine='', 
+    waitHours=0, waitMinutes=0)
+# Save by xinlo on 2023_07_10-00.21.47; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.8)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.7)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.6)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.8)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.9)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh(regions=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#7f ]', 
+    ), ))
+mdb.models['Model-1'].parts['clamp'].deleteSeeds(regions=
+    mdb.models['Model-1'].parts['clamp'].edges.getSequenceFromMask((
+    '[#ffffffff:2 #3ff ]', ), ))
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh()
+mdb.models['Model-1'].parts['clamp'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.5)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh()
+mdb.models['Model-1'].parts['clamp'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.2)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].parts['clamp'].deleteMesh()
+mdb.models['Model-1'].parts['clamp'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.1)
+mdb.models['Model-1'].parts['clamp'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by xinlo on 2023_07_10-00.37.21; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_10-00.37.33; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+#* Academic Teaching license is restricted to 250000 nodes.
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.7)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.95)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['purlin'].deleteMesh()
+mdb.models['Model-1'].parts['purlin'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1'].parts['purlin'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['moduleFrame'].deleteMesh()
+mdb.models['Model-1'].parts['moduleFrame'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.8)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by xinlo on 2023_07_10-00.50.13; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_10-00.50.38; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'WHENEVER A TRANSLATION (ROTATION) DOF AT A NODE IS CONSTRAINED BY A KINEMATIC COUPLING DEFINITION THE TRANSLATION (ROTATION) DOFS FOR THAT NODE CANNOT BE INCLUDED IN ANY OTHER CONSTRAINT INCLUDING MPCS, RIGID BODIES, ETC.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'MPCS (EXTERNAL or INTERNAL, including those generated from rigid body definitions), KINEMATIC COUPLINGS, AND/OR EQUATIONS WILL ACTIVATE ADDITIONAL DEGREES OF FREEDOM', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\Job20230710topDownClamp.odb', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(COMPLETED, {
+    'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 39316, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 1, 'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20230710topDownClamp', 
+    'memory': 4802.0})
+mdb.jobs['Job20230710topDownClamp']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 751.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Process terminated by external request (SIGTERM or SIGINT received).', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(INTERRUPTED, {
+    'phase': STANDARD_PHASE, 
+    'message': 'Analysis interrupted by external signal', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.models['Model-1'].steps['pretension'].setValues(nlgeom=OFF)
+mdb.models['Model-1'].steps['cyclicLoading'].setValues(nlgeom=OFF)
+mdb.models['Model-1'].steps['pretension'].setValues(maxNumInc=1, noStop=OFF, 
+    timeIncrementationMethod=FIXED)
+mdb.models['Model-1'].steps['cyclicLoading'].setValues(maxNumInc=1, noStop=OFF, 
+    timeIncrementationMethod=FIXED)
+# Save by xinlo on 2023_07_10-00.57.29; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'WHENEVER A TRANSLATION (ROTATION) DOF AT A NODE IS CONSTRAINED BY A KINEMATIC COUPLING DEFINITION THE TRANSLATION (ROTATION) DOFS FOR THAT NODE CANNOT BE INCLUDED IN ANY OTHER CONSTRAINT INCLUDING MPCS, RIGID BODIES, ETC.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'MPCS (EXTERNAL or INTERNAL, including those generated from rigid body definitions), KINEMATIC COUPLINGS, AND/OR EQUATIONS WILL ACTIVATE ADDITIONAL DEGREES OF FREEDOM', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\Job20230710topDownClamp.odb', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(COMPLETED, {
+    'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 10600, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 1, 'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20230710topDownClamp', 
+    'memory': 4802.0})
+mdb.jobs['Job20230710topDownClamp']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 751.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Process terminated by external request (SIGTERM or SIGINT received).', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(INTERRUPTED, {
+    'phase': STANDARD_PHASE, 
+    'message': 'Analysis interrupted by external signal', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.models['Model-1'].steps['pretension'].setValues(maxNumInc=100, 
+    timeIncrementationMethod=AUTOMATIC)
+mdb.models['Model-1'].steps['cyclicLoading'].setValues(maxNumInc=100, 
+    timeIncrementationMethod=AUTOMATIC)
+# Save by xinlo on 2023_07_10-01.03.37; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_10-01.03.48; build 2017 2016_09_27-14.54.59 126836
