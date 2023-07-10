@@ -708,3 +708,242 @@ from connectorBehavior import *
 mdb.models['Model-1'].rootAssembly.regenerate()
 # Save by xinlo on 2023_07_08-23.12.55; build 2017 2016_09_27-14.54.59 126836
 # Save by xinlo on 2023_07_08-23.12.58; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].StaticStep(name='pretension', nlgeom=ON, previous=
+    'Initial')
+mdb.models['Model-1'].StaticStep(name='cyclicLoading', previous='pretension')
+mdb.models['Model-1'].ContactProperty('bolt2clampProp')
+mdb.models['Model-1'].interactionProperties['bolt2clampProp'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].rootAssembly.Surface(name='bolt', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['bolt-1'].faces.getSequenceFromMask(
+    ('[#7f ]', ), ))
+mdb.models['Model-1'].rootAssembly.Surface(name='clamp', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['clamp-1'].faces.getSequenceFromMask(
+    ('[#1ffff ]', ), ))
+mdb.models['Model-1'].SurfaceToSurfaceContactStd(adjustMethod=NONE, 
+    clearanceRegion=None, createStepName='Initial', datumAxis=None, 
+    initialClearance=OMIT, interactionProperty='bolt2clampProp', master=
+    mdb.models['Model-1'].rootAssembly.surfaces['bolt'], name='bolt2clamp', 
+    slave=mdb.models['Model-1'].rootAssembly.surfaces['clamp'], sliding=FINITE, 
+    thickness=ON)
+# Save by xinlo on 2023_07_09-17.58.01; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['bolt'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['bolt'].cells.getSequenceFromMask(('[#1 ]', ), 
+    ), extendFace=mdb.models['Model-1'].parts['bolt'].faces[0])
+mdb.models['Model-1'].parts['bolt'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['bolt'].cells.getSequenceFromMask(('[#2 ]', ), 
+    ), extendFace=mdb.models['Model-1'].parts['bolt'].faces[6])
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['clamp'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#1 ]', ), 
+    ), extendFace=mdb.models['Model-1'].parts['clamp'].faces[9])
+del mdb.models['Model-1'].parts['clamp'].features['Partition cell-1']
+mdb.models['Model-1'].parts['clamp'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#1 ]', ), 
+    ), extendFace=mdb.models['Model-1'].parts['clamp'].faces[14])
+mdb.models['Model-1'].parts['clamp'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#2 ]', ), 
+    ), extendFace=mdb.models['Model-1'].parts['clamp'].faces[17])
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].parts['clamp'].PartitionCellByPlanePointNormal(cells=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#10 ]', 
+    ), ), normal=mdb.models['Model-1'].parts['clamp'].edges[31], point=
+    mdb.models['Model-1'].parts['clamp'].vertices[21])
+mdb.models['Model-1'].parts['clamp'].PartitionCellByPlanePointNormal(cells=
+    mdb.models['Model-1'].parts['clamp'].cells.getSequenceFromMask(('[#8 ]', ), 
+    ), normal=mdb.models['Model-1'].parts['clamp'].edges[62], point=
+    mdb.models['Model-1'].parts['clamp'].vertices[37])
+mdb.models['Model-1'].parts['moduleFrame'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#1 ]', ), ), extendFace=
+    mdb.models['Model-1'].parts['moduleFrame'].faces[2])
+del mdb.models['Model-1'].parts['moduleFrame'].features['Partition cell-1']
+mdb.models['Model-1'].parts['moduleFrame'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#3 ]', ), ), extendFace=
+    mdb.models['Model-1'].parts['moduleFrame'].faces[2])
+mdb.models['Model-1'].parts['moduleFrame'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#9 ]', ), ), extendFace=
+    mdb.models['Model-1'].parts['moduleFrame'].faces[8])
+mdb.models['Model-1'].parts['moduleFrame'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#22 ]', ), ), extendFace=
+    mdb.models['Model-1'].parts['moduleFrame'].faces[20])
+mdb.models['Model-1'].parts['moduleFrame'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['moduleFrame'].cells.getSequenceFromMask((
+    '[#84 ]', ), ), extendFace=
+    mdb.models['Model-1'].parts['moduleFrame'].faces[20])
+mdb.models['Model-1'].parts['purlin'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['purlin'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), extendFace=mdb.models['Model-1'].parts['purlin'].faces[3])
+del mdb.models['Model-1'].parts['purlin'].features['Partition cell-1']
+mdb.models['Model-1'].parts['purlin'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['purlin'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), extendFace=mdb.models['Model-1'].parts['purlin'].faces[1])
+mdb.models['Model-1'].parts['purlin'].PartitionCellByExtendFace(cells=
+    mdb.models['Model-1'].parts['purlin'].cells.getSequenceFromMask(('[#4 ]', 
+    ), ), extendFace=mdb.models['Model-1'].parts['purlin'].faces[11])
+# Save by xinlo on 2023_07_09-18.28.25; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].interactions['bolt2clamp'].setValues(adjustMethod=NONE, 
+    bondingSet=None, contactTracking=TWO_CONFIG, enforcement=SURFACE_TO_SURFACE
+    , initialClearance=OMIT, sliding=FINITE, thickness=ON)
+mdb.models['Model-1'].interactions['bolt2clamp'].swapSurfaces()
+mdb.models['Model-1'].rootAssembly.Surface(name='clamp', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['clamp-1'].faces.getSequenceFromMask(
+    ('[#fffcfcee #1ff ]', ), ))
+mdb.models['Model-1'].interactionProperties.changeKey(fromName='bolt2clampProp'
+    , toName='clamp2boltProp')
+mdb.models['Model-1'].ContactProperty('purlin2boltProp')
+mdb.models['Model-1'].interactionProperties['purlin2boltProp'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['purlin2boltProp'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.models['Model-1'].interactionProperties['clamp2boltProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['clamp2boltProp'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.models['Model-1'].ContactProperty('moduleFrame2clampProp')
+mdb.models['Model-1'].interactionProperties['moduleFrame2clampProp'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['moduleFrame2clampProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['moduleFrame2clampProp'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.models['Model-1'].ContactProperty('purlin2moduleFrameProp')
+mdb.models['Model-1'].interactionProperties['purlin2moduleFrameProp'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.2, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['purlin2moduleFrameProp'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+mdb.models['Model-1'].rootAssembly.Surface(name='moduleFrame', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['moduleFrame-1'].faces.getSequenceFromMask(
+    ('[#fffdde7c #ffbbcf9f #3ff ]', ), ))
+mdb.models['Model-1'].SurfaceToSurfaceContactStd(adjustMethod=NONE, 
+    clearanceRegion=None, createStepName='Initial', datumAxis=None, 
+    initialClearance=OMIT, interactionProperty='moduleFrame2clampProp', master=
+    mdb.models['Model-1'].rootAssembly.surfaces['moduleFrame'], name=
+    'moduleFrame2clamp', slave=
+    mdb.models['Model-1'].rootAssembly.surfaces['clamp'], sliding=FINITE, 
+    thickness=ON)
+mdb.models['Model-1'].rootAssembly.Surface(name='purlin', side1Faces=
+    mdb.models['Model-1'].rootAssembly.instances['purlin-1'].faces.getSequenceFromMask(
+    ('[#7ffffcfc ]', ), ))
+mdb.models['Model-1'].SurfaceToSurfaceContactStd(adjustMethod=NONE, 
+    clearanceRegion=None, createStepName='Initial', datumAxis=None, 
+    initialClearance=OMIT, interactionProperty='purlin2boltProp', master=
+    mdb.models['Model-1'].rootAssembly.surfaces['purlin'], name='purlin2bolt', 
+    slave=mdb.models['Model-1'].rootAssembly.surfaces['bolt'], sliding=FINITE, 
+    thickness=ON)
+mdb.models['Model-1'].SurfaceToSurfaceContactStd(adjustMethod=NONE, 
+    clearanceRegion=None, createStepName='Initial', datumAxis=None, 
+    initialClearance=OMIT, interactionProperty='purlin2moduleFrameProp', 
+    master=mdb.models['Model-1'].rootAssembly.surfaces['purlin'], name=
+    'purlin2moduleFrame', slave=
+    mdb.models['Model-1'].rootAssembly.surfaces['moduleFrame'], sliding=FINITE, 
+    thickness=ON)
+# Save by xinlo on 2023_07_09-18.47.40; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].interactions['bolt2clamp'].setValues(adjustMethod=NONE, 
+    bondingSet=None, contactTracking=TWO_CONFIG, enforcement=SURFACE_TO_SURFACE
+    , initialClearance=OMIT, interactionProperty='clamp2boltProp', sliding=
+    FINITE, thickness=ON)
+mdb.models['Model-1'].interactions.changeKey(fromName='bolt2clamp', toName=
+    'clamp2bolt')
+# Save by xinlo on 2023_07_09-18.51.25; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_09-18.55.24; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].rootAssembly.Surface(name='boltCut', side2Faces=
+    mdb.models['Model-1'].rootAssembly.instances['bolt-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ))
+mdb.models['Model-1'].BoltLoad(boltMethod=APPLY_FORCE, createStepName=
+    'pretension', datumAxis=mdb.models['Model-1'].rootAssembly.datums[1].axis2, 
+    magnitude=4448.22, name='pretension', region=
+    mdb.models['Model-1'].rootAssembly.surfaces['boltCut'])
+# Save by xinlo on 2023_07_09-19.10.23; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_09-19.12.43; build 2017 2016_09_27-14.54.59 126836
