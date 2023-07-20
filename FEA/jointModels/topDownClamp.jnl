@@ -1459,3 +1459,176 @@ mdb.models['Model-1'].steps['cyclicLoading'].setValues(maxNumInc=100,
     timeIncrementationMethod=AUTOMATIC)
 # Save by xinlo on 2023_07_10-01.03.37; build 2017 2016_09_27-14.54.59 126836
 # Save by xinlo on 2023_07_10-01.03.48; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].interactionProperties['moduleFrame2clampProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.3, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['clamp2boltProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.18, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['purlin2boltProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.18, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].interactionProperties['purlin2moduleFrameProp'].tangentialBehavior.setValues(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.18, ), ), temperatureDependency=OFF)
+mdb.models['Model-1'].parts['moduleFrame'].features['Datum plane-1'].setValues(
+    offset=13.7)
+mdb.models['Model-1'].parts['moduleFrame'].regenerate()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.models['Model-1'].rootAssembly.translate(instanceList=('moduleFrame-1', ), 
+    vector=(1.0, 0.0, 0.0))
+mdb.models['Model-1'].loads['pretension'].setValues(magnitude=11120.55)
+mdb.models['Model-1'].parts['moduleFrame'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+# Save by xinlo on 2023_07_19-18.08.13; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].boundaryConditions['mfEnd2'].move('cyclicLoading', 
+    'pretension')
+mdb.models['Model-1'].boundaryConditions['mfEnd2'].move('pretension', 
+    'Initial')
+#* ValueError: Non-zero boundary condition in initial step.
+mdb.models['Model-1'].boundaryConditions['mfEnd2'].setValues(u1=0.0, u2=0.0, 
+    u3=0.0, ur1=0.0, ur2=0.0, ur3=0.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd2'].move('pretension', 
+    'Initial')
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].move('Initial', 
+    'pretension')
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].move('pretension', 
+    'cyclicLoading')
+del mdb.models['Model-1'].boundaryConditions['mfEnd3']
+mdb.models['Model-1'].boundaryConditions.changeKey(fromName='mfEnd1', toName=
+    'mfEnd3')
+mdb.models['Model-1'].boundaryConditions.changeKey(fromName='mfEnd2', toName=
+    'mfEnd5')
+mdb.models['Model-1'].boundaryConditions.changeKey(fromName='mfEnd4', toName=
+    'mfEnd6')
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName=
+    'cyclicLoading', distributionType=UNIFORM, fieldName='', fixed=OFF, 
+    localCsys=None, name='mfEnd4', region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[22], )), u1=0.0, u2=1.0, 
+    u3=0.0, ur1=0.0, ur2=0.0, ur3=0.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].setValues(u1=0.0, u3=0.0, 
+    ur1=0.0, ur2=0.0, ur3=0.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].move('cyclicLoading', 
+    'pretension')
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].move('pretension', 
+    'Initial')
+#* ValueError: Non-zero boundary condition in initial step.
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].setValues(u2=0.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].move('pretension', 
+    'Initial')
+mdb.models['Model-1'].boundaryConditions['mfEnd3'].setValuesInStep(stepName=
+    'cyclicLoading', u2=1.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd4'].setValues(u2=0.0)
+mdb.models['Model-1'].boundaryConditions['mfEnd4'].move('cyclicLoading', 
+    'pretension')
+mdb.models['Model-1'].boundaryConditions['mfEnd4'].move('pretension', 
+    'Initial')
+mdb.models['Model-1'].boundaryConditions['mfEnd4'].setValuesInStep(stepName=
+    'cyclicLoading', u2=1.0)
+del mdb.models['Model-1'].boundaryConditions['mfEnd6']
+mdb.models['Model-1'].DisplacementBC(amplitude=UNSET, createStepName='Initial', 
+    distributionType=UNIFORM, fieldName='', localCsys=None, name='mfEnd6', 
+    region=Region(referencePoints=(
+    mdb.models['Model-1'].rootAssembly.referencePoints[24], )), u1=SET, u2=SET, 
+    u3=SET, ur1=SET, ur2=SET, ur3=SET)
+# Save by xinlo on 2023_07_19-18.22.50; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].steps['pretension'].setValues(initialInc=0.1)
+mdb.models['Model-1'].steps['cyclicLoading'].setValues(initialInc=0.1, 
+    maxNumInc=1000)
+# Save by xinlo on 2023_07_19-18.24.44; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_19-18.25.04; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230710topDownClamp'].submit(consistencyChecking=OFF)
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'WHENEVER A TRANSLATION (ROTATION) DOF AT A NODE IS CONSTRAINED BY A KINEMATIC COUPLING DEFINITION THE TRANSLATION (ROTATION) DOFS FOR THAT NODE CANNOT BE INCLUDED IN ANY OTHER CONSTRAINT INCLUDING MPCS, RIGID BODIES, ETC.', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'MPCS (EXTERNAL or INTERNAL, including those generated from rigid body definitions), KINEMATIC COUPLINGS, AND/OR EQUATIONS WILL ACTIVATE ADDITIONAL DEGREES OF FREEDOM', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 'file': 'C:\\temp\\Job20230710topDownClamp.odb', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(COMPLETED, {
+    'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 27456, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 1, 'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20230710topDownClamp', 
+    'memory': 7975.0})
+mdb.jobs['Job20230710topDownClamp']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20230710topDownClamp'})
+mdb.jobs['Job20230710topDownClamp']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 844.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20230710topDownClamp'})
+# Save by xinlo on 2023_07_19-18.30.10; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_07_19-18.30.25; build 2017 2016_09_27-14.54.59 126836
