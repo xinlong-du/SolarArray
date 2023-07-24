@@ -20,8 +20,8 @@ node(1,0.0,0.0,0.0);
 node(2,0.0,0.0,0.0);
 fix(1, 1, 1, 1, 1, 1, 1);
 
-Fy=3.65;
-E0=1494.8;
+Fy=2000.0;
+E0=2000.0;
 b=0.0001;
 a1=0.0;
 a2=1.0;
@@ -29,19 +29,19 @@ a3=0.0;
 a4=1.0;
 uniaxialMaterial('Steel01', 1, Fy, E0, b, a1, a2, a3, a4)
 
-E=10000.0;
-Fy=10000.0;
-gap=0.05;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
+# E=10000.0;
+# Fy=10000.0;
+# gap=0.05;
+# eta=0.99999;
+# uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
 
-E=10000.0;
-Fy=-10000.0;
-gap=-0.05;
+E=27500.0;
+Fy=-100000.0;
+gap=-1.75;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 3, E, Fy, gap, eta)
 
-uniaxialMaterial('Parallel', 4, *[1,2,3])
+uniaxialMaterial('Parallel', 4, *[1,3])
 element('zeroLength', 1, *[1,2], '-mat', *[4,4,4,4,4,4], '-dir', *[1,2,3,4,5,6])
 
 timeSeries('Linear',1);
@@ -58,17 +58,24 @@ numberer('Plain');	   # renumber dof's to minimize band-width
 system('BandGeneral'); # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
-integrator('LoadControl', 0.0001)
+#integrator('LoadControl', 0.1)
+Dincr = 0.1; #-0.00002
+                                  #Node,  dof, 1st incr, Jd,  min,   max
+integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(200000);
+analyze(50);
 
-integrator('LoadControl', -0.0001)
+Dincr = -0.1; #-0.00002
+                                  #Node,  dof, 1st incr, Jd,  min,   max
+integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(400000);
+analyze(100);
 
-integrator('LoadControl', 0.0001)
+Dincr = 0.1; #-0.00002
+                                  #Node,  dof, 1st incr, Jd,  min,   max
+integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(400000);
+analyze(50);
 
 print('Finished')
 wipe()
