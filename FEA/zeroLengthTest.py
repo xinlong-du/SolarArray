@@ -7,11 +7,17 @@ Created on Sun Jul 23 16:13:48 2023
 from openseespy.opensees import *
 import numpy as np
 import math
+import pandas as pd
 
 # visulization
 import vfo.vfo as vfo
 
-#%% SET UP ----------------------------------------------------------------------
+import matplotlib.pyplot as plt
+big_fig_size = (3.5,3);
+plt_line_width = 0.5; 
+fig_font_size = 8;
+
+#%% SET UP---------------------------------------------------------------------
 wipe();
 model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
@@ -20,8 +26,9 @@ node(1,0.0,0.0,0.0);
 node(2,0.0,0.0,0.0);
 fix(1, 1, 1, 1, 1, 1, 1);
 
-Fy=2000.0;
-E0=2000.0;
+# material for dispX-----------------------------------------------------------
+Fy=1500.0;
+E0=1000.0;
 b=0.0001;
 a1=0.0;
 a2=1.0;
@@ -29,28 +36,42 @@ a3=0.0;
 a4=1.0;
 uniaxialMaterial('Steel01', 1, Fy, E0, b, a1, a2, a3, a4)
 
-# E=10000.0;
-# Fy=10000.0;
-# gap=0.05;
-# eta=0.99999;
-# uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
-
-E=27500.0;
+E=19500.0;
 Fy=-100000.0;
-gap=-1.75;
+gap=-2.15;
 eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 3, E, Fy, gap, eta)
+uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
 
-uniaxialMaterial('Parallel', 4, *[1,3])
-element('zeroLength', 1, *[1,2], '-mat', *[4,4,4,4,4,4], '-dir', *[1,2,3,4,5,6])
+uniaxialMaterial('Parallel', 101, *[1,2])
+
+# material for dispY-----------------------------------------------------------
+Fy=4000.0;
+E0=15000.0;
+b=0.04;
+a1=0.0;
+a2=1.0;
+a3=0.0;
+a4=1.0;
+uniaxialMaterial('Steel01', 3, Fy, E0, b, a1, a2, a3, a4)
+
+E=195000.0;
+Fy=-1000000.0;
+gap=-0.0;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 102, *[3,4])
+
+# define element---------------------------------------------------------------
+element('zeroLength', 1, *[1,2], '-mat', *[101,102,101,101,101,101], '-dir', *[1,2,3,4,5,6])
 
 timeSeries('Linear',1);
 #timeSeries('Path',1,'-dt',1.0,'-values',*[0.0,1.0,0.0,-1.0,0.0],'-prependZero');
 pattern('Plain',1,1);
-load(2, *[1.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
+load(2, *[1.0, 1.0, 1.0, 1.0, 1.0, 1.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/zeroLengthTest.out', '-time', '-node', *[2], '-dof', *[1], 'disp');
+recorder('Node', '-file', f'{dataDir}/zeroLengthTest.out', '-time', '-node', *[2], '-dof', *[1,2,3,4,5,6], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -59,39 +80,62 @@ system('BandGeneral'); # how to store and solve the system of equations in the a
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
 #integrator('LoadControl', 0.1)
-Dincr = 0.1; #-0.00002
+dof=2;
+if dof==1:
+    Dincr=0.1;
+    nSteps=50;
+elif dof==2:
+    Dincr=1.5/50;
+    nSteps=50;
                                   #Node,  dof, 1st incr, Jd,  min,   max
-integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
+integrator('DisplacementControl',    2,   dof,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(50);
+analyze(nSteps);
 
-Dincr = -0.1; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
-integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
+integrator('DisplacementControl',    2,   dof,  -Dincr,    1,  -Dincr, -Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(100);
+analyze(nSteps*2);
 
-Dincr = 0.1; #-0.00002
                                   #Node,  dof, 1st incr, Jd,  min,   max
-integrator('DisplacementControl',    2,    1,   Dincr,    1,  Dincr, Dincr);
+integrator('DisplacementControl',    2,   dof,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(50);
+analyze(nSteps);
 
 print('Finished')
 wipe()
 
-#%%
+#%% postprocessing-------------------------------------------------------------
 file_name = './Data/zeroLengthTest.out'
 nodeDisps = np.loadtxt(file_name)
 
-import matplotlib.pyplot as plt
-big_fig_size = (3.5,3);
-plt_line_width = 0.5; 
-fig_font_size = 8;
+abaqusData=pd.ExcelFile('jointResponse.xlsx');
 
-fig = plt.figure(figsize=big_fig_size)
-ax = fig.add_axes([0, 0, 1, 1])
-plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
-ax.tick_params(direction="in")
-ax.plot(nodeDisps[:,1],nodeDisps[:,0], linewidth=plt_line_width)
+# dispX------------------------------------------------------------------------
+if dof==1:
+    abaDispX=pd.read_excel(abaqusData,'dispX2');
+    
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(abaDispX[abaDispX.columns[3]],abaDispX[abaDispX.columns[5]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,1],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-10000,2500])
+elif dof==2:
+    abaDispY=pd.read_excel(abaqusData,'dispY2');
+    
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(abaDispY[abaDispY.columns[4]],abaDispY[abaDispY.columns[6]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,2],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-200000,5000])
+    
