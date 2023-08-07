@@ -62,8 +62,93 @@ uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
 
 uniaxialMaterial('Parallel', 102, *[3,4])
 
+# material for dispZ-----------------------------------------------------------
+Fy=1650.0;
+E0=7000.0;
+b=0.002;
+a1=0.0;
+a2=1.0;
+a3=0.0;
+a4=1.0;
+uniaxialMaterial('Steel01', 103, Fy, E0, b, a1, a2, a3, a4)
+
+# material for rotX-----------------------------------------------------------
+Fy=1.0e5;
+E0=9.9e7;
+b=0.1;
+a1=0.0;
+a2=1.0;
+a3=0.0;
+a4=1.0;
+uniaxialMaterial('Steel01', 5, Fy, E0, b, a1, a2, a3, a4)
+
+E=2.0e6;
+Fy=1.0e10;
+gap=0.0;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
+
+E=2.8e7;
+Fy=-1.0e10;
+gap=-0.0;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
+
+E=9.6e7;
+uniaxialMaterial('Elastic', 8, E)
+
+uniaxialMaterial('Parallel', 104, *[5,6,7,8])
+
+# material for rotY-----------------------------------------------------------
+Fy=80000.0;
+E0=8.0e6;
+b=0.04;
+a1=0.0;
+a2=1.0;
+a3=0.0;
+a4=1.0;
+uniaxialMaterial('Steel01', 9, Fy, E0, b, a1, a2, a3, a4)
+
+E=1.6e6;
+Fy=1.0e10;
+gap=0.022;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
+
+E=1.6e6;
+Fy=-1.0e10;
+gap=-0.022;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 105, *[9,10,11])
+
+# material for rotZ-----------------------------------------------------------
+Fy=40000.0;
+E0=5.0e7;
+b=0.05;
+a1=0.0;
+a2=1.0;
+a3=0.0;
+a4=1.0;
+uniaxialMaterial('Steel01', 12, Fy, E0, b, a1, a2, a3, a4)
+
+E=1.0e6;
+Fy=-1.0e10;
+gap=-0.02;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
+
+fpc=-1.4e6;
+epsc0=-0.1;
+fpcu=0.0;
+epsU=-0.06;
+uniaxialMaterial('Concrete01',14,fpc,epsc0,fpcu,epsU)
+
+uniaxialMaterial('Parallel', 106, *[12,13,14])
+
 # define element---------------------------------------------------------------
-element('zeroLength', 1, *[1,2], '-mat', *[101,102,101,101,101,101], '-dir', *[1,2,3,4,5,6])
+element('zeroLength', 1, *[1,2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6])
 
 timeSeries('Linear',1);
 #timeSeries('Path',1,'-dt',1.0,'-values',*[0.0,1.0,0.0,-1.0,0.0],'-prependZero');
@@ -80,13 +165,25 @@ system('BandGeneral'); # how to store and solve the system of equations in the a
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
 #integrator('LoadControl', 0.1)
-dof=2;
+dof=6;
 if dof==1:
     Dincr=0.1;
     nSteps=50;
 elif dof==2:
     Dincr=1.5/50;
     nSteps=50;
+elif dof==3:
+    Dincr=0.1;
+    nSteps=48;
+elif dof==4:
+    Dincr=0.01/50;
+    nSteps=50;
+elif dof==5:
+    Dincr=0.05/50;
+    nSteps=46;
+elif dof==6:
+    Dincr=-0.05/50
+    nSteps=55;
                                   #Node,  dof, 1st incr, Jd,  min,   max
 integrator('DisplacementControl',    2,   dof,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
@@ -121,7 +218,7 @@ if dof==1:
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
     ax.plot(abaDispX[abaDispX.columns[3]],abaDispX[abaDispX.columns[5]],linewidth=plt_line_width,color='b',label='Abaqus solid')
-    ax.plot(nodeDisps[:,1],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
     #ax.set_ylim([-10000,2500])
@@ -134,8 +231,59 @@ elif dof==2:
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
     ax.plot(abaDispY[abaDispY.columns[4]],abaDispY[abaDispY.columns[6]],linewidth=plt_line_width,color='b',label='Abaqus solid')
-    ax.plot(nodeDisps[:,2],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
     #ax.set_ylim([-200000,5000])
+elif dof==3:
+    abaDispZ=pd.read_excel(abaqusData,'dispZ2');
     
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(abaDispZ[abaDispZ.columns[3]],abaDispZ[abaDispZ.columns[5]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-200000,5000])    
+elif dof==4:
+    abaRotX=pd.read_excel(abaqusData,'rotX2');
+    
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(abaRotX[abaRotX.columns[0]],abaRotX[abaRotX.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-200000,5000])
+elif dof==5:
+    abaRotY=pd.read_excel(abaqusData,'rotY2');
+    
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(abaRotY[abaRotY.columns[0]],abaRotY[abaRotY.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-200000,5000])
+elif dof==6:
+    abaRotZ=pd.read_excel(abaqusData,'rotZ2');
+    
+    fig = plt.figure(figsize=big_fig_size)
+    ax = fig.add_axes([0, 0, 1, 1])
+    plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
+    plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
+    ax.tick_params(direction="in")
+    ax.plot(-abaRotZ[abaRotZ.columns[0]],-abaRotZ[abaRotZ.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid')
+    ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
+    plt.legend(loc="lower right")
+    ax=plt.gca()
+    #ax.set_ylim([-200000,5000])
