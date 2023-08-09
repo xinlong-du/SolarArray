@@ -30,11 +30,7 @@ fix(1, 1, 1, 1, 1, 1, 1);
 Fy=1500.0;
 E0=1000.0;
 b=0.0001;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 1, Fy, E0, b, a1, a2, a3, a4)
+uniaxialMaterial('Steel01', 1, Fy, E0, b)
 
 E=19500.0;
 Fy=-100000.0;
@@ -47,18 +43,13 @@ uniaxialMaterial('Parallel', 101, *[1,2])
 # material for dispY-----------------------------------------------------------
 Fy=4000.0;
 E0=15000.0;
-b=0.04;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 3, Fy, E0, b, a1, a2, a3, a4)
+b=0.0001;
+uniaxialMaterial('Steel01', 3, Fy, E0, b)
 
-E=195000.0;
-Fy=-1000000.0;
-gap=-0.0;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
+E=400.0;
+Eneg=195000.0;
+eta=0.0;
+uniaxialMaterial('Elastic', 4, E, eta, Eneg)
 
 uniaxialMaterial('Parallel', 102, *[3,4])
 
@@ -66,21 +57,13 @@ uniaxialMaterial('Parallel', 102, *[3,4])
 Fy=1650.0;
 E0=7000.0;
 b=0.002;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 103, Fy, E0, b, a1, a2, a3, a4)
+uniaxialMaterial('Steel01', 103, Fy, E0, b)
 
 # material for rotX-----------------------------------------------------------
 Fy=1.0e5;
 E0=9.9e7;
 b=0.1;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 5, Fy, E0, b, a1, a2, a3, a4)
+uniaxialMaterial('Steel01', 5, Fy, E0, b)
 
 E=2.0e6;
 Fy=1.0e10;
@@ -103,11 +86,7 @@ uniaxialMaterial('Parallel', 104, *[5,6,7,8])
 Fy=80000.0;
 E0=8.0e6;
 b=0.04;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 9, Fy, E0, b, a1, a2, a3, a4)
+uniaxialMaterial('Steel01', 9, Fy, E0, b)
 
 E=1.6e6;
 Fy=1.0e10;
@@ -127,11 +106,7 @@ uniaxialMaterial('Parallel', 105, *[9,10,11])
 Fy=40000.0;
 E0=5.0e7;
 b=0.05;
-a1=0.0;
-a2=1.0;
-a3=0.0;
-a4=1.0;
-uniaxialMaterial('Steel01', 12, Fy, E0, b, a1, a2, a3, a4)
+uniaxialMaterial('Steel01', 12, Fy, E0, b)
 
 E=7.0e6;
 Fy=-1.0e10;
@@ -197,7 +172,7 @@ analyze(nSteps*2);
                                   #Node,  dof, 1st incr, Jd,  min,   max
 integrator('DisplacementControl',    2,   dof,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
-analyze(nSteps);
+analyze(nSteps+5);
 
 print('Finished')
 wipe()
@@ -241,7 +216,7 @@ elif dof==2:
     ax.set_xlabel('Y disp. (mm)',fontsize=fig_font_size)
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/dispY.tif', transparent=False, bbox_inches='tight', dpi=100)
-    ax.set_ylim([-35000,5000])
+    ax.set_ylim([-20000,6000])
     plt.savefig('./Data/springOutput/dispYlocal.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==3:
     abaDispZ=pd.read_excel(abaqusData,'dispZ2');
