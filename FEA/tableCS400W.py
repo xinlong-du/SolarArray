@@ -13,6 +13,7 @@ import vfo.vfo as vfo
 from plotFunctions import localForcePlot
 from plotFunctions import globalDispPlot
 from plotFunctions import localYdispPlot
+from plotFunctions import springResPlot
 
 #%% SET UP ----------------------------------------------------------------------
 wipe();
@@ -361,7 +362,7 @@ with h5py.File(filename, "r") as f:
 
 #%% define LOADS---------------------------------------------------------------
 L=169.25*in2m;
-U=27.0;
+U=47.0;
 dt=dtNorm*L/U;
 rho_air=1.226;
 p=0.5*rho_air*U*U*Cp;
@@ -402,7 +403,10 @@ nodeRec=list(range(1001,1023))+list(range(1101,1123))+list(range(1801,1823));
 eleRec=list(range(701,724))+list(range(801,824));
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001, 16002], 'deformation');
+recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001], 'deformation');
+recorder('Element', '-file', f'{dataDir}/tableCS400WlocalForces.out', '-time', '-ele', *[15001], 'localForces');
+recorder('Element', '-file', f'{dataDir}/tableCS400WbasicStiffness.out', '-time', '-ele', *[15001], 'basicStiffness');
+recorder('Element', '-file', f'{dataDir}/tableCS400WdefANDfor.out', '-time', '-ele', *[15001], 'deformationsANDforces');
 
 # define DAMPING
 rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -457,6 +461,11 @@ wipe()
 #%% defomed shape and animation------------------------------------------------
 vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=20)
 #ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
+
+#%% plot response of springs
+file_name='./Data/tableCS400WdefANDfor.out';
+springRes=np.loadtxt(file_name);
+springResPlot(springRes)
 
 #%% calculate time series of forces on joints----------------------------------
 file_name = './Data/tableCS400Weles.out'
