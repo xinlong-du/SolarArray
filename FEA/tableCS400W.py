@@ -250,7 +250,8 @@ ebTransfTag = 5;
 vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', ebTransfTag, *vecxz);
 
-vecx = [0.0, -1.0, 0]; #local a-axis for spring
+vecx1 = [0.0,  1.0, 0]; #local x-axis for spring, module frame on the left side of the bolt
+vecx2 = [0.0, -1.0, 0]; #local x-axis for spring, module frame on the right side of the bolt
 vecyp = [-40.0211, 0.0000, 69.0560]; #vector in the local x-y plane for the element
 
 for i in range(0,4):
@@ -307,10 +308,10 @@ for i in range (0,2):
         element('elasticBeamColumn', (18*i+12)*1000+j+1, *[602+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
         element('elasticBeamColumn', (18*i+13)*1000+j+1, *[801+i*400+j*2,  802+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
         element('elasticBeamColumn', (18*i+14)*1000+j+1, *[501+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('zeroLength', (18*i+15)*1000+j+1, *[601+i*400+j*2, 1501+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx, *vecyp);
-        element('zeroLength', (18*i+16)*1000+j+1, *[602+i*400+j*2, 1502+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx, *vecyp);
-        element('zeroLength', (18*i+17)*1000+j+1, *[701+i*400+j*2, 1601+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx, *vecyp);
-        element('zeroLength', (18*i+18)*1000+j+1, *[702+i*400+j*2, 1602+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx, *vecyp);
+        element('zeroLength', (18*i+15)*1000+j+1, *[1501+i*400+j*2, 601+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+        element('zeroLength', (18*i+16)*1000+j+1, *[1502+i*400+j*2, 602+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
+        element('zeroLength', (18*i+17)*1000+j+1, *[1601+i*400+j*2, 701+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+        element('zeroLength', (18*i+18)*1000+j+1, *[1602+i*400+j*2, 702+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
         
 # external braces
 for i in range(0,2):
@@ -401,6 +402,7 @@ nodeRec=list(range(1001,1023))+list(range(1101,1123))+list(range(1801,1823));
 eleRec=list(range(701,724))+list(range(801,824));
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001, 16002], 'deformation');
 
 # define DAMPING
 rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
