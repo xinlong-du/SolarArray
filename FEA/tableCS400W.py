@@ -233,23 +233,23 @@ fix(405, 1, 1, 1, 1, 1, 1);
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
 vecxz = [1.0, 0.0, 0.0];
-geomTransf('Linear', postTransfTag, *vecxz);
+geomTransf('Corotational', postTransfTag, *vecxz);
 
 rafterTransfTag = 2;
 vecxz = [0.0, 0.0, -1.0];
-geomTransf('Linear', rafterTransfTag, *vecxz);
+geomTransf('Corotational', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
 vecxz = [0.0-(-88.0), 0.0, 92.25-41.25]; #local z' direction (nodes 104 - 107)
-geomTransf('Linear', purlinTransfTag, *vecxz);
+geomTransf('Corotational', purlinTransfTag, *vecxz);
 
 ibTransfTag = 4;
 vecxz = [0.0, 1.0, 0.0];
-geomTransf('Linear', ibTransfTag, *vecxz);
+geomTransf('Corotational', ibTransfTag, *vecxz);
 
 ebTransfTag = 5;
 vecxz = [1.0, 0.0, 0.0];
-geomTransf('Linear', ebTransfTag, *vecxz);
+geomTransf('Corotational', ebTransfTag, *vecxz);
 
 vecx1 = [0.0,  1.0, 0]; #local x-axis for spring, module frame on the left side of the bolt
 vecx2 = [0.0, -1.0, 0]; #local x-axis for spring, module frame on the right side of the bolt
@@ -401,12 +401,13 @@ for i in range(0,28):
 # define RECORDERS ------------------------------------------------------------
 nodeRec=list(range(1001,1023))+list(range(1101,1123))+list(range(1801,1823));
 eleRec=list(range(701,724))+list(range(801,824));
+springRec=list(range(15001,15023))+list(range(16001,16023))+list(range(17001,17023))+list(range(18001,18023))+list(range(33001,33023))+list(range(34001,34023))+list(range(35001,35023))+list(range(36001,36023));
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
 recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001], 'deformation');
 recorder('Element', '-file', f'{dataDir}/tableCS400WlocalForces.out', '-time', '-ele', *[15001], 'localForces');
 recorder('Element', '-file', f'{dataDir}/tableCS400WbasicStiffness.out', '-time', '-ele', *[15001], 'basicStiffness');
-recorder('Element', '-file', f'{dataDir}/tableCS400WdefANDfor.out', '-time', '-ele', *[15001], 'deformationsANDforces');
+recorder('Element', '-file', f'{dataDir}/tableCS400WdefANDfor.out', '-time', '-ele', *springRec, 'deformationsANDforces');
 
 # define DAMPING
 rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -465,7 +466,8 @@ vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=20)
 #%% plot response of springs
 file_name='./Data/tableCS400WdefANDfor.out';
 springRes=np.loadtxt(file_name);
-springResPlot(springRes)
+for i in range(len(springRec)):
+    springResPlot(springRes[:,i*12+1:i*12+13],str(springRec[i]));
 
 #%% calculate time series of forces on joints----------------------------------
 file_name = './Data/tableCS400Weles.out'
