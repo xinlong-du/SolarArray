@@ -201,24 +201,29 @@ for i in range(1,5):
 # purlins and modules
 for i in range (0,2):
     for j in range (0,22):
-        node(501+400*i+2*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
-        node(502+400*i+2*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
-        node(601+400*i+2*j, (-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-        node(1501+400*i+2*j,(-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-        node(602+400*i+2*j, (-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-        node(1502+400*i+2*j,(-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-        node(701+400*i+2*j,  (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
-        node(1601+400*i+2*j, (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
-        node(702+400*i+2*j,  (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
-        node(1602+400*i+2*j, (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
-        node(801+400*i+2*j,  (-51.0730+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
-        node(802+400*i+2*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
-        node(1401+400*i+2*j, (-87.4115+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
-        node(1402+400*i+2*j, (-87.4115+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
+        node(501+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
+        node(502+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
+        node(503+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
+        node(601+700*i+3*j, (-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+        node(602+700*i+3*j, (-105.5808+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+        node(603+700*i+3*j, (-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+        node(701+700*i+3*j,  (-87.4115+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
+        node(702+700*i+3*j,  (-87.4115+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
+        node(703+700*i+3*j,  (-87.4115+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (41.5910+43.2185*i)*in2m)
+        node(801+700*i+3*j,  (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+        node(802+700*i+3*j,  (-69.2423+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+        node(803+700*i+3*j,  (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+        node(901+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
+        node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
+        node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
+        node(1001+700*i+2*j,(-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+        node(1002+700*i+2*j,(-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+        node(1101+700*i+2*j, (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+        node(1102+700*i+2*j, (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
 
 # intersection of external braces
-node(1301, 0.0, 132.6800*in2m, 51.6250*in2m)
-node(1302, 0.0, 597.5400*in2m, 51.6250*in2m)
+node(1901, 0.0, 132.6800*in2m, 51.6250*in2m)
+node(1902, 0.0, 597.5400*in2m, 51.6250*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
 fix(101, 1, 1, 1, 1, 1, 1);  
@@ -275,7 +280,7 @@ for i in range(0,4):
 
 # purlins
 nPurlin=[[0]*48]*4; #nodes of purlins
-rowPurlin=[1501,1601,1901,2001];
+rowPurlin=[1001,1101,1701,1801];
 nRafter=[11,10,9,8];
 for i in range (0,4):
     nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+44));
@@ -294,32 +299,38 @@ for i in range (0,4):
 for i in range (0,2):
     for j in range (0,22):
         #                    elemID               node1          node2          node3          node4 counter-clockwise
-        element('ShellMITC4',(18*i+1)*1000+j+1,  *[501+i*400+j*2,  601+i*400+j*2,  602+i*400+j*2,  502+i*400+j*2], moduleSecTag)
-        element('ShellMITC4',(18*i+2)*1000+j+1,  *[601+i*400+j*2, 1401+i*400+j*2, 1402+i*400+j*2,  602+i*400+j*2], moduleSecTag)
-        element('ShellMITC4',(18*i+3)*1000+j+1,  *[1401+i*400+j*2, 701+i*400+j*2,  702+i*400+j*2, 1402+i*400+j*2], moduleSecTag)
-        element('ShellMITC4',(18*i+4)*1000+j+1,  *[701+i*400+j*2,  801+i*400+j*2,  802+i*400+j*2,  702+i*400+j*2], moduleSecTag)
+        element('ShellMITC4',(24*i+1)*1000+j+1, *[501+i*700+j*3, 601+i*700+j*3, 602+i*700+j*3, 502+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+2)*1000+j+1, *[601+i*700+j*3, 701+i*700+j*3, 702+i*700+j*3, 602+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+3)*1000+j+1, *[701+i*700+j*3, 801+i*700+j*3, 802+i*700+j*3, 702+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+4)*1000+j+1, *[801+i*700+j*3, 901+i*700+j*3, 902+i*700+j*3, 802+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+5)*1000+j+1, *[502+i*700+j*3, 602+i*700+j*3, 603+i*700+j*3, 503+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+6)*1000+j+1, *[602+i*700+j*3, 702+i*700+j*3, 703+i*700+j*3, 603+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+7)*1000+j+1, *[702+i*700+j*3, 802+i*700+j*3, 803+i*700+j*3, 703+i*700+j*3], moduleSecTag)
+        element('ShellMITC4',(24*i+8)*1000+j+1, *[802+i*700+j*3, 902+i*700+j*3, 903+i*700+j*3, 803+i*700+j*3], moduleSecTag)
     
-        element('elasticBeamColumn', (18*i+5)*1000+j+1,  *[801+i*400+j*2,  701+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+6)*1000+j+1,  *[701+i*400+j*2, 1401+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+7)*1000+j+1,  *[1401+i*400+j*2, 601+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+8)*1000+j+1,  *[601+i*400+j*2,  501+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+9)*1000+j+1,  *[802+i*400+j*2,  702+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+10)*1000+j+1, *[702+i*400+j*2, 1402+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+11)*1000+j+1, *[1402+i*400+j*2, 602+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+12)*1000+j+1, *[602+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+13)*1000+j+1, *[801+i*400+j*2,  802+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('elasticBeamColumn', (18*i+14)*1000+j+1, *[501+i*400+j*2,  502+i*400+j*2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-        element('zeroLength', (18*i+15)*1000+j+1, *[1501+i*400+j*2, 601+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
-        element('zeroLength', (18*i+16)*1000+j+1, *[1502+i*400+j*2, 602+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
-        element('zeroLength', (18*i+17)*1000+j+1, *[1601+i*400+j*2, 701+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
-        element('zeroLength', (18*i+18)*1000+j+1, *[1602+i*400+j*2, 702+i*400+j*2], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
+        element('elasticBeamColumn', (24*i+9)*1000+j+1,  *[901+i*700+j*3,  801+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+10)*1000+j+1, *[801+i*700+j*3,  701+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+11)*1000+j+1, *[701+i*700+j*3,  601+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+12)*1000+j+1, *[601+i*700+j*3,  501+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+13)*1000+j+1, *[903+i*700+j*3,  803+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+14)*1000+j+1, *[803+i*700+j*3,  703+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+15)*1000+j+1, *[703+i*700+j*3,  603+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+16)*1000+j+1, *[603+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+17)*1000+j+1, *[901+i*700+j*3,  902+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+18)*1000+j+1, *[902+i*700+j*3,  903+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+19)*1000+j+1, *[501+i*700+j*3,  502+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('elasticBeamColumn', (24*i+20)*1000+j+1, *[502+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+        element('zeroLength', (24*i+21)*1000+j+1, *[1001+i*700+j*2, 601+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+        element('zeroLength', (24*i+22)*1000+j+1, *[1002+i*700+j*2, 603+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
+        element('zeroLength', (24*i+23)*1000+j+1, *[1101+i*700+j*2, 801+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+        element('zeroLength', (24*i+24)*1000+j+1, *[1102+i*700+j*2, 803+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
         
 # external braces
 for i in range(0,2):
-    element('elasticBeamColumn', 37000+1000*i+1, *[(i+1)*100+3, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 37000+1000*i+2, *[(i+1)*100+4, 1301], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 37000+1000*i+3, *[(i+3)*100+3, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-    element('elasticBeamColumn', 37000+1000*i+4, *[(i+3)*100+4, 1302], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 49000+1000*i+1, *[(i+1)*100+3, 1901], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 49000+1000*i+2, *[(i+1)*100+4, 1901], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 49000+1000*i+3, *[(i+3)*100+3, 1902], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
+    element('elasticBeamColumn', 49000+1000*i+4, *[(i+3)*100+4, 1902], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
