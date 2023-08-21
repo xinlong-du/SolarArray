@@ -385,20 +385,20 @@ A_trib=np.reshape(A_trib,(1,28),order='F');
 Force=np.multiply(p,A_trib);
 Force=Force.T.tolist()
 
-nodesTapEd=[[1201,1202,1203,1801,1802,1803],[1801,1802,1803,901,902,903],[801,802,803,1401,1402,1403],[1401,1402,1403,501,502,503],
-            list(range(1204,1209))+list(range(1804,1809)),list(range(1804,1809))+list(range(904,909)),list(range(804,809))+list(range(1404,1409)),list(range(1404,1409))+list(range(504,509)),
-            list(range(1209,1216))+list(range(1809,1816)),list(range(1809,1816))+list(range(909,916)),list(range(809,816))+list(range(1409,1416)),list(range(1409,1416))+list(range(509,516)),
-            list(range(1216,1225))+list(range(1816,1825)),list(range(1816,1825))+list(range(916,925)),list(range(816,825))+list(range(1416,1425)),list(range(1416,1425))+list(range(516,525)),
-            list(range(1225,1234))+list(range(1825,1834)),list(range(1825,1834))+list(range(925,934)),list(range(825,834))+list(range(1425,1434)),list(range(1425,1434))+list(range(525,534)),
-            list(range(1234,1241))+list(range(1834,1841)),list(range(1834,1841))+list(range(934,941)),list(range(834,841))+list(range(1434,1441)),list(range(1434,1441))+list(range(534,541)),
-            list(range(1241,1245))+list(range(1841,1845)),list(range(1841,1845))+list(range(941,945)),list(range(841,845))+list(range(1441,1445)),list(range(1441,1445))+list(range(541,545))];
-nodesTapIn=[[1101,1102,1103],[1001,1002,1003],[701,702,703],[601,602,603],
-            list(range(1104,1109)),list(range(1004,1009)),list(range(704,709)),list(range(604,609)),
-            list(range(1109,1116)),list(range(1009,1016)),list(range(709,716)),list(range(609,616)),
-            list(range(1116,1125)),list(range(1016,1025)),list(range(716,725)),list(range(616,625)),
-            list(range(1125,1134)),list(range(1025,1034)),list(range(725,734)),list(range(625,634)),
-            list(range(1134,1141)),list(range(1034,1041)),list(range(734,741)),list(range(634,641)),
-            list(range(1141,1145)),list(range(1041,1045)),list(range(741,745)),list(range(641,645))];
+nodesTapEd=[list(range(1601,1606))+list(range(1401,1406)),list(range(1401,1406))+list(range(1201,1206)),list(range(901,906))+list(range(701,706)),list(range(701,706))+list(range(501,506)),
+            list(range(1606,1613))+list(range(1406,1413)),list(range(1406,1413))+list(range(1206,1213)),list(range(906,913))+list(range(706,713)),list(range(706,713))+list(range(506,513)),
+            list(range(1613,1624))+list(range(1413,1424)),list(range(1413,1424))+list(range(1213,1224)),list(range(913,924))+list(range(713,724)),list(range(713,724))+list(range(513,524)),
+            list(range(1624,1637))+list(range(1424,1437)),list(range(1424,1437))+list(range(1224,1237)),list(range(924,937))+list(range(724,737)),list(range(724,737))+list(range(524,537)),
+            list(range(1637,1651))+list(range(1437,1451)),list(range(1437,1451))+list(range(1237,1251)),list(range(937,951))+list(range(737,751)),list(range(737,751))+list(range(537,551)),
+            list(range(1651,1661))+list(range(1451,1461)),list(range(1451,1461))+list(range(1251,1261)),list(range(951,961))+list(range(751,761)),list(range(751,761))+list(range(551,561)),
+            list(range(1661,1667))+list(range(1461,1467)),list(range(1461,1467))+list(range(1261,1267)),list(range(961,967))+list(range(761,767)),list(range(761,767))+list(range(561,567))];
+nodesTapIn=[list(range(1501,1506)),list(range(1301,1306)),list(range(801,806)),list(range(601,606)),
+            list(range(1506,1513)),list(range(1306,1313)),list(range(806,813)),list(range(606,613)),
+            list(range(1513,1524)),list(range(1313,1324)),list(range(813,824)),list(range(613,624)),
+            list(range(1524,1537)),list(range(1324,1337)),list(range(824,837)),list(range(624,637)),
+            list(range(1537,1551)),list(range(1337,1351)),list(range(837,851)),list(range(637,651)),
+            list(range(1551,1561)),list(range(1351,1361)),list(range(851,861)),list(range(651,661)),
+            list(range(1561,1567)),list(range(1361,1367)),list(range(861,867)),list(range(661,667))];
 for i in range(0,28):
     timeSeries('Path',i,'-dt',dt,'-values',*Force[i],'-prependZero');
     pattern('Plain',i,i);
@@ -410,9 +410,9 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # define RECORDERS ------------------------------------------------------------
-nodeRec=list(range(1001,1023))+list(range(1101,1123))+list(range(1801,1823));
+nodeRec=list(set(list(range(1301,1334))).difference(list(range(1302,1333,3))))+list(set(list(range(1501,1534))).difference(list(range(1502,1533,3))))+list(set(list(range(1401,1434))).difference(list(range(1402,1433,3))));
 eleRec=list(range(701,724))+list(range(801,824));
-springRec=list(range(15001,15023))+list(range(16001,16023))+list(range(17001,17023))+list(range(18001,18023))+list(range(33001,33023))+list(range(34001,34023))+list(range(35001,35023))+list(range(36001,36023));
+springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
 recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001], 'deformation');
