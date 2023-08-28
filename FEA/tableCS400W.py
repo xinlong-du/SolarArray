@@ -360,14 +360,14 @@ freq = omega/(2*math.pi);
 # vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
 
 #%% gravity loads
-#module frame
-g_mfCorne=-0.1*mass_mf*g*(84.0/4/2+41.26/2/2)*in2m; #nodes at corner
+#module frame, 0.1 is used to account for 10 steps in analyze(10)
+g_mfCorne=-0.1*mass_mf*g*(84.0/4/2+41.26/2/2)*in2m;  #nodes at corner
 g_mfMidEW=-0.1*mass_mf*g*(41.26/2)*in2m;             #nodes at middle of E-W direction
 g_mfMidNS=-0.1*mass_mf*g*(84.0/4)*in2m;              #nodes at middle of N-S direction
 
-#module
-g_m=84.0*41.26*h*rho_m*g;
-g_mCo=-0.1*g_m/32; #corner, 4 in total
+#module, 0.1 is used to account for 10 steps in analyze(10)
+g_m=84.0*in2m*41.26*in2m*h*rho_m*g;
+g_mCo=-0.1*g_m/32;     #corner, 4 in total
 g_mEd=-0.1*g_m/32*2;   #edge, 8 in total
 g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
@@ -397,14 +397,15 @@ constraints('Plain');  # how it handles boundary conditions
 numberer('RCM');	   # renumber dof's to minimize band-width 
 system('UmfPack'); # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
-algorithm('Linear');
+algorithm('KrylovNewton');
 integrator('LoadControl', 1)
 analysis('Static');	# define type of analysis static or transient
-analyze(2);
+analyze(10);
 print('Gravity Finished')
-#%%
-wipe()
-vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=2)
+
+#wipe()
+#vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=20)
+loadConst('-time', 0.0)
 
 #%% load wind tunnel test DATA
 import h5py
