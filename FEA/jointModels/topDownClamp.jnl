@@ -19851,3 +19851,768 @@ mdb.jobs['Job20230826rigidPurlinFlexMfRotZ']._Message(JOB_COMPLETED, {
     'time': 'Sat Aug 26 22:01:58 2023', 
     'jobName': 'Job20230826rigidPurlinFlexMfRotZ'})
 # Save by xinlo on 2023_08_26-22.35.45; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].ConstrainedSketch(name='__profile__', 
+    sheetSize=20.0)
+mdb.models['Model-1-rigidPurlin'].sketches['__profile__'].rectangle(point1=(
+    0.0, 0.0), point2=(10.6, 4.96))
+mdb.models['Model-1-rigidPurlin'].Part(dimensionality=THREE_D, name='module', 
+    type=DEFORMABLE_BODY)
+mdb.models['Model-1-rigidPurlin'].parts['module'].BaseSolidExtrude(depth=80.0, 
+    sketch=mdb.models['Model-1-rigidPurlin'].sketches['__profile__'])
+del mdb.models['Model-1-rigidPurlin'].sketches['__profile__']
+# Save by xinlo on 2023_09_01-17.07.02; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].parts['module'].DatumPlaneByOffset(flip=SIDE1
+    , offset=15.06, plane=
+    mdb.models['Model-1-rigidPurlin'].parts['module'].faces[2])
+mdb.models['Model-1-rigidPurlin'].parts['module'].Mirror(keepOriginal=ON, 
+    mirrorPlane=mdb.models['Model-1-rigidPurlin'].parts['module'].datums[2])
+mdb.models['Model-1-rigidPurlin'].Material(name='glass')
+mdb.models['Model-1-rigidPurlin'].materials['glass'].Elastic(table=((70000.0, 
+    0.22), ))
+mdb.models['Model-1-rigidPurlin'].HomogeneousSolidSection(material='glass', 
+    name='glass', thickness=None)
+mdb.models['Model-1-rigidPurlin'].parts['module'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
+    cells=mdb.models['Model-1-rigidPurlin'].parts['module'].cells.getSequenceFromMask(
+    mask=('[#3 ]', ), )), sectionName='glass', thicknessAssignment=
+    FROM_SECTION)
+mdb.models['Model-1-rigidPurlin'].rootAssembly.Instance(dependent=ON, name=
+    'module-1', part=mdb.models['Model-1-rigidPurlin'].parts['module'])
+mdb.models['Model-1-rigidPurlin'].rootAssembly.translate(instanceList=(
+    'module-1', ), vector=(61.64, 125.03, -10.0))
+mdb.models['Model-1-rigidPurlin'].ContactProperty('moduleFrame2module')
+mdb.models['Model-1-rigidPurlin'].interactionProperties['moduleFrame2module'].TangentialBehavior(
+    dependencies=0, directionality=ISOTROPIC, elasticSlipStiffness=None, 
+    formulation=PENALTY, fraction=0.005, maximumElasticSlip=FRACTION, 
+    pressureDependency=OFF, shearStressLimit=None, slipRateDependency=OFF, 
+    table=((0.6, ), ), temperatureDependency=OFF)
+mdb.models['Model-1-rigidPurlin'].interactionProperties['moduleFrame2module'].NormalBehavior(
+    allowSeparation=ON, constraintEnforcementMethod=DEFAULT, 
+    pressureOverclosure=HARD)
+# Save by xinlo on 2023_09_01-17.29.20; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].rootAssembly.Surface(name='module', 
+    side1Faces=
+    mdb.models['Model-1-rigidPurlin'].rootAssembly.instances['module-1'].faces.getSequenceFromMask(
+    ('[#fff ]', ), ))
+mdb.models['Model-1-rigidPurlin'].SurfaceToSurfaceContactStd(adjustMethod=NONE, 
+    clearanceRegion=None, createStepName='Initial', datumAxis=None, 
+    initialClearance=OMIT, interactionProperty='moduleFrame2module', master=
+    mdb.models['Model-1-rigidPurlin'].rootAssembly.surfaces['moduleFrame'], 
+    name='moduleFrame2module', slave=
+    mdb.models['Model-1-rigidPurlin'].rootAssembly.surfaces['module'], sliding=
+    FINITE, thickness=ON)
+mdb.models['Model-1-rigidPurlin'].interactionProperties.changeKey(fromName=
+    'moduleFrame2module', toName='moduleFrame2moduleProp')
+mdb.models['Model-1-rigidPurlin'].interactions['moduleFrame2module'].setValues(
+    adjustMethod=NONE, bondingSet=None, contactTracking=TWO_CONFIG, 
+    enforcement=SURFACE_TO_SURFACE, initialClearance=OMIT, interactionProperty=
+    'moduleFrame2moduleProp', sliding=FINITE, thickness=ON)
+# Save by xinlo on 2023_09_01-17.37.33; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd3'].suppress()
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd4'].suppress()
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd5'].move('Initial', 
+    'pretension')
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd5'].move(
+    'pretension', 'cyclicLoading')
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd6'].move('Initial', 
+    'pretension')
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfEnd6'].move(
+    'pretension', 'cyclicLoading')
+mdb.models['Model-1-rigidPurlin'].boundaryConditions['mfMid7'].resume()
+mdb.models['Model-1-rigidPurlin'].constraints['mfCoupling1'].suppress()
+mdb.models['Model-1-rigidPurlin'].constraints['mfCoupling2'].suppress()
+mdb.models['Model-1-rigidPurlin'].constraints['mfCoupling5'].resume()
+# Save by xinlo on 2023_09_01-17.39.47; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].parts['module'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=5.0)
+mdb.models['Model-1-rigidPurlin'].parts['module'].setElementType(elemTypes=(
+    ElemType(elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1-rigidPurlin'].parts['module'].cells.getSequenceFromMask(
+    ('[#3 ]', ), ), ))
+mdb.models['Model-1-rigidPurlin'].parts['module'].generateMesh()
+mdb.models['Model-1-rigidPurlin'].rootAssembly.regenerate()
+# Save by xinlo on 2023_09_01-17.42.19; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].parts['module'].deleteMesh()
+mdb.models['Model-1-rigidPurlin'].parts['module'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=2.5)
+mdb.models['Model-1-rigidPurlin'].parts['module'].generateMesh()
+mdb.models['Model-1-rigidPurlin'].rootAssembly.regenerate()
+mdb.models['Model-1-rigidPurlin'].parts['module'].deleteMesh()
+mdb.models['Model-1-rigidPurlin'].parts['module'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=1.0)
+mdb.models['Model-1-rigidPurlin'].parts['module'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=2.0)
+mdb.models['Model-1-rigidPurlin'].parts['module'].generateMesh()
+mdb.models['Model-1-rigidPurlin'].rootAssembly.regenerate()
+# Save by xinlo on 2023_09_01-17.44.16; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_09_01-17.44.32; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-rigidPurlin'].materials['ASTMa653Gr80'].elastic.setValues(
+    table=((200000.0, 0.3), ))
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1-rigidPurlin', modelPrint=
+    OFF, multiprocessingMode=DEFAULT, name='Job20230901purlin1EglassDispZ', 
+    nodalOutputPrecision=SINGLE, numCpus=4, numDomains=4, numGPUs=0, queue=None
+    , resultsFormat=ODB, scratch='', type=ANALYSIS, userSubroutine='', 
+    waitHours=0, waitMinutes=0)
+# Save by xinlo on 2023_09_01-18.38.31; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20230901purlin1EglassDispZ'].submit(consistencyChecking=OFF)
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STARTED, {
+    'phase': BATCHPRE_PHASE, 'clientHost': 'DESKTOP-A24BAF5', 'handle': 0, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'WHENEVER A TRANSLATION (ROTATION) DOF AT A NODE IS CONSTRAINED BY A KINEMATIC COUPLING DEFINITION THE TRANSLATION (ROTATION) DOFS FOR THAT NODE CANNOT BE INCLUDED IN ANY OTHER CONSTRAINT INCLUDING MPCS, RIGID BODIES, ETC.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'MPCS (EXTERNAL or INTERNAL, including those generated from rigid body definitions), KINEMATIC COUPLINGS, AND/OR EQUATIONS WILL ACTIVATE ADDITIONAL DEGREES OF FREEDOM', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET30 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET32 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET41 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET45 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET47 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET48 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FILE, {
+    'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job20230901purlin1EglassDispZ.odb', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(COMPLETED, {
+    'phase': BATCHPRE_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STARTED, {
+    'phase': STANDARD_PHASE, 'clientHost': 'DESKTOP-A24BAF5', 'handle': 23140, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 0, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20230901purlin1EglassDispZ', 
+    'memory': 8538.0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 886.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 0.0, 
+    'attempts': ' 1U', 'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.0, 
+    'step': 1, 'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 6, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 0.025, 
+    'attempts': 2, 'timeIncrement': 0.025, 'increment': 1, 'stepTime': 0.025, 
+    'step': 1, 'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 20, 
+    'iterations': 20, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 0.05, 
+    'attempts': 1, 'timeIncrement': 0.025, 'increment': 2, 'stepTime': 0.05, 
+    'step': 1, 'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 16, 
+    'iterations': 17, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.0875, 'attempts': 1, 'timeIncrement': 0.0375, 
+    'increment': 3, 'stepTime': 0.0875, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 10, 'iterations': 11, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 3, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.14375, 'attempts': 1, 'timeIncrement': 0.05625, 
+    'increment': 4, 'stepTime': 0.14375, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 4, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.228125, 'attempts': 1, 'timeIncrement': 0.084375, 
+    'increment': 5, 'stepTime': 0.228125, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 6, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 5, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.3546875, 'attempts': 1, 'timeIncrement': 0.1265625, 
+    'increment': 6, 'stepTime': 0.3546875, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 2, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 6, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.54453125, 'attempts': 1, 'timeIncrement': 0.18984375, 
+    'increment': 7, 'stepTime': 0.54453125, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 1, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 7, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 0.829296875, 'attempts': 1, 'timeIncrement': 0.284765625, 
+    'increment': 8, 'stepTime': 0.829296875, 'step': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 1, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 8, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 0, 'frame': 9, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 1.0, 
+    'attempts': 1, 'timeIncrement': 0.170703125, 'increment': 9, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'Job20230901purlin1EglassDispZ', 
+    'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 0, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20230901purlin1EglassDispZ', 
+    'memory': 7616.0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 896.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 1.0, 
+    'attempts': ' 1U', 'timeIncrement': 0.05, 'increment': 1, 'stepTime': 0.0, 
+    'step': 2, 'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 13, 
+    'iterations': 13, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 1.0, 
+    'attempts': ' 2U', 'timeIncrement': 0.0125, 'increment': 1, 
+    'stepTime': 0.0, 'step': 2, 'jobName': 'Job20230901purlin1EglassDispZ', 
+    'severe': 7, 'iterations': 8, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.003125, 'attempts': 3, 'timeIncrement': 0.003125, 
+    'increment': 1, 'stepTime': 0.003125, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 14, 'iterations': 15, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 1, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.003125, 'attempts': ' 1U', 'timeIncrement': 0.003125, 
+    'increment': 2, 'stepTime': 0.003125, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 2, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.00390625, 'attempts': 2, 'timeIncrement': 0.00078125, 
+    'increment': 2, 'stepTime': 0.00390625, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.005078125, 'attempts': 1, 'timeIncrement': 0.001171875, 
+    'increment': 3, 'stepTime': 0.005078125, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 2, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 3, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.0068359375, 'attempts': 1, 'timeIncrement': 0.0017578125, 
+    'increment': 4, 'stepTime': 0.0068359375, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 4, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.00947265625, 'attempts': 1, 'timeIncrement': 0.00263671875, 
+    'increment': 5, 'stepTime': 0.00947265625, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 5, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.013427734375, 'attempts': 1, 
+    'timeIncrement': 0.003955078125, 'increment': 6, 
+    'stepTime': 0.013427734375, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 6, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.0193603515625, 'attempts': 1, 
+    'timeIncrement': 0.0059326171875, 'increment': 7, 
+    'stepTime': 0.0193603515625, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 7, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.02825927734375, 'attempts': 1, 
+    'timeIncrement': 0.00889892578125, 'increment': 8, 
+    'stepTime': 0.02825927734375, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 8, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.04160766601563, 'attempts': 1, 
+    'timeIncrement': 0.013348388671875, 'increment': 9, 
+    'stepTime': 0.041607666015625, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 9, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.06163024902344, 'attempts': 1, 
+    'timeIncrement': 0.0200225830078125, 'increment': 10, 
+    'stepTime': 0.0616302490234375, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 10, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.09166412353516, 'attempts': 1, 
+    'timeIncrement': 0.0300338745117188, 'increment': 11, 
+    'stepTime': 0.0916641235351563, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 8, 'iterations': 8, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 11, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.13671493530273, 'attempts': 1, 
+    'timeIncrement': 0.0450508117675781, 'increment': 12, 
+    'stepTime': 0.136714935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 12, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.18671493530273, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 13, 'stepTime': 0.186714935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 13, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.23671493530273, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 14, 'stepTime': 0.236714935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 14, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.23671493530273, 'attempts': ' 1U', 'timeIncrement': 0.05, 
+    'increment': 15, 'stepTime': 0.236714935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 2, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.24921493530273, 'attempts': 2, 'timeIncrement': 0.0125, 
+    'increment': 15, 'stepTime': 0.249214935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 2, 'iterations': 3, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 15, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(WARNING, {
+    'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.24921493530273, 'attempts': ' 1U', 'timeIncrement': 0.01875, 
+    'increment': 16, 'stepTime': 0.249214935302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.25390243530273, 'attempts': 2, 'timeIncrement': 0.0046875, 
+    'increment': 16, 'stepTime': 0.253902435302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 6, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 16, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.26093368530273, 'attempts': 1, 'timeIncrement': 0.00703125, 
+    'increment': 17, 'stepTime': 0.260933685302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 7, 'iterations': 8, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 17, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.27148056030273, 'attempts': 1, 'timeIncrement': 0.010546875, 
+    'increment': 18, 'stepTime': 0.271480560302734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 18, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.28730087280273, 'attempts': 1, 
+    'timeIncrement': 0.0158203125, 'increment': 19, 
+    'stepTime': 0.287300872802734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 19, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.31103134155273, 'attempts': 1, 
+    'timeIncrement': 0.02373046875, 'increment': 20, 
+    'stepTime': 0.311031341552734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 7, 'iterations': 8, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 20, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.31103134155273, 'attempts': ' 1U', 
+    'timeIncrement': 0.035595703125, 'increment': 21, 
+    'stepTime': 0.311031341552734, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.31993026733398, 'attempts': 2, 
+    'timeIncrement': 0.00889892578125, 'increment': 21, 
+    'stepTime': 0.319930267333984, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 21, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.33327865600586, 'attempts': 1, 
+    'timeIncrement': 0.013348388671875, 'increment': 22, 
+    'stepTime': 0.333278656005859, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 22, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.35330123901367, 'attempts': 1, 
+    'timeIncrement': 0.0200225830078125, 'increment': 23, 
+    'stepTime': 0.353301239013672, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 9, 'iterations': 10, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 23, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.38333511352539, 'attempts': 1, 
+    'timeIncrement': 0.0300338745117188, 'increment': 24, 
+    'stepTime': 0.383335113525391, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 24, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.42838592529297, 'attempts': 1, 
+    'timeIncrement': 0.0450508117675781, 'increment': 25, 
+    'stepTime': 0.428385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 9, 'iterations': 10, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 25, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.47838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 26, 'stepTime': 0.478385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 26, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.52838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 27, 'stepTime': 0.528385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 27, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.57838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 28, 'stepTime': 0.578385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 28, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.62838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 29, 'stepTime': 0.628385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 29, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.67838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 30, 'stepTime': 0.678385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 5, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 30, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.72838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 31, 'stepTime': 0.728385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 31, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.77838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 32, 'stepTime': 0.778385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 12, 'iterations': 12, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 32, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.82838592529297, 'attempts': 1, 'timeIncrement': 0.05, 
+    'increment': 33, 'stepTime': 0.828385925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 13, 'iterations': 14, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 33, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.86588592529297, 'attempts': 1, 'timeIncrement': 0.0375, 
+    'increment': 34, 'stepTime': 0.865885925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 12, 'iterations': 13, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 34, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.89401092529297, 'attempts': 1, 'timeIncrement': 0.028125, 
+    'increment': 35, 'stepTime': 0.894010925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 8, 'iterations': 9, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 35, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.92213592529297, 'attempts': 1, 'timeIncrement': 0.028125, 
+    'increment': 36, 'stepTime': 0.922135925292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 3, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 36, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {
+    'totalTime': 1.96432342529297, 'attempts': 1, 'timeIncrement': 0.0421875, 
+    'increment': 37, 'stepTime': 0.964323425292969, 'step': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 37, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(ODB_FRAME, {
+    'phase': STANDARD_PHASE, 'step': 1, 'frame': 38, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(STATUS, {'totalTime': 2.0, 
+    'attempts': 1, 'timeIncrement': 0.035676574707031, 'increment': 38, 
+    'stepTime': 1.0, 'step': 2, 'jobName': 'Job20230901purlin1EglassDispZ', 
+    'severe': 9, 'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(END_STEP, {
+    'phase': STANDARD_PHASE, 'stepId': 2, 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(COMPLETED, {
+    'phase': STANDARD_PHASE, 'message': 'Analysis phase complete', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+mdb.jobs['Job20230901purlin1EglassDispZ']._Message(JOB_COMPLETED, {
+    'time': 'Fri Sep 01 21:48:50 2023', 
+    'jobName': 'Job20230901purlin1EglassDispZ'})
+# Save by xinlo on 2023_09_01-22.53.55; build 2017 2016_09_27-14.54.59 126836
+# Save by xinlo on 2023_09_01-22.54.06; build 2017 2016_09_27-14.54.59 126836
