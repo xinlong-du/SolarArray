@@ -459,14 +459,11 @@ for i in range(0,28):
         load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # define RECORDERS ------------------------------------------------------------
-nodeRec=list(set(list(range(1301,1334))).difference(list(range(1302,1333,3))))+list(set(list(range(1501,1534))).difference(list(range(1502,1533,3))))+list(set(list(range(1401,1434))).difference(list(range(1402,1433,3))));
+nodeRec=list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
 eleRec=list(range(701,724))+list(range(801,824));
 springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
 recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Element', '-file', f'{dataDir}/tableCS400Wspring.out', '-time', '-ele', *[15001], 'deformation');
-recorder('Element', '-file', f'{dataDir}/tableCS400WlocalForces.out', '-time', '-ele', *[15001], 'localForces');
-recorder('Element', '-file', f'{dataDir}/tableCS400WbasicStiffness.out', '-time', '-ele', *[15001], 'basicStiffness');
 recorder('Element', '-file', f'{dataDir}/tableCS400WdefANDfor.out', '-time', '-ele', *springRec, 'deformationsANDforces');
 
 # define DAMPING
@@ -489,22 +486,22 @@ ef813end=eleForce(813);
 ef813endLoc=eleResponse(813, 'localForces')
 ef814end=eleForce(814);
 ef814endLoc=eleResponse(814, 'localForces')
-nf1113end=np.array(ef813endLoc[6:12])+np.array(ef814endLoc[0:6]);
+nf1813end=np.array(ef813endLoc[6:12])+np.array(ef814endLoc[0:6]);
 
 wipe()
 #%% defomed shape and animation------------------------------------------------
-vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=20)
+#vfo.plot_deformedshape(model="tableCS400W", loadcase="windDir0", scale=20)
 #ani = vfo.animate_deformedshape(model="tableCS400W", loadcase="windDir0", speedup=4, scale=50, gifname="tableCS400W_Dynamic")
 
 #%% plot response of springs
-file_name='./Data/tableCS400WdefANDfor.out';
-springRes=np.loadtxt(file_name);
-for i in range(len(springRec)):
-    springResPlot(springRes[:,i*12+1:i*12+13],str(springRec[i]));
+# file_name='./Data/tableCS400WdefANDfor.out';
+# springRes=np.loadtxt(file_name);
+# for i in range(len(springRec)):
+#     springResPlot(springRes[:,i*12+1:i*12+13],str(springRec[i]));
 
 #%% calculate time series of forces on joints----------------------------------
-file_name = './Data/tableCS400Weles.out'
-eleForces = np.loadtxt(file_name)
-ef813=eleForces[:,35*12+1:36*12+1];
-ef814=eleForces[:,36*12+1:37*12+1];
-nf1113=ef813[:,6:12]+ef814[:,0:6];
+# file_name = './Data/tableCS400Weles.out'
+# eleForces = np.loadtxt(file_name)
+# ef813=eleForces[:,35*12+1:36*12+1];
+# ef814=eleForces[:,36*12+1:37*12+1];
+# nf1813=ef813[:,6:12]+ef814[:,0:6];
