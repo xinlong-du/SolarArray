@@ -337,8 +337,8 @@ allNodeTags=getNodeTags();
 alleleTags=getEleTags();
 
 # render the model
-vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
-vfo.plot_model()
+# vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
+# vfo.plot_model()
 
 # eigen ANALYSIS---------------------------------------------------------------
 eigenValues = eigen(12);
@@ -409,23 +409,48 @@ loadConst('-time', 0.0)
 
 #%% load wind tunnel test DATA
 import h5py
-filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
 
+filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
 with h5py.File(filename, "r") as f:
     # get the key of interest; may or may NOT be a group
-    a_group_key = list(f.keys())[0]
+    a_group_key0 = list(f.keys())[0]
+    a_group_key30 = list(f.keys())[1]
+    a_group_key60 = list(f.keys())[2]
+    a_group_key90 = list(f.keys())[3]
     # get the object names in the group and returns as a list
-    objNames = list(f[a_group_key])
+    objNames = list(f[a_group_key0])
     # preferred methods to get dataset values
-    Cp = f[a_group_key]['Row1'][()]  # returns as a numpy array
-    dtNorm = f[a_group_key]['dtNorm'][()]
+    Cp0 = f[a_group_key0]['Row1'][()]  # returns as a numpy array
+    Cp30 = f[a_group_key30]['Row1'][()]
+    Cp60 = f[a_group_key60]['Row1'][()]
+    Cp90 = f[a_group_key90]['Row1'][()]
+    dtNorm0 = f[a_group_key0]['dtNorm'][()]
+    dtNorm30 = f[a_group_key30]['dtNorm'][()]
+    dtNorm60 = f[a_group_key60]['dtNorm'][()]
+    dtNorm90 = f[a_group_key90]['dtNorm'][()]
+
+filename = "../../../RWDI/Wind Tunnel Data/tilt_p30deg.hdf5"
+with h5py.File(filename, "r") as f:
+    # get the key of interest; may or may NOT be a group
+    a_group_key180 = list(f.keys())[0]
+    a_group_key150 = list(f.keys())[1]
+    a_group_key120 = list(f.keys())[2]
+    # get the object names in the group and returns as a list
+    objNames = list(f[a_group_key180])
+    # preferred methods to get dataset values
+    Cp180 = f[a_group_key180]['Row7'][()]
+    Cp150 = f[a_group_key150]['Row7'][()]
+    Cp120 = f[a_group_key120]['Row7'][()]
+    dtNorm180 = f[a_group_key180]['dtNorm'][()]
+    dtNorm150 = f[a_group_key150]['dtNorm'][()]
+    dtNorm120 = f[a_group_key120]['dtNorm'][()]
 
 #%% define LOADS---------------------------------------------------------------
 L=169.25*in2m;
 U=47.0;
 dt=dtNorm*L/U;
 rho_air=1.226;
-p=0.5*rho_air*U*U*Cp;
+p=0.5*rho_air*U*U*Cp[1000:None,:];
 x=L*np.array([0.125/2+0.25/2,0.25,0.25,0.25/2+0.125/2]);
 y=L*np.array([0.125/2+0.5/2,0.5/2+0.75/2,0.75/2+1/2,1/2+1.25/2,1.25/2+1/2,1/2+0.75/2,0.75/2+0.125/2]);
 A_trib=np.outer(x, y);
