@@ -6,6 +6,7 @@
 from openseespy.opensees import *
 import numpy as np
 import math
+import h5py
 
 # visulization
 import vfo.vfo as vfo
@@ -15,7 +16,7 @@ from plotFunctions import globalDispPlot
 from plotFunctions import localYdispPlot
 from plotFunctions import springResPlot
 
-def runDynamicAnalysis(windDir,U):
+def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     #%% SET UP ----------------------------------------------------------------------
     wipe();
     model('basic', '-ndm', 3, '-ndf', 6);
@@ -410,7 +411,6 @@ def runDynamicAnalysis(windDir,U):
 
     #%% define LOADS---------------------------------------------------------------
     L=169.25*in2m;
-    U=47.0;
     dt=dtNorm*L/U;
     rho_air=1.226;
     p=0.5*rho_air*U*U*Cp[1000:None,:];
@@ -450,14 +450,15 @@ def runDynamicAnalysis(windDir,U):
     nodeRec=list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
     eleRec=list(range(701,724))+list(range(801,824));
     springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
-    recorder('Node', '-file', f'{dataDir}/tableCS400Wnodes.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-    recorder('Element', '-file', f'{dataDir}/tableCS400Weles.out', '-time', '-ele', *eleRec, 'localForces');
-    recorder('Element', '-file', f'{dataDir}/tableCS400WdefANDfor.out', '-time', '-ele', *springRec, 'deformationsANDforces');
+    recorder('Node', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+    recorder('Element', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
+    recorder('Element', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
     
     # define DAMPING
     rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
     
     # define ANALYSIS PARAMETERS---------------------------------------------------
+    wipeAnalysis();
     constraints('Plain');  # how it handles boundary conditions
     numberer('RCM');	   # renumber dof's to minimize band-width 
     system('UmfPack');     # how to store and solve the system of equations in the analysis
@@ -465,7 +466,7 @@ def runDynamicAnalysis(windDir,U):
     algorithm('KrylovNewton');
     integrator('Newmark', 0.5, 0.25);
     analysis('Transient'); # define type of analysis static or transient
-    ok = analyze(1000, 0.02);
+    ok = analyze(500, 0.02);
     print('Finished')
     
     #%% output forces on joints at the last time step, used for verification-------
@@ -495,8 +496,8 @@ def runDynamicAnalysis(windDir,U):
     # nf1813=ef813[:,6:12]+ef814[:,0:6];
 
 #%% load wind tunnel test DATA
-import h5py
-
+CpList=[None]*12;
+dtNormList=[None]*12;
 filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
 with h5py.File(filename, "r") as f:
     # get the key of interest; may or may NOT be a group
@@ -507,14 +508,14 @@ with h5py.File(filename, "r") as f:
     # get the object names in the group and returns as a list
     objNames = list(f[a_group_key0])
     # preferred methods to get dataset values
-    Cp0 = f[a_group_key0]['Row1'][()]  # returns as a numpy array
-    Cp30 = f[a_group_key30]['Row1'][()]
-    Cp60 = f[a_group_key60]['Row1'][()]
-    Cp90 = f[a_group_key90]['Row1'][()]
-    dtNorm0 = f[a_group_key0]['dtNorm'][()]
-    dtNorm30 = f[a_group_key30]['dtNorm'][()]
-    dtNorm60 = f[a_group_key60]['dtNorm'][()]
-    dtNorm90 = f[a_group_key90]['dtNorm'][()]
+    CpList[0] = f[a_group_key0]['Row1'][()]  # returns as a numpy array
+    CpList[1] = f[a_group_key30]['Row1'][()]
+    CpList[2] = f[a_group_key60]['Row1'][()]
+    CpList[3] = f[a_group_key90]['Row1'][()]
+    dtNormList[0] = f[a_group_key0]['dtNorm'][()]
+    dtNormList[1] = f[a_group_key30]['dtNorm'][()]
+    dtNormList[2] = f[a_group_key60]['dtNorm'][()]
+    dtNormList[3] = f[a_group_key90]['dtNorm'][()]
 
 filename = "../../../RWDI/Wind Tunnel Data/tilt_p30deg.hdf5"
 with h5py.File(filename, "r") as f:
@@ -525,9 +526,29 @@ with h5py.File(filename, "r") as f:
     # get the object names in the group and returns as a list
     objNames = list(f[a_group_key180])
     # preferred methods to get dataset values
-    Cp180 = f[a_group_key180]['Row7'][()]
-    Cp150 = f[a_group_key150]['Row7'][()]
-    Cp120 = f[a_group_key120]['Row7'][()]
-    dtNorm180 = f[a_group_key180]['dtNorm'][()]
-    dtNorm150 = f[a_group_key150]['dtNorm'][()]
-    dtNorm120 = f[a_group_key120]['dtNorm'][()]
+    CpList[6] = f[a_group_key180]['Row7'][()]
+    CpList[5] = f[a_group_key150]['Row7'][()]
+    CpList[4] = f[a_group_key120]['Row7'][()]
+    dtNormList[6] = f[a_group_key180]['dtNorm'][()]
+    dtNormList[5] = f[a_group_key150]['dtNorm'][()]
+    dtNormList[4] = f[a_group_key120]['dtNorm'][()]
+
+for i in range(7,12):
+    CpList[i]=CpList[12-i]; #may need deep copy
+    dtNormList[i]=dtNormList[12-i];
+
+#%% load wind speed information
+filename='../../WindAnalysis/FiguresDeg30/CTspdPb30.txt';
+dirSpdDura=np.loadtxt(filename);
+dirSpd=0.44704*dirSpdDura[:,0]; #convert mph to m/s
+dirList=['0','30','60','90','120','150','180','210','240','270','300','330'];
+
+#%% run analysis
+for i in range(0,12):
+    UList=dirSpd[i*10:i*10+10];
+    Cp=CpList[i];
+    dtNorm=dtNormList[i];
+    dirID=dirList[i];
+    for j in range(0,10):
+        U=UList[j];
+        runDynamicAnalysis(Cp,U,dtNorm,dirID,str(j))
