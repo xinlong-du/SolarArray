@@ -1,8 +1,9 @@
 close all; clear; clc;
 exForceAll=[];
+exForce2All=[];
 nfsAll=cell(8,1);
 ndLocYsAll=cell(8,1);
-for i=0:30:180
+for i=0:30:240
     for j=0:9
         filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
         nodeDisp=load(filename);
@@ -10,21 +11,35 @@ for i=0:30:180
         eleForce=load(filename);
         filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'springResp.out');
         springResp=load(filename);
-        [nfs,exForce,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
+        [nfs,exForce,exForce2,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
         for k=1:8
             nfsAll{k}=[nfsAll{k};nfs{k}];
             ndLocYsAll{k}=[ndLocYsAll{k};ndLocYs{k}];
         end
         exForceAll=[exForceAll;exForce];
+        exForce2All=[exForce2All;exForce2];
     end
 end
 
 %% duty cycles
 fs=1/0.02;
 rainflow(exForceAll(:,2),fs)
-
+figure
+rainflow(exForceAll(:,3),fs)
+figure
+rainflow(exForce2All(:,2),fs)
+figure
+rainflow(exForce2All(:,3),fs)
 %%
-function [nfs,exForce,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp)
+for i=1:8
+    figure
+    rainflow(ndLocYsAll{i}*39.37,fs)
+end
+%%
+figure
+rainflow(nfsAll{8}(:,2))
+%%
+function [nfs,exForce,exForce2,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp)
 nodeRec=[1301:1333,1401:1433,1501:1533]';
 eleRec=[701:723,801:823]';
 springRec=[21001:21022,22001:22022,23001:23022,24001:24022,45001:45022,46001:46022,47001:47022,48001:48022]';
@@ -57,6 +72,8 @@ nf1814=eleForceDiv{find(eleRec==814)}(:,7:12)+eleForceDiv{find(eleRec==815)}(:,1
 
 nfs={nf1711;nf1712;nf1713;nf1714;nf1811;nf1812;nf1813;nf1814};
 exForce=nf1711+nf1714+nf1811+nf1814;
+exForce2=eleForceDiv{find(eleRec==711)}(:,7:12)+eleForceDiv{find(eleRec==715)}(:,1:6)+...
+    eleForceDiv{find(eleRec==811)}(:,7:12)+eleForceDiv{find(eleRec==815)}(:,1:6);
 
 %% nodal displacement
 nd1316=nodeDispDiv{find(nodeRec==1316)};
