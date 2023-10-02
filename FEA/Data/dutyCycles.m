@@ -1,9 +1,28 @@
 close all; clear; clc;
-nodeDisp=load('./testAllcases/dir0spd0nodeDisp.out');
-eleForce=load('./testAllcases/dir0spd0eleForce.out');
-springResp=load('./testAllcases/dir0spd0springResp.out');
+exForceAll=[];
+nfsAll=cell(8,1);
+ndLocYsAll=cell(8,1);
+for i=0:30:180
+    for j=0:9
+        filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
+        nodeDisp=load(filename);
+        filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'eleForce.out');
+        eleForce=load(filename);
+        filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'springResp.out');
+        springResp=load(filename);
+        [nfs,exForce,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
+        for k=1:8
+            nfsAll{k}=[nfsAll{k};nfs{k}];
+            ndLocYsAll{k}=[ndLocYsAll{k};ndLocYs{k}];
+        end
+        exForceAll=[exForceAll;exForce];
+    end
+end
 
-[nfs,exForce,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
+%% duty cycles
+fs=1/0.02;
+rainflow(exForceAll(:,2),fs)
+
 %%
 function [nfs,exForce,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp)
 nodeRec=[1301:1333,1401:1433,1501:1533]';
