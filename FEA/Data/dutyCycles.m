@@ -2,10 +2,10 @@ close all; clear; clc;
 %% load data
 filename='../../../WindAnalysis/FiguresDeg30/CTspdPb30.txt';
 spdDura=load(filename);
-duraDiv10s=floor(spdDura(:,2)/10);
-duraDiv10s=reshape(duraDiv10s,[10,12]);
+duraDiv=floor(spdDura(:,2)/10);            %10 is for 10s duration of simulation data 
+duraDiv=floor(duraDiv/min(duraDiv)); %the final counts should multiply 165
+duraDiv=reshape(duraDiv,[10,12]);
 
-exForceAll=[];
 exForce2All=[];
 nfsAll=cell(8,1);
 ndLocYsAll=cell(8,1);
@@ -19,19 +19,15 @@ for i=0:30:330
         springResp=load(filename);
         [nfs,exForce,exForce2,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
         for k=1:8
-            nfsAll{k}=[nfsAll{k};repmat(nfs{k},duraDiv10s(j+1,i/30+1),1)];
-            ndLocYsAll{k}=[ndLocYsAll{k};repmat(ndLocYs{k},duraDiv10s(j+1,i/30+1),1)];
+            nfsAll{k}=[nfsAll{k};repmat(nfs{k},duraDiv(j+1,i/30+1),1)];
+            ndLocYsAll{k}=[ndLocYsAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
         end
-        exForceAll=[exForceAll;repmat(exForce,duraDiv10s(j+1,i/30+1),1)];
-        exForce2All=[exForce2All;repmat(exForce2,duraDiv10s(j+1,i/30+1),1)];
+        exForce2All=[exForce2All;repmat(exForce2,duraDiv(j+1,i/30+1),1)];
     end
 end
 
 %% duty cycles
 fs=1/0.02;
-rainflow(exForceAll(:,2),fs)
-figure
-rainflow(exForceAll(:,3),fs)
 figure
 rainflow(exForce2All(:,2),fs)
 figure
