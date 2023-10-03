@@ -35,8 +35,35 @@ rainflow(exForce2All(:,3),fs)
 %%
 for i=1:8
     figure
-    rainflow(ndLocYsAll{i}*39.37,fs)
+    rainflow(ndLocYsAll{i}*39.37,fs) %convert m to inch
 end
+
+%% relative rotation for bending
+nd1316m1318=ndLocYsAll{1}*39.37-ndLocYsAll{2}*39.37;
+nd1319m1321=ndLocYsAll{3}*39.37-ndLocYsAll{4}*39.37;
+rot13xx=nd1316m1318/41.26-nd1319m1321/41.26;
+figure
+rainflow(rot13xx,fs)
+
+nd1516m1518=ndLocYsAll{5}*39.37-ndLocYsAll{6}*39.37;
+nd1519m1521=ndLocYsAll{7}*39.37-ndLocYsAll{8}*39.37;
+rot15xx=nd1516m1518/41.26-nd1519m1521/41.26;
+figure
+rainflow(rot15xx,fs)
+
+%% relative rotation for twist
+nd1316m1516=ndLocYsAll{1}*39.37-ndLocYsAll{5}*39.37;
+nd1321m1521=ndLocYsAll{4}*39.37-ndLocYsAll{8}*39.37;
+rot1621=nd1316m1516/42.0-nd1321m1521/42.0;
+figure
+rainflow(rot1621,fs)
+
+nd1318m1518=ndLocYsAll{2}*39.37-ndLocYsAll{6}*39.37;
+nd1319m1519=ndLocYsAll{3}*39.37-ndLocYsAll{7}*39.37;
+rot1819=nd1318m1518/42.0-nd1319m1519/42.0;
+figure
+rainflow(rot1819,fs)
+
 %%
 figure
 rainflow(nfsAll{8}(:,2),fs)
