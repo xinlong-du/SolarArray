@@ -1,9 +1,15 @@
 close all; clear; clc;
+%% load data
+filename='../../../WindAnalysis/FiguresDeg30/CTspdPb30.txt';
+spdDura=load(filename);
+duraDiv10s=floor(spdDura(:,2)/10);
+duraDiv10s=reshape(duraDiv10s,[10,12]);
+
 exForceAll=[];
 exForce2All=[];
 nfsAll=cell(8,1);
 ndLocYsAll=cell(8,1);
-for i=0:30:240
+for i=0:30:330
     for j=0:9
         filename=strcat('./testAllcases/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
         nodeDisp=load(filename);
@@ -13,11 +19,11 @@ for i=0:30:240
         springResp=load(filename);
         [nfs,exForce,exForce2,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp);
         for k=1:8
-            nfsAll{k}=[nfsAll{k};nfs{k}];
-            ndLocYsAll{k}=[ndLocYsAll{k};ndLocYs{k}];
+            nfsAll{k}=[nfsAll{k};repmat(nfs{k},duraDiv10s(j+1,i/30+1),1)];
+            ndLocYsAll{k}=[ndLocYsAll{k};repmat(ndLocYs{k},duraDiv10s(j+1,i/30+1),1)];
         end
-        exForceAll=[exForceAll;exForce];
-        exForce2All=[exForce2All;exForce2];
+        exForceAll=[exForceAll;repmat(exForce,duraDiv10s(j+1,i/30+1),1)];
+        exForce2All=[exForce2All;repmat(exForce2,duraDiv10s(j+1,i/30+1),1)];
     end
 end
 
@@ -37,7 +43,7 @@ for i=1:8
 end
 %%
 figure
-rainflow(nfsAll{8}(:,2))
+rainflow(nfsAll{8}(:,2),fs)
 %%
 function [nfs,exForce,exForce2,ndLocYs]=forceDispResp(nodeDisp,eleForce,springResp)
 nodeRec=[1301:1333,1401:1433,1501:1533]';
@@ -81,20 +87,20 @@ nd1318=nodeDispDiv{find(nodeRec==1318)};
 nd1319=nodeDispDiv{find(nodeRec==1319)};
 nd1321=nodeDispDiv{find(nodeRec==1321)};
 
-nd1416=nodeDispDiv{find(nodeRec==1416)};
-nd1418=nodeDispDiv{find(nodeRec==1418)};
-nd1419=nodeDispDiv{find(nodeRec==1419)};
-nd1421=nodeDispDiv{find(nodeRec==1421)};
+nd1516=nodeDispDiv{find(nodeRec==1516)};
+nd1518=nodeDispDiv{find(nodeRec==1518)};
+nd1519=nodeDispDiv{find(nodeRec==1519)};
+nd1521=nodeDispDiv{find(nodeRec==1521)};
 
 nd1316LocY=nd1316(:,3)*cos(30/180*pi)-nd1316(:,3)*sin(30/180*pi);
 nd1318LocY=nd1318(:,3)*cos(30/180*pi)-nd1318(:,3)*sin(30/180*pi);
 nd1319LocY=nd1319(:,3)*cos(30/180*pi)-nd1319(:,3)*sin(30/180*pi);
 nd1321LocY=nd1321(:,3)*cos(30/180*pi)-nd1321(:,3)*sin(30/180*pi);
 
-nd1416LocY=nd1316(:,3)*cos(30/180*pi)-nd1416(:,3)*sin(30/180*pi);
-nd1418LocY=nd1318(:,3)*cos(30/180*pi)-nd1418(:,3)*sin(30/180*pi);
-nd1419LocY=nd1319(:,3)*cos(30/180*pi)-nd1419(:,3)*sin(30/180*pi);
-nd1421LocY=nd1321(:,3)*cos(30/180*pi)-nd1421(:,3)*sin(30/180*pi);
+nd1516LocY=nd1316(:,3)*cos(30/180*pi)-nd1516(:,3)*sin(30/180*pi);
+nd1518LocY=nd1318(:,3)*cos(30/180*pi)-nd1518(:,3)*sin(30/180*pi);
+nd1519LocY=nd1319(:,3)*cos(30/180*pi)-nd1519(:,3)*sin(30/180*pi);
+nd1521LocY=nd1321(:,3)*cos(30/180*pi)-nd1521(:,3)*sin(30/180*pi);
 
-ndLocYs={nd1316LocY;nd1318LocY;nd1319LocY;nd1321LocY;nd1416LocY;nd1418LocY;nd1419LocY;nd1421LocY};
+ndLocYs={nd1316LocY;nd1318LocY;nd1319LocY;nd1321LocY;nd1516LocY;nd1518LocY;nd1519LocY;nd1521LocY};
 end
