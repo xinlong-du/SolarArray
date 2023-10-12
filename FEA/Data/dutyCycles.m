@@ -50,6 +50,8 @@ nd1519m1521=ndLocYsAll{7}*39.37-ndLocYsAll{8}*39.37;
 rot15xx=nd1516m1518/41.26-nd1519m1521/41.26;
 figure
 rainflow(rot15xx,fs)
+figure
+rainflow(nd1519m1521,fs)
 
 %% relative rotation for twist
 nd1316m1516=ndLocYsAll{1}*39.37-ndLocYsAll{5}*39.37;
@@ -63,6 +65,10 @@ nd1319m1519=ndLocYsAll{3}*39.37-ndLocYsAll{7}*39.37;
 rot1819=nd1318m1518/42.0-nd1319m1519/42.0;
 figure
 rainflow(rot1819,fs)
+figure
+rainflow(nd1316m1516,fs)
+figure
+rainflow(nd1321m1521,fs)
 
 %%
 figure
