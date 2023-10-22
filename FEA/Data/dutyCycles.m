@@ -28,15 +28,30 @@ end
 
 %% duty cycles
 fs=1/0.02;
+[c,hist,edges,rmm,idx] = rainflow(exForce2All(:,2),fs);
 figure
-rainflow(exForce2All(:,2),fs)
+histogram('BinEdges',edges','BinCounts',sum(hist,2))
+xlabel('Force Range')
+ylabel('Cycle Counts')
+set(gca,'YScale','log')
+
 figure
 rainflow(exForce2All(:,3),fs)
-%%
-for i=1:8
-    figure
-    rainflow(ndLocYsAll{i}*39.37,fs) %convert m to inch
-end
+%% disp at node 1516
+hfig=figure;
+[c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{5}*39.37,fs); %convert m to inch
+histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\nd1516Disp.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% relative rotation for bending
 nd1316m1318=ndLocYsAll{1}*39.37-ndLocYsAll{2}*39.37;
@@ -48,8 +63,21 @@ rainflow(rot13xx,fs)
 nd1516m1518=ndLocYsAll{5}*39.37-ndLocYsAll{6}*39.37;
 nd1519m1521=ndLocYsAll{7}*39.37-ndLocYsAll{8}*39.37;
 rot15xx=nd1516m1518/41.26-nd1519m1521/41.26;
-figure
-rainflow(rot15xx,fs)
+hfig=figure;
+[c,hist,edges,rmm,idx] = rainflow(rot15xx,fs);
+histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\rot15xx.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
 figure
 rainflow(nd1519m1521,fs)
 
@@ -57,8 +85,20 @@ rainflow(nd1519m1521,fs)
 nd1316m1516=ndLocYsAll{1}*39.37-ndLocYsAll{5}*39.37;
 nd1321m1521=ndLocYsAll{4}*39.37-ndLocYsAll{8}*39.37;
 rot1621=nd1316m1516/42.0-nd1321m1521/42.0;
-figure
-rainflow(rot1621,fs)
+hfig=figure;
+[c,hist,edges,rmm,idx] = rainflow(rot1621,fs);
+histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\rot1621.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 nd1318m1518=ndLocYsAll{2}*39.37-ndLocYsAll{6}*39.37;
 nd1319m1519=ndLocYsAll{3}*39.37-ndLocYsAll{7}*39.37;
