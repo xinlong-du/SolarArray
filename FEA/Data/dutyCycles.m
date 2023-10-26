@@ -40,7 +40,15 @@ rainflow(exForce2All(:,3),fs)
 %% disp at node 1516
 hfig=figure;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{5}*39.37,fs); %convert m to inch
-histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+edges2=0:0.1:1.2;
+bins=165*sum(hist,2);
+bins2=zeros(12,1);
+for i=0:10
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
+end
+bins2(11+1)=sum(bins(11*50+1:end));
+
+histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
@@ -50,7 +58,7 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\nd1516Disp.';
+fileout='.\nd1516Disp2.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% relative rotation for bending
@@ -65,7 +73,15 @@ nd1519m1521=ndLocYsAll{7}*39.37-ndLocYsAll{8}*39.37;
 rot15xx=nd1516m1518/41.26-nd1519m1521/41.26;
 hfig=figure;
 [c,hist,edges,rmm,idx] = rainflow(rot15xx,fs);
-histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+edges2=0:0.0005:0.006;
+bins=165*sum(hist,2);
+bins2=zeros(12,1);
+for i=0:10
+    bins2(i+1)=sum(bins(i*48+1:i*48+48));
+end
+bins2(11+1)=sum(bins(11*48+1:end));
+
+histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
@@ -75,7 +91,7 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\rot15xx.';
+fileout='.\rot15xx2.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 figure
@@ -87,7 +103,15 @@ nd1321m1521=ndLocYsAll{4}*39.37-ndLocYsAll{8}*39.37;
 rot1621=nd1316m1516/42.0-nd1321m1521/42.0;
 hfig=figure;
 [c,hist,edges,rmm,idx] = rainflow(rot1621,fs);
-histogram('BinEdges',edges','BinCounts',165*sum(hist,2))
+edges2=0:0.0003:0.0036;
+bins=165*sum(hist,2);
+bins2=zeros(12,1);
+for i=0:10
+    bins2(i+1)=sum(bins(i*59+1:i*59+59));
+end
+bins2(11+1)=sum(bins(11*59+1:end));
+
+histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
@@ -97,7 +121,7 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\rot1621.';
+fileout='.\rot1621-2.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 nd1318m1518=ndLocYsAll{2}*39.37-ndLocYsAll{6}*39.37;
