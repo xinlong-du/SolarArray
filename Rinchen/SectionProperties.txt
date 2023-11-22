@@ -1,0 +1,60 @@
+Open Section Properties
+----------------------------------------------
+Area:  789.2790
+ 
+Second moment,product moment of area about rectangular axes
+Ix:    1339664.7167
+Iy:    581949.2327
+Ixy:   -0.0000
+
+Second moment of area about principal axes
+Ipxx:  1339664.7167
+Ipyy:  581949.2327
+
+Torsion constant,  J: 2367.8371
+Warping constant, Iw: 1260333778.3668
+
+Coordinates of centroid from bottom left
+xc0:	26.8321 
+yc0:	48.5000 
+
+Coordinates of shear centre w.r.t rectangular axes
+Xs:	-36.6292 
+Ys:	48.5000 
+
+Coordinates of shear centre in principal axes
+x0:	-63.4614 
+y0:	-0.0000 
+
+Orientation of principal axes
+alpha:	-0.000000 radian(-0.0000 deg)
+ 
+Monosymmetry section constants
+betax: 	0.0000
+betay: 	155.8102
+    
+Normalized Sectorial coordinate
+ Node       Sectorial Coordinate
+---------------------------
+1     3325.9151
+2     2185.3080
+3     1983.1684
+4     1780.4792
+5     1606.9183
+6     1487.7290
+7     -1567.7710
+8     -1637.2031
+9     -1669.0676
+10     -1659.6932
+11     -1611.6867
+12     1611.6867
+13     1659.6932
+14     1669.0676
+15     1637.2031
+16     1567.7710
+17     -1487.7290
+18     -1606.9183
+19     -1780.4792
+20     -1983.1684
+21     -2185.3080
+22     -3325.9151
