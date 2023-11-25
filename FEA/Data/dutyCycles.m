@@ -116,6 +116,7 @@ xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.0006:0.0036)
 % save figure
 figWidth=6;
 figHeight=3;

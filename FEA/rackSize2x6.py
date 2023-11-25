@@ -35,10 +35,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 0.822*in2m**2;     #cross-sectional area
-Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
+A_pu = 0.538*in2m**2;     #cross-sectional area
+Iz_pu = 1.35*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.331*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.000625*in2m**4; #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for rafter HAT Section 6HU3x060 in AISI Manual (2002)
@@ -83,36 +83,6 @@ h = 4.96*0.001; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
-# east side rack, north post
-node(101, 0.0,           0.0,          0.0)
-node(102, 0.0,           7*in2m,       0.0)
-node(103, 0.0,           11*in2m,      0.0)
-node(104, 0.0,           92.25*in2m,   0.0)
-# east side rack, south post
-node(105, 88*in2m,       0.0,          0.0)
-node(106, 88*in2m,       7*in2m,       0.0)
-node(107, 88*in2m,       41.25*in2m,   0.0)
-# east side rack, rafter
-node(108, -5.3308*in2m,  95.3394*in2m, 0.0)
-node(109, 31.0077*in2m,  74.2796*in2m, 0.0)
-node(110, 69.2423*in2m,  52.1209*in2m, 0.0)
-node(111, 105.5808*in2m, 31.0611*in2m, 0.0)
-
-# west side rack, north post
-node(201, 0.0,           0.0,          143.0*in2m)
-node(202, 0.0,           7*in2m,       143.0*in2m)
-node(203, 0.0,           11*in2m,      143.0*in2m)
-node(204, 0.0,           92.25*in2m,   143.0*in2m)
-# west side rack, south post
-node(205, 88*in2m,       0.0,          143.0*in2m)
-node(206, 88*in2m,       7*in2m,       143.0*in2m)
-node(207, 88*in2m,       41.25*in2m,   143.0*in2m)
-# west side rack, rafter
-node(208, -5.3308*in2m,  95.3394*in2m, 143.0*in2m)
-node(209, 31.0077*in2m,  74.2796*in2m, 143.0*in2m)
-node(210, 69.2423*in2m,  52.1209*in2m, 143.0*in2m)
-node(211, 105.5808*in2m, 31.0611*in2m, 143.0*in2m)
-
 # purlin # 1 from North
 node(301, -5.3308*in2m,  95.3394*in2m, -54.0000*in2m)
 node(302, -5.3308*in2m,  95.3394*in2m, -12.9167*in2m)
@@ -139,32 +109,6 @@ node(409, 31.0077*in2m,  74.2796*in2m, 114.0833*in2m)
 node(410, 31.0077*in2m,  74.2796*in2m, 154.4167*in2m)
 node(411, 31.0077*in2m,  74.2796*in2m, 155.9167*in2m)
 node(412, 31.0077*in2m,  74.2796*in2m, 197.0000*in2m)
-# purlin # 3 from North
-node(501, 69.2423*in2m,  52.1209*in2m, -54.0000*in2m)
-node(502, 69.2423*in2m,  52.1209*in2m, -12.9167*in2m)
-node(503, 69.2423*in2m,  52.1209*in2m, -11.4167*in2m)
-node(504, 69.2423*in2m,  52.1209*in2m, 28.9167*in2m)
-node(505, 69.2423*in2m,  52.1209*in2m, 30.4167*in2m)
-node(506, 69.2423*in2m,  52.1209*in2m, 70.7500*in2m)
-node(507, 69.2423*in2m,  52.1209*in2m, 72.2500*in2m)
-node(508, 69.2423*in2m,  52.1209*in2m, 112.5833*in2m)
-node(509, 69.2423*in2m,  52.1209*in2m, 114.0833*in2m)
-node(510, 69.2423*in2m,  52.1209*in2m, 154.4167*in2m)
-node(511, 69.2423*in2m,  52.1209*in2m, 155.9167*in2m)
-node(512, 69.2423*in2m,  52.1209*in2m, 197.0000*in2m)
-# purlin # 4 from North
-node(601, 105.5808*in2m, 31.0611*in2m, -54.0000*in2m)
-node(602, 105.5808*in2m, 31.0611*in2m, -12.9167*in2m)
-node(603, 105.5808*in2m, 31.0611*in2m, -11.4167*in2m)
-node(604, 105.5808*in2m, 31.0611*in2m, 28.9167*in2m)
-node(605, 105.5808*in2m, 31.0611*in2m, 30.4167*in2m)
-node(606, 105.5808*in2m, 31.0611*in2m, 70.7500*in2m)
-node(607, 105.5808*in2m, 31.0611*in2m, 72.2500*in2m)
-node(608, 105.5808*in2m, 31.0611*in2m, 112.5833*in2m)
-node(609, 105.5808*in2m, 31.0611*in2m, 114.0833*in2m)
-node(610, 105.5808*in2m, 31.0611*in2m, 154.4167*in2m)
-node(611, 105.5808*in2m, 31.0611*in2m, 155.9167*in2m)
-node(612, 105.5808*in2m, 31.0611*in2m, 197.0000*in2m)
 
 # module edge # 1 from North
 node(701, -23.5000*in2m, 105.8693*in2m, -54.0000*in2m)
@@ -192,41 +136,12 @@ node(809, 49.1770*in2m,  63.7497*in2m, 114.0833*in2m)
 node(810, 49.1770*in2m,  63.7497*in2m, 154.4167*in2m)
 node(811, 49.1770*in2m,  63.7497*in2m, 155.9167*in2m)
 node(812, 49.1770*in2m,  63.7497*in2m, 197.0000*in2m)
-# module edge # 3 from North
-node(901, 51.0730*in2m,  62.6508*in2m, -54.0000*in2m)
-node(902, 51.0730*in2m,  62.6508*in2m, -12.9167*in2m)
-node(903, 51.0730*in2m,  62.6508*in2m, -11.4167*in2m)
-node(904, 51.0730*in2m,  62.6508*in2m, 28.9167*in2m)
-node(905, 51.0730*in2m,  62.6508*in2m, 30.4167*in2m)
-node(906, 51.0730*in2m,  62.6508*in2m, 70.7500*in2m)
-node(907, 51.0730*in2m,  62.6508*in2m, 72.2500*in2m)
-node(908, 51.0730*in2m,  62.6508*in2m, 112.5833*in2m)
-node(909, 51.0730*in2m,  62.6508*in2m, 114.0833*in2m)
-node(910, 51.0730*in2m,  62.6508*in2m, 154.4167*in2m)
-node(911, 51.0730*in2m,  62.6508*in2m, 155.9167*in2m)
-node(912, 51.0730*in2m,  62.6508*in2m, 197.0000*in2m)
-# module edge # 4 from North
-node(1001, 123.7500*in2m, 20.5312*in2m, -54.0000*in2m)
-node(1002, 123.7500*in2m, 20.5312*in2m, -12.9167*in2m)
-node(1003, 123.7500*in2m, 20.5312*in2m, -11.4167*in2m)
-node(1004, 123.7500*in2m, 20.5312*in2m, 28.9167*in2m)
-node(1005, 123.7500*in2m, 20.5312*in2m, 30.4167*in2m)
-node(1006, 123.7500*in2m, 20.5312*in2m, 70.7500*in2m)
-node(1007, 123.7500*in2m, 20.5312*in2m, 72.2500*in2m)
-node(1008, 123.7500*in2m, 20.5312*in2m, 112.5833*in2m)
-node(1009, 123.7500*in2m, 20.5312*in2m, 114.0833*in2m)
-node(1010, 123.7500*in2m, 20.5312*in2m, 154.4167*in2m)
-node(1011, 123.7500*in2m, 20.5312*in2m, 155.9167*in2m)
-node(1012, 123.7500*in2m, 20.5312*in2m, 197.0000*in2m)
-
-# intersection of external braces
-node(2001, 0.0, 51.6250*in2m, 71.5000*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(101, 1, 1, 1, 1, 1, 1);  
-fix(105, 1, 1, 1, 1, 1, 1);
-fix(201, 1, 1, 1, 1, 1, 1);  
-fix(205, 1, 1, 1, 1, 1, 1);
+fix(301, 1, 1, 1, 0, 0, 1);  #fix on twist need to be changed after switch to coordinate system that uses Z for vertical
+fix(312, 1, 1, 1, 0, 0, 0);
+fix(401, 1, 1, 1, 0, 0, 1);  
+fix(412, 1, 1, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 postTransfTag = 1;
@@ -249,55 +164,15 @@ ebTransfTag = 5;
 vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', ebTransfTag, *vecxz);
 
-# east side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
-element('elasticBeamColumn', 101, *[101, 102], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 102, *[102, 103], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 103, *[103, 104], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
-# east side rack, south post
-element('elasticBeamColumn', 104, *[105, 106], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 105, *[106, 107], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
-# east side rack, rafter
-element('elasticBeamColumn', 106, *[108, 104], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 107, *[104, 109], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 108, *[109, 110], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 109, *[110, 107], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 110, *[107, 111], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-# east side rack, internal brace
-element('elasticBeamColumn', 111, *[102, 106], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-element('elasticBeamColumn', 112, *[103, 107], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-
-# west side rack, north post ID    nodeI nodeJ                            TBD for mass, release can be omitted for fixed BC
-element('elasticBeamColumn', 201, *[201, 202], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 202, *[202, 203], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 203, *[203, 204], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
-# west side rack, south post
-element('elasticBeamColumn', 204, *[205, 206], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
-element('elasticBeamColumn', 205, *[206, 207], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po, '-releasez', 2, 'releasey', 2);
-# west side rack, rafter
-element('elasticBeamColumn', 206, *[208, 204], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 207, *[204, 209], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 208, *[209, 210], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 209, *[210, 207], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-element('elasticBeamColumn', 210, *[207, 211], A_r, Es, Gs, Jx_r, Iy_r, Iz_r, rafterTransfTag, '-mass', mass_r);
-# west side rack, internal brace
-element('elasticBeamColumn', 211, *[202, 206], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-element('elasticBeamColumn', 212, *[203, 207], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
-
 # purlins
-nPurlin1 = [301,302,303,108,304,305,306,307,308,309,208,310,311,312]; #nodes of purlin # 1
-nPurlin2 = [401,402,403,109,404,405,406,407,408,409,209,410,411,412]; #nodes of purlin # 2
-nPurlin3 = [501,502,503,110,504,505,506,507,508,509,210,510,511,512]; #nodes of purlin # 3
-nPurlin4 = [601,602,603,111,604,605,606,607,608,609,211,610,611,612]; #nodes of purlin # 4
-for i in range (0,13):
+nPurlin1 = [301,302,303,304,305,306,307,308,309,310,311,312]; #nodes of purlin # 1
+nPurlin2 = [401,402,403,404,405,406,407,408,409,410,411,412]; #nodes of purlin # 2
+for i in range (0,11):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
     element('elasticBeamColumn', i+300, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     # purlin # 2
     element('elasticBeamColumn', i+400, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
-    # perlin # 3
-    element('elasticBeamColumn', i+500, *[nPurlin3[i], nPurlin3[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
-    # purlin # 4
-    element('elasticBeamColumn', i+600, *[nPurlin4[i], nPurlin4[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 for i in range (1,7):
@@ -305,34 +180,17 @@ for i in range (1,7):
     element('ShellMITC4',i+700,  *[700+2*i-1, 700+2*i, 300+2*i, 300+2*i-1], moduleSecTag)
     element('ShellMITC4',i+800,  *[300+2*i-1, 300+2*i, 400+2*i, 400+2*i-1], moduleSecTag)
     element('ShellMITC4',i+900,  *[400+2*i-1, 400+2*i, 800+2*i, 800+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1000, *[900+2*i-1, 900+2*i, 500+2*i, 500+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1100, *[500+2*i-1, 500+2*i, 600+2*i, 600+2*i-1], moduleSecTag)
-    element('ShellMITC4',i+1200, *[600+2*i-1, 600+2*i, 1000+2*i, 1000+2*i-1], moduleSecTag)
     
     element('elasticBeamColumn', i+1400, *[700+2*i-1, 700+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', i+1500, *[800+2*i-1, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1600, *[900+2*i-1, 900+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+1700, *[1000+2*i-1, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
     
     element('elasticBeamColumn', i+1800, *[700+2*i-1, 300+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', i+1900, *[300+2*i-1, 400+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', i+2000, *[400+2*i-1, 800+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2100, *[900+2*i-1, 500+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2200, *[500+2*i-1, 600+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2300, *[600+2*i-1, 1000+2*i-1], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
     
     element('elasticBeamColumn', i+2400, *[700+2*i, 300+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', i+2500, *[300+2*i, 400+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', i+2600, *[400+2*i, 800+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2700, *[900+2*i, 500+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2800, *[500+2*i, 600+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i+2900, *[600+2*i, 1000+2*i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
-
-# external braces
-element('elasticBeamColumn', 1301, *[103, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1302, *[104, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1303, *[203, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-element('elasticBeamColumn', 1304, *[204, 2001], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
 
 # render the model
 #vfo.createODB(model="solarPanel")
@@ -349,13 +207,6 @@ vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
 vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
-
-vfo.plot_modeshape(modenumber=7, scale=1); #plot mode shape 7
-vfo.plot_modeshape(modenumber=8, scale=1); #plot mode shape 8
-vfo.plot_modeshape(modenumber=9, scale=1); #plot mode shape 9
-vfo.plot_modeshape(modenumber=10, scale=1); #plot mode shape 10
-vfo.plot_modeshape(modenumber=11, scale=1); #plot mode shape 11
-vfo.plot_modeshape(modenumber=12, scale=1); #plot mode shape 12
 
 # define loads-----------------------------------------------------------------
 F = 1.0; 
