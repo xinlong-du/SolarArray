@@ -100,9 +100,9 @@ nPurlin2 = [800,801,803,804,806,807,809,810,812,813,815,816,818,819]; #nodes of 
 for i in range (0,13):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
-    element('elasticBeamColumn', i+300, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+500, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     # purlin # 2
-    element('elasticBeamColumn', i+400, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+600, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 i=0;
@@ -189,7 +189,12 @@ for i in range (0,1):
         load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
-recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+allNodeTags=getNodeTags();
+alleleTags=getEleTags();
+
+eleRec=list(range(501,513))+list(range(601,613));
+recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -200,7 +205,15 @@ algorithm('Linear');
 integrator('LoadControl', 1)
 analysis('Static');	# define type of analysis static or transient
 analyze(10);
-print('Gravity Finished')
+print('Finished')
+
+efLocEnd506=eleResponse(506, 'localForces')
+efLocEnd606=eleResponse(606, 'localForces')
+ndGloEnd609=nodeDisp(609);
+ndGloEnd610=nodeDisp(610);
+ndGloEnd809=nodeDisp(809);
+ndGloEnd810=nodeDisp(810);
+
 wipe()
 vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=2)
 #------------------------------------------------------------------------------
