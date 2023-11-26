@@ -88,11 +88,11 @@ fix(819, 1, 1, 1, 0, 0, 0);
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
 vecxz = [0.0, 0.0, -1.0];
-geomTransf('Corotational', rafterTransfTag, *vecxz);
+geomTransf('Linear', rafterTransfTag, *vecxz);
 
 purlinTransfTag = 3;
 vecxz = [0.0-(-88.0), 0.0, 92.25-41.25]; #local z' direction (nodes 104 - 107)
-geomTransf('Corotational', purlinTransfTag, *vecxz);
+geomTransf('Linear', purlinTransfTag, *vecxz);
 
 # purlins
 nPurlin1 = [600,601,603,604,606,607,609,610,612,613,615,616,618,619]; #nodes of purlin # 1
@@ -159,26 +159,34 @@ g_mCo=-0.1*g_m/32;     #corner, 4 in total
 g_mEd=-0.1*g_m/32*2;   #edge, 8 in total
 g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
+# wind pressure
+#pMax=-2352.8;
+pMax=2446.912;
+f_m=84.0*in2m*41.26*in2m*pMax;
+f_mCo=0.1*f_m/32;     #corner, 4 in total
+f_mEd=0.1*f_m/32*2;   #edge, 8 in total
+f_mIn=0.1*f_m/32*4;   #internal, 3 in total
+
 timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
 
 for i in range (0,1):
     for j in range (0,6):
-        load(501+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(502+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(503+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(601+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(602+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
-        load(603+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(701+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(702+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
-        load(703+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(801+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(802+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
-        load(803+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(901+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(902+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(903+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(601+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(602+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(603+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(701+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(702+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(703+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(801+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(802+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(803+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(901+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(902+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
@@ -188,11 +196,11 @@ constraints('Plain');  # how it handles boundary conditions
 numberer('RCM');	   # renumber dof's to minimize band-width 
 system('UmfPack'); # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
-algorithm('KrylovNewton');
+algorithm('Linear');
 integrator('LoadControl', 1)
 analysis('Static');	# define type of analysis static or transient
 analyze(10);
 print('Gravity Finished')
 wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=20)
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=2)
 #------------------------------------------------------------------------------
