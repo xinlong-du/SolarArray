@@ -41,34 +41,6 @@ Iy_pu = 0.331*in2m**4;    #second moment of area about the local y-axis
 Jx_pu = 0.000625*in2m**4; #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
-# SECTION properties for rafter HAT Section 6HU3x060 in AISI Manual (2002)
-A_r = 0.954*in2m**2;      #cross-sectional area
-Iz_r = 1.92*in2m**4       #second moment of area about the local z-axis
-Iy_r = 4.15*in2m**4;      #second moment of area about the local y-axis
-Jx_r = 0.00115*in2m**4;   #torsional moment of inertia of section
-mass_r = A_r*rho_s;       #mass per unit length
-    
-# SECTION properties for post Pipe 2.25x2.25x1/8 (https://www.engineersedge.com/standard_material/aisc-steel-tube.htm)
-A_po = 0.956*in2m**2;     #cross-sectional area
-Iz_po = 0.712*in2m**4;    #second moment of area about the local z-axis
-Iy_po = 0.712*in2m**4;    #second moment of area about the local y-axis
-Jx_po = 1.15*in2m**4;     #torsional moment of inertia of section
-mass_po = A_po*rho_s;     #mass per unit length
-    
-# SECTION properties for internal brace Pipe 2x2x1/8
-A_ib = 0.84*in2m**2;      #cross-sectional area
-Iz_ib = 0.486*in2m**4;     #second moment of area about the local z-axis
-Iy_ib = 0.486*in2m**4;     #second moment of area about the local y-axis
-Jx_ib = 0.796*in2m**4;     #torsional moment of inertia of section
-mass_ib = A_ib*rho_s;      #mass per unit length
-
-# SECTION properties for external brace Pipe 2x2x1/8
-A_eb = 0.84*in2m**2;      #cross-sectional area
-Iz_eb = 0.486*in2m**4;     #second moment of area about the local z-axis
-Iy_eb = 0.486*in2m**4;     #second moment of area about the local y-axis
-Jx_eb = 0.796*in2m**4;     #torsional moment of inertia of section
-mass_eb = A_eb*rho_s;      #mass per unit length
-
 # SECTION properties for module frames
 A_mf = 168.07*0.001**2;    #cross-sectional area
 Iz_mf = 21828.0*0.001**4;  #second moment of area about the local z-axis
@@ -101,17 +73,18 @@ for j in range (0,6):
     node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
     node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
 
+node(600, -105.5808*in2m, (-99.2500-5.0)*in2m, 31.0611*in2m)
+node(619, -105.5808*in2m, (153.3100+5.0)*in2m, 31.0611*in2m)
+node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
+node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
+
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(601, 1, 1, 1, 0, 1, 0);  #may need to remove restraints on twist
-fix(618, 1, 1, 1, 0, 0, 0);
-fix(801, 1, 1, 1, 0, 1, 0);  
-fix(818, 1, 1, 1, 0, 0, 0);
+fix(600, 1, 1, 1, 0, 0, 0);
+fix(619, 1, 1, 1, 0, 0, 0);
+fix(800, 1, 1, 1, 0, 0, 0);  
+fix(819, 1, 1, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
-postTransfTag = 1;
-vecxz = [1.0, 0.0, 0.0];
-geomTransf('Corotational', postTransfTag, *vecxz);
-
 rafterTransfTag = 2;
 vecxz = [0.0, 0.0, -1.0];
 geomTransf('Corotational', rafterTransfTag, *vecxz);
@@ -120,18 +93,10 @@ purlinTransfTag = 3;
 vecxz = [0.0-(-88.0), 0.0, 92.25-41.25]; #local z' direction (nodes 104 - 107)
 geomTransf('Corotational', purlinTransfTag, *vecxz);
 
-ibTransfTag = 4;
-vecxz = [0.0, 1.0, 0.0];
-geomTransf('Corotational', ibTransfTag, *vecxz);
-
-ebTransfTag = 5;
-vecxz = [1.0, 0.0, 0.0];
-geomTransf('Corotational', ebTransfTag, *vecxz);
-
 # purlins
-nPurlin1 = [601,603,604,606,607,609,610,612,613,615,616,618]; #nodes of purlin # 1
-nPurlin2 = [801,803,804,806,807,809,810,812,813,815,816,818]; #nodes of purlin # 2
-for i in range (0,11):
+nPurlin1 = [600,601,603,604,606,607,609,610,612,613,615,616,618,619]; #nodes of purlin # 1
+nPurlin2 = [800,801,803,804,806,807,809,810,812,813,815,816,818,819]; #nodes of purlin # 2
+for i in range (0,13):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
     element('elasticBeamColumn', i+300, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
