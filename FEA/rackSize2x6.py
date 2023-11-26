@@ -20,6 +20,7 @@ model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
 #os.mkdir(dataDir);
 in2m=0.0254; #convert inch to meter
+g=9.8;       #gravitational acceleration (m/s2)
 
 # MATERIAL properties----------------------------------------------------------
 Es = 2.0e11;		      #Steel Young's modulus
@@ -130,7 +131,7 @@ for j in range (0,6):
     element('elasticBeamColumn', (24*i+20)*1000+j+1, *[502+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
 # render the model
-#vfo.createODB(model="solarPanel")
+vfo.createODB(model="solarPanel", loadcase="static", Nmodes=6, deltaT=1)
 vfo.plot_model()
 
 # eigen analysis---------------------------------------------------------------
@@ -146,32 +147,52 @@ vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
 vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
-F = 1.0; 
-timeSeries('Linear',1);
-pattern('Plain', 1, 1);
-load(801, *[0.0,  F, 0.0, 0.0, 0.0, 0.0]);
+# gravity loads
+#module frame, 0.1 is used to account for 10 steps in analyze(10)
+g_mfCorne=-0.1*mass_mf*g*(84.0/4/2+41.26/2/2)*in2m;  #nodes at corner
+g_mfMidEW=-0.1*mass_mf*g*(41.26/2)*in2m;             #nodes at middle of E-W direction
+g_mfMidNS=-0.1*mass_mf*g*(84.0/4)*in2m;              #nodes at middle of N-S direction
+
+#module, 0.1 is used to account for 10 steps in analyze(10)
+g_m=84.0*in2m*41.26*in2m*h*rho_m*g;
+g_mCo=-0.1*g_m/32;     #corner, 4 in total
+g_mEd=-0.1*g_m/32*2;   #edge, 8 in total
+g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
+
+timeSeries('Linear',10000);
+pattern('Plain', 10000, 10000);
+
+for i in range (0,1):
+    for j in range (0,6):
+        load(501+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(502+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(503+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(601+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(602+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(603+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(701+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(702+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(703+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(801+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(802+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(803+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(901+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(902+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(903+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 recorder('Node', '-file', f'{dataDir}/ElasDispEndDB40.out', '-time', '-node', *[801], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
-constraints('Plain'); # how it handles boundary conditions
-numberer('Plain');	   # renumber dof's to minimize band-width 
-system('BandGeneral');# how to store and solve the system of equations in the analysis
+constraints('Plain');  # how it handles boundary conditions
+numberer('RCM');	   # renumber dof's to minimize band-width 
+system('UmfPack'); # how to store and solve the system of equations in the analysis
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
-#algorithm NewtonLineSearch;# use Newton's solution algorithm: updates tangent stiffness at every iteration
-algorithm('Linear');
-integrator('LoadControl', 0.1)
-#integrator ArcLength 0.05 1.0; #arclength alpha
-#Dincr = -0.01; #-0.00002
-                                  #Node,  dof, 1st incr, Jd,  min,   max
-#integrator('DisplacementControl', EndNode, 1,   Dincr,    1,  Dincr, -0.01);
+algorithm('KrylovNewton');
+integrator('LoadControl', 1)
 analysis('Static');	# define type of analysis static or transient
-analyze(100);
-print('Finished')
+analyze(10);
+print('Gravity Finished')
 wipe()
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=20)
 #------------------------------------------------------------------------------
-# set finishTime [clock clicks -milliseconds];
-# puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
-# set systemTime [clock seconds] 
-# puts "Finished Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
