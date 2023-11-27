@@ -81,9 +81,9 @@ node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
 fix(600, 1, 1, 1, 0, 0, 0);
-fix(619, 1, 1, 1, 0, 0, 0);
+fix(619, 1, 0, 1, 0, 0, 0);
 fix(800, 1, 1, 1, 0, 0, 0);  
-fix(819, 1, 1, 1, 0, 0, 0);
+fix(819, 1, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -139,8 +139,8 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
 vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
@@ -225,5 +225,5 @@ ubLength=262.56; #in
 avaMoment=60.9; #=required strength, Section 12CS3.5x085
 
 wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=2)
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
 #------------------------------------------------------------------------------
