@@ -36,10 +36,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 0.822*in2m**2;     #cross-sectional area
-Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
+A_pu = 1.69*in2m**2;     #cross-sectional area
+Iz_pu = 35.6*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 2.48*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00408*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -139,8 +139,8 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
 vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
