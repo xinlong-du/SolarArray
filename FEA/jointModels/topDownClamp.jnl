@@ -31388,3 +31388,710 @@ mdb.jobs['Job20230921velBCdispZ']._Message(JOB_COMPLETED, {
     'time': 'Thu Sep 21 05:19:29 2023', 'jobName': 'Job20230921velBCdispZ'})
 # Save by xinlo on 2023_09_21-09.47.16; build 2017 2016_09_27-14.54.59 126836
 # Save by xinlo on 2023_09_21-09.47.24; build 2017 2016_09_27-14.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd3V'].setValues(v1=5.0
+    , v3=0.0)
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd3V'].setValuesInStep(
+    stepName='negtiveV', v1=-5.0, v3=0.0)
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd3V'].setValuesInStep(
+    stepName='positiveV2', v1=5.0, v3=0.0)
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd4V'].setValues(v1=5.0
+    , v3=0.0)
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd4V'].setValuesInStep(
+    stepName='negtiveV', v1=-5.0, v3=0.0)
+mdb.models['Model-1-velocityBC'].boundaryConditions['mfEnd4V'].setValuesInStep(
+    stepName='positiveV2', v1=5.0, v3=0.0)
+# Save by xinlo on 2023_11_27-15.23.00; build 2017 2016_09_27-17.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1-velocityBC', modelPrint=
+    OFF, multiprocessingMode=DEFAULT, name='Job20231127velBCdispX', 
+    nodalOutputPrecision=SINGLE, numCpus=4, numDomains=4, numGPUs=0, queue=None
+    , resultsFormat=ODB, scratch='', type=ANALYSIS, userSubroutine='', 
+    waitHours=0, waitMinutes=0)
+# Save by xinlo on 2023_11_27-15.26.24; build 2017 2016_09_27-17.54.59 126836
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.jobs['Job20231127velBCdispX'].submit(consistencyChecking=OFF)
+mdb.jobs['Job20231127velBCdispX']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 0, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'WHENEVER A TRANSLATION (ROTATION) DOF AT A NODE IS CONSTRAINED BY A KINEMATIC COUPLING DEFINITION THE TRANSLATION (ROTATION) DOFS FOR THAT NODE CANNOT BE INCLUDED IN ANY OTHER CONSTRAINT INCLUDING MPCS, RIGID BODIES, ETC.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'PLEASE MAKE SURE THAT THE MESH DENSITY OF THE SLAVE SURFACE IN THE TIE PAIR (ASSEMBLY_MODULE,ASSEMBLY_MODULEFRAME) IS FINER THAN THE MASTER SURFACE.  THE ANALYSIS MAY RUN SLOWER, MAY YIELD INACCURATE RESULTS, AND MAY REQUIRE MORE MEMORY IF THIS IS NOT THE CASE.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'FOR *TIE PAIR (ASSEMBLY_MODULE-ASSEMBLY_MODULEFRAME), ADJUSTED NODES WITH VERY SMALL ADJUSTMENTS WERE NOT PRINTED. SPECIFY *PREPRINT,MODEL=YES FOR COMPLETE PRINTOUT.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': '98 nodes are either missing intersection with their respective master surface or are outside the adjust zone. The nodes have been identified in node set WarnNodeMissMasterIntersect.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'MPCS (EXTERNAL or INTERNAL, including those generated from rigid body definitions), KINEMATIC COUPLINGS, AND/OR EQUATIONS WILL ACTIVATE ADDITIONAL DEGREES OF FREEDOM', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET62 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': BATCHPRE_PHASE, 
+    'message': 'NODE SET ASSEMBLY__PICKEDSET69 HAS NO MEMBERS AND WILL BE IGNORED.  NODES DEFINED IN THIS SET MAY HAVE BEEN DELETED BECAUSE THEY WERE NOT CONNECTED TO ANY ELEMENTS.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\temp\\Job20231127velBCdispX.odb', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-A24BAF5', 'handle': 18088, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 1, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 0, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20231127velBCdispX', 
+    'memory': 9694.0})
+mdb.jobs['Job20231127velBCdispX']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 1006.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.1, 
+    'attempts': 1, 'timeIncrement': 0.1, 'increment': 1, 'stepTime': 0.1, 
+    'step': 1, 'jobName': 'Job20231127velBCdispX', 'severe': 22, 
+    'iterations': 23, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 1, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.175, 
+    'attempts': 1, 'timeIncrement': 0.075, 'increment': 2, 'stepTime': 0.175, 
+    'step': 1, 'jobName': 'Job20231127velBCdispX', 'severe': 11, 
+    'iterations': 13, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 2, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.23125, 
+    'attempts': 1, 'timeIncrement': 0.05625, 'increment': 3, 
+    'stepTime': 0.23125, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 3, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.2875, 
+    'attempts': 1, 'timeIncrement': 0.05625, 'increment': 4, 
+    'stepTime': 0.2875, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 4, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.371875, 
+    'attempts': 1, 'timeIncrement': 0.084375, 'increment': 5, 
+    'stepTime': 0.371875, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 5, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.4984375, 
+    'attempts': 1, 'timeIncrement': 0.1265625, 'increment': 6, 
+    'stepTime': 0.4984375, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 6, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.68828125, 
+    'attempts': 1, 'timeIncrement': 0.18984375, 'increment': 7, 
+    'stepTime': 0.68828125, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 7, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 0.973046875, 
+    'attempts': 1, 'timeIncrement': 0.284765625, 'increment': 8, 
+    'stepTime': 0.973046875, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 8, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 0, 'frame': 9, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.0, 
+    'attempts': 1, 'timeIncrement': 0.0269531249999998, 'increment': 9, 
+    'stepTime': 1.0, 'step': 1, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(END_STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 1, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 2, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 0, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20231127velBCdispX', 
+    'memory': 8672.0})
+mdb.jobs['Job20231127velBCdispX']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 1021.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.05, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 1, 'stepTime': 0.05, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 6, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 1, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.1, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 2, 'stepTime': 0.1, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 4, 
+    'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 2, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.15, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 3, 'stepTime': 0.15, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 3, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.2, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 4, 'stepTime': 0.2, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 4, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.25, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 5, 'stepTime': 0.25, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 5, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.3, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 6, 'stepTime': 0.3, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 6, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.35, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 7, 'stepTime': 0.35, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 5, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 7, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.4, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 8, 'stepTime': 0.4, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 8, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.45, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 9, 'stepTime': 0.45, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 9, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.5, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 10, 'stepTime': 0.5, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 10, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.55, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 11, 'stepTime': 0.55, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 5, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 11, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.6, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 12, 'stepTime': 0.6, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 12, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.65, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 13, 'stepTime': 0.65, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 13, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.7, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 14, 'stepTime': 0.7, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 14, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.75, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 15, 'stepTime': 0.75, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 5, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 15, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.8, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 16, 'stepTime': 0.8, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 16, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.85, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 17, 'stepTime': 0.85, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 17, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.9, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 18, 'stepTime': 0.9, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 2, 
+    'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 18, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 1.95, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 19, 'stepTime': 0.95, 
+    'step': 2, 'jobName': 'Job20231127velBCdispX', 'severe': 5, 
+    'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 19, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 1, 'frame': 20, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.0, 
+    'attempts': 1, 'timeIncrement': 0.0499999999999997, 'increment': 20, 
+    'stepTime': 1.0, 'step': 2, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(END_STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 2, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STEP, {'phase': STANDARD_PHASE, 
+    'stepId': 3, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 0, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MEMORY_ESTIMATE, {
+    'phase': STANDARD_PHASE, 'jobName': 'Job20231127velBCdispX', 
+    'memory': 7819.0})
+mdb.jobs['Job20231127velBCdispX']._Message(PHYSICAL_MEMORY, {
+    'phase': STANDARD_PHASE, 'physical_memory': 32620.0, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(MINIMUM_MEMORY, {
+    'minimum_memory': 942.0, 'phase': STANDARD_PHASE, 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.0, 
+    'attempts': ' 1U', 'timeIncrement': 0.05, 'increment': 1, 'stepTime': 0.0, 
+    'step': 3, 'jobName': 'Job20231127velBCdispX', 'severe': 4, 
+    'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.0125, 
+    'attempts': 2, 'timeIncrement': 0.0125, 'increment': 1, 'stepTime': 0.0125, 
+    'step': 3, 'jobName': 'Job20231127velBCdispX', 'severe': 3, 
+    'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 1, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.025, 
+    'attempts': 1, 'timeIncrement': 0.0125, 'increment': 2, 'stepTime': 0.025, 
+    'step': 3, 'jobName': 'Job20231127velBCdispX', 'severe': 1, 
+    'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 2, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.04375, 
+    'attempts': 1, 'timeIncrement': 0.01875, 'increment': 3, 
+    'stepTime': 0.04375, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 3, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.071875, 
+    'attempts': 1, 'timeIncrement': 0.028125, 'increment': 4, 
+    'stepTime': 0.071875, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 4, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.1140625, 
+    'attempts': 1, 'timeIncrement': 0.0421875, 'increment': 5, 
+    'stepTime': 0.1140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 5, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.1640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 6, 
+    'stepTime': 0.1640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 6, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.2140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 7, 
+    'stepTime': 0.2140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 7, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.2640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 8, 
+    'stepTime': 0.2640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 8, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.3140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 9, 
+    'stepTime': 0.3140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 9, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.3640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 10, 
+    'stepTime': 0.3640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 10, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.4140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 11, 
+    'stepTime': 0.4140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 11, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.4640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 12, 
+    'stepTime': 0.4640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 12, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.5140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 13, 
+    'stepTime': 0.5140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 0, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 13, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.5640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 14, 
+    'stepTime': 0.5640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 14, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.6140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 15, 
+    'stepTime': 0.6140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 15, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.6640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 16, 
+    'stepTime': 0.6640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 16, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.7140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 17, 
+    'stepTime': 0.7140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 17, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.7640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 18, 
+    'stepTime': 0.7640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 18, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.8140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 19, 
+    'stepTime': 0.8140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 19, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.8640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 20, 
+    'stepTime': 0.8640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 20, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.9140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 21, 
+    'stepTime': 0.9140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 2, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 21, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 2.9640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 22, 
+    'stepTime': 0.9640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 22, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.0140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 23, 
+    'stepTime': 1.0140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 23, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.0640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 24, 
+    'stepTime': 1.0640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 24, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.1140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 25, 
+    'stepTime': 1.1140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 25, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.1640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 26, 
+    'stepTime': 1.1640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 26, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.2140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 27, 
+    'stepTime': 1.2140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 9, 'iterations': 10, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 27, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.2640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 28, 
+    'stepTime': 1.2640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 12, 'iterations': 13, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 28, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.3140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 29, 
+    'stepTime': 1.3140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 29, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.3640625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 30, 
+    'stepTime': 1.3640625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 6, 'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 30, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.4140625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 31, 
+    'stepTime': 1.4140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 11, 'iterations': 12, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 31, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'DISPLACEMENT INCREMENT FOR CONTACT IS TOO BIG.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(WARNING, {'phase': STANDARD_PHASE, 
+    'message': 'EXCESSIVE DISTORTION AT A TOTAL OF 4 INTEGRATION POINTS IN SOLID (CONTINUUM) ELEMENTS', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.4140625, 
+    'attempts': ' 1U', 'timeIncrement': 0.05, 'increment': 32, 
+    'stepTime': 1.4140625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 6, 'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.4265625, 
+    'attempts': 2, 'timeIncrement': 0.0125, 'increment': 32, 
+    'stepTime': 1.4265625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 6, 'iterations': 8, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 32, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.4453125, 
+    'attempts': 1, 'timeIncrement': 0.01875, 'increment': 33, 
+    'stepTime': 1.4453125, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 33, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.4734375, 
+    'attempts': 1, 'timeIncrement': 0.028125, 'increment': 34, 
+    'stepTime': 1.4734375, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 6, 'iterations': 9, 'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 34, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.515625, 
+    'attempts': 1, 'timeIncrement': 0.0421875, 'increment': 35, 
+    'stepTime': 1.515625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 5, 'iterations': 8, 'phase': STANDARD_PHASE, 'equilibrium': 3})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 35, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.565625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 36, 
+    'stepTime': 1.565625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 5, 'iterations': 9, 'phase': STANDARD_PHASE, 'equilibrium': 4})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 36, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.615625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 37, 
+    'stepTime': 1.615625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 2, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 37, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.665625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 38, 
+    'stepTime': 1.665625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 5, 'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 38, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.715625, 
+    'attempts': 1, 'timeIncrement': 0.05, 'increment': 39, 
+    'stepTime': 1.715625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 5, 'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 39, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.715625, 
+    'attempts': ' 1U', 'timeIncrement': 0.05, 'increment': 40, 
+    'stepTime': 1.715625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 6, 'iterations': 6, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.728125, 
+    'attempts': 2, 'timeIncrement': 0.0125, 'increment': 40, 
+    'stepTime': 1.728125, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 40, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.746875, 
+    'attempts': 1, 'timeIncrement': 0.01875, 'increment': 41, 
+    'stepTime': 1.746875, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 7, 'iterations': 8, 'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 41, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.746875, 
+    'attempts': ' 1U', 'timeIncrement': 0.028125, 'increment': 42, 
+    'stepTime': 1.746875, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.75390625, 
+    'attempts': 2, 'timeIncrement': 0.00703125, 'increment': 42, 
+    'stepTime': 1.75390625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 3, 'iterations': 5, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 42, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.75390625, 
+    'attempts': ' 1U', 'timeIncrement': 0.010546875, 'increment': 43, 
+    'stepTime': 1.75390625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 15, 'iterations': 15, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {'totalTime': 3.75390625, 
+    'attempts': ' 2U', 'timeIncrement': 0.00263671875, 'increment': 43, 
+    'stepTime': 1.75390625, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 7, 'iterations': 7, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.7545654296875, 'attempts': 3, 
+    'timeIncrement': 0.0006591796875, 'increment': 43, 
+    'stepTime': 1.7545654296875, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 1, 'iterations': 3, 'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 43, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.7545654296875, 'attempts': ' 1U', 
+    'timeIncrement': 0.00098876953125, 'increment': 44, 
+    'stepTime': 1.7545654296875, 'step': 3, 'jobName': 'Job20231127velBCdispX', 
+    'severe': 4, 'iterations': 4, 'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75481262207031, 'attempts': 2, 
+    'timeIncrement': 0.0002471923828125, 'increment': 44, 
+    'stepTime': 1.75481262207031, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 0, 'iterations': 1, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 44, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75518341064453, 'attempts': 1, 
+    'timeIncrement': 0.00037078857421875, 'increment': 45, 
+    'stepTime': 1.75518341064453, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 45, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75518341064453, 'attempts': ' 1U', 
+    'timeIncrement': 0.000556182861328125, 'increment': 46, 
+    'stepTime': 1.75518341064453, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 5, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75532245635986, 'attempts': 2, 
+    'timeIncrement': 0.000139045715332031, 'increment': 46, 
+    'stepTime': 1.75532245635986, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 1, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 46, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75532245635986, 'attempts': ' 1U', 
+    'timeIncrement': 0.000208568572998047, 'increment': 47, 
+    'stepTime': 1.75532245635986, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 6, 'iterations': 6, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75537459850311, 'attempts': 2, 
+    'timeIncrement': 5.21421432495117e-05, 'increment': 47, 
+    'stepTime': 1.75537459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 47, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75537459850311, 'attempts': ' 1U', 
+    'timeIncrement': 7.82132148742676e-05, 'increment': 48, 
+    'stepTime': 1.75537459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 7, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75539459850311, 'attempts': 2, 'timeIncrement': 2e-05, 
+    'increment': 48, 'stepTime': 1.75539459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 0, 'iterations': 2, 
+    'phase': STANDARD_PHASE, 'equilibrium': 2})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 48, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75542459850311, 'attempts': 1, 'timeIncrement': 3e-05, 
+    'increment': 49, 'stepTime': 1.75542459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 4, 'iterations': 5, 
+    'phase': STANDARD_PHASE, 'equilibrium': 1})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 49, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75542459850311, 'attempts': ' 1U', 'timeIncrement': 4.5e-05, 
+    'increment': 50, 'stepTime': 1.75542459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 7, 'iterations': 7, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'Time increment required is less than the minimum specified', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75542459850311, 'attempts': ' 2U', 'timeIncrement': 2e-05, 
+    'increment': 50, 'stepTime': 1.75542459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 4, 'iterations': 4, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 
+    'step': 2, 'frame': 50, 'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(STATUS, {
+    'totalTime': 3.75542459850311, 'attempts': 3, 'timeIncrement': 1e-35, 
+    'increment': 50, 'stepTime': 1.75542459850311, 'step': 3, 
+    'jobName': 'Job20231127velBCdispX', 'severe': 0, 'iterations': 0, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['Job20231127velBCdispX']._Message(ERROR, {'phase': STANDARD_PHASE, 
+    'message': 'THE ANALYSIS HAS BEEN TERMINATED DUE TO PREVIOUS ERRORS. ALL OUTPUT REQUESTS HAVE BEEN WRITTEN FOR THE LAST CONVERGED INCREMENT.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ABORTED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase failed due to errors', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(ERROR, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20231127velBCdispX'})
+mdb.jobs['Job20231127velBCdispX']._Message(JOB_ABORTED, {
+    'message': 'Abaqus/Standard Analysis exited with an error - Please see the  message file for possible error messages if the file exists.', 
+    'jobName': 'Job20231127velBCdispX'})
+# Save by xinlo on 2023_11_27-20.20.42; build 2017 2016_09_27-17.54.59 126836
+# Save by xinlo on 2023_11_27-20.20.58; build 2017 2016_09_27-17.54.59 126836
+# Save by xinlo on 2023_11_27-20.23.35; build 2017 2016_09_27-17.54.59 126836
+# Save by xinlo on 2023_11_27-20.23.36; build 2017 2016_09_27-17.54.59 126836
