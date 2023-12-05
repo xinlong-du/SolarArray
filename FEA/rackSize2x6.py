@@ -36,10 +36,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 1.69*in2m**2;     #cross-sectional area
-Iz_pu = 35.6*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 2.48*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.00408*in2m**4;  #torsional moment of inertia of section
+A_pu = 0.940*in2m**2;     #cross-sectional area
+Iz_pu = 9.65*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 1.52*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00109*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -161,7 +161,7 @@ g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
 # wind pressure
 #pMax=-2352.8;
-pMax=2446.912;
+pMax=1726.6;
 f_m=84.0*in2m*41.26*in2m*pMax;
 f_mCo=0.1*f_m/32;     #corner, 4 in total
 f_mEd=0.1*f_m/32*2;   #edge, 8 in total
@@ -218,7 +218,7 @@ ndGloEnd810=nodeDisp(810);
 ndLocYend609=39.3701*ndGloEnd609[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd609[0]*math.sin(30/180*math.pi); #m to in
 
 #required strength for Cb=1
-reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.67/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.3/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
 
 #available strength for beam charts in AISI Manual
 ubLength=262.56; #in

@@ -36,10 +36,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 0.822*in2m**2;     #cross-sectional area
-Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
+A_pu = 0.776*in2m**2;     #cross-sectional area
+Iz_pu = 4.36*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.677*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00109*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -134,12 +134,12 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=2); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=2); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
+# vfo.plot_modeshape(modenumber=1, scale=2); #plot mode shape 1
+# vfo.plot_modeshape(modenumber=2, scale=2); #plot mode shape 2
+# vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
+# vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
+# vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
+# vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
 # gravity loads
@@ -156,7 +156,7 @@ g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
 # wind pressure
 #pMax=-2352.8;
-pMax=2446.912;
+pMax=1726.6;
 f_m=84.0*in2m*41.26*in2m*pMax;
 f_mCo=0.1*f_m/32;     #corner, 4 in total
 f_mEd=0.1*f_m/32*2;   #edge, 8 in total
