@@ -36,10 +36,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 1.69*in2m**2;     #cross-sectional area
-Iz_pu = 35.6*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 2.48*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.00408*in2m**4;  #torsional moment of inertia of section
+A_pu = 0.822*in2m**2;     #cross-sectional area
+Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -57,7 +57,7 @@ section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
 i=0;
-for j in range (0,6):
+for j in range (0,10):
     node(501+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
     node(502+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
     node(503+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
@@ -74,16 +74,11 @@ for j in range (0,6):
     node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
     node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
 
-node(600, -105.5808*in2m, (-99.2500-5.0)*in2m, 31.0611*in2m)
-node(619, -105.5808*in2m, (153.3100+5.0)*in2m, 31.0611*in2m)
-node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
-node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
-
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(600, 1, 1, 1, 0, 0, 0);
-fix(619, 1, 0, 1, 0, 0, 0);
-fix(800, 1, 1, 1, 0, 0, 0);  
-fix(819, 1, 0, 1, 0, 0, 0);
+fix(607, 1, 1, 1, 0, 0, 0);
+fix(624, 1, 0, 1, 0, 0, 0);
+fix(807, 1, 1, 1, 0, 0, 0);  
+fix(824, 1, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -95,18 +90,18 @@ vecxz = [0.0-(-88.0), 0.0, 92.25-41.25]; #local z' direction (nodes 104 - 107)
 geomTransf('Linear', purlinTransfTag, *vecxz);
 
 # purlins
-nPurlin1 = [600,601,603,604,606,607,609,610,612,613,615,616,618,619]; #nodes of purlin # 1
-nPurlin2 = [800,801,803,804,806,807,809,810,812,813,815,816,818,819]; #nodes of purlin # 2
-for i in range (0,13):
+nPurlin1 = [601,603,604,606,607,609,610,612,613,615,616,618,619,621,622,624,625,627,628,630]; #nodes of purlin # 1
+nPurlin2 = [801,803,804,806,807,809,810,812,813,815,816,818,819,821,822,824,825,827,828,830]; #nodes of purlin # 2
+for i in range (0,19):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
-    element('elasticBeamColumn', i+500, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+501, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     # purlin # 2
-    element('elasticBeamColumn', i+600, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+601, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 i=0;
-for j in range (0,6):
+for j in range (0,10):
     #                    elemID               node1          node2          node3          node4 counter-clockwise
     element('ShellMITC4',(24*i+1)*1000+j+1, *[501+i*700+j*3, 601+i*700+j*3, 602+i*700+j*3, 502+i*700+j*3], moduleSecTag)
     element('ShellMITC4',(24*i+2)*1000+j+1, *[601+i*700+j*3, 701+i*700+j*3, 702+i*700+j*3, 602+i*700+j*3], moduleSecTag)
@@ -139,8 +134,8 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=1, scale=2); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=2); #plot mode shape 2
 vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
@@ -171,7 +166,7 @@ timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
 
 for i in range (0,1):
-    for j in range (0,6):
+    for j in range (0,10):
         load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
         load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
         load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
@@ -192,9 +187,9 @@ for i in range (0,1):
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
 
-eleRec=list(range(501,513))+list(range(601,613));
-recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+eleRec=list(range(501,519))+list(range(601,619));
+recorder('Element', '-file', f'{dataDir}/test8PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Node', '-file', f'{dataDir}/test8PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -209,21 +204,25 @@ print('Finished')
 
 # postprocessing---------------------------------------------------------------
 # forces and displacements at mid span
-efLocEnd506=eleResponse(506, 'localForces')
-efLocEnd606=eleResponse(606, 'localForces')
-ndGloEnd609=nodeDisp(609);
-ndGloEnd610=nodeDisp(610);
-ndGloEnd809=nodeDisp(809);
-ndGloEnd810=nodeDisp(810);
-ndLocYend609=39.3701*ndGloEnd609[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd609[0]*math.sin(30/180*math.pi); #m to in
+efLocEnd510=eleResponse(510, 'localForces')
+efLocEnd610=eleResponse(610, 'localForces')
+efLocEnd504=eleResponse(504, 'localForces')
+efLocEnd604=eleResponse(604, 'localForces')
+efLocEnd516=eleResponse(516, 'localForces')
+efLocEnd616=eleResponse(616, 'localForces')
+ndGloEnd615=nodeDisp(615);
+ndGloEnd616=nodeDisp(616);
+ndGloEnd815=nodeDisp(815);
+ndGloEnd816=nodeDisp(816);
+ndLocYend615=39.3701*ndGloEnd615[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd615[0]*math.sin(30/180*math.pi); #m to in
 
 #required strength for Cb=1
-reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.67/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMoment=efLocEnd510[5]*0.0002248*39.3701/2.24/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
 
 #available strength for beam charts in AISI Manual
-ubLength=262.56; #in
-avaMoment=60.9; #=required strength, Section 12CS3.5x085
+ubLength=262.56/2; #in
+avaMoment=43; #=required strength, Section 12CS3.5x085
 
 wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=10)
 #------------------------------------------------------------------------------
