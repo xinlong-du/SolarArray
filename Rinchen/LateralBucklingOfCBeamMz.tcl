@@ -1,4 +1,5 @@
 # Lateral buckling of simply supported C beam subjected to major axis bending
+# Units: N, mm
 # ----------------------------------------------------------------------------
 set systemTime [clock seconds] 
 puts "Starting Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
@@ -12,28 +13,30 @@ file mkdir $dir;          # create data directory
 
 # define GEOMETRY
 #-------------------------------------------------------------
+set in2mm 25.4;
+set eleLen 10;
 #Nodes, NodeNumber, xCoord, yCoord, zCoord
-node 1	0	0	0
-node 2	200	0	0
-node 3	400	0	0
-node 4	600	0	0
-node 5	800	0	0
-node 6	1000	0	0
-node 7	1200	0	0
-node 8	1400	0	0
-node 9	1600	0	0
-node 10	1800	0	0
-node 11	2000	0	0
-node 12	2200	0	0
-node 13	2400	0	0
-node 14	2600	0	0
-node 15	2800	0	0
-node 16	3000	0	0
-node 17	3200	0	0
-node 18	3400	0	0
-node 19	3600	0	0
-node 20	3800	0	0
-node 21	4000	0	0
+node 1	[expr $eleLen*0.0*$in2mm]	0	0
+node 2	[expr $eleLen*1.0*$in2mm]	0	0
+node 3	[expr $eleLen*2.0*$in2mm]	0	0
+node 4	[expr $eleLen*3.0*$in2mm]	0	0
+node 5	[expr $eleLen*4.0*$in2mm]	0	0
+node 6	[expr $eleLen*5.0*$in2mm]	0	0
+node 7	[expr $eleLen*6.0*$in2mm]	0	0
+node 8	[expr $eleLen*7.0*$in2mm]	0	0
+node 9	[expr $eleLen*8.0*$in2mm]	0	0
+node 10	[expr $eleLen*9.0*$in2mm]	0	0
+node 11	[expr $eleLen*10.0*$in2mm]	0	0
+node 12	[expr $eleLen*11.0*$in2mm]	0	0
+node 13	[expr $eleLen*12.0*$in2mm]	0	0
+node 14	[expr $eleLen*13.0*$in2mm]	0	0
+node 15	[expr $eleLen*14.0*$in2mm]	0	0
+node 16	[expr $eleLen*15.0*$in2mm]	0	0
+node 17	[expr $eleLen*16.0*$in2mm]	0	0
+node 18	[expr $eleLen*17.0*$in2mm]	0	0
+node 19	[expr $eleLen*18.0*$in2mm]	0	0
+node 20	[expr $eleLen*19.0*$in2mm]	0	0
+node 21	[expr $eleLen*20.0*$in2mm]	0	0
 
 # define BOUNDARY CONDITIONS (single point constraint)
 #----------------------------------------------------------
@@ -63,11 +66,11 @@ uniaxialMaterial Steel01 $IDsteel $Fy $Es $Bs;	# build steel01 material
 
 # define SECTION DIMENSION AND FIBER DIVISION
 #----------------------------------------------------------------
-set D 100.0;		# Depth
-set B 75.0; 		# Flange width
-set L 16.5;		# Lip
-set t 3.0;		# section thickness for C-section	
-set r 3.0;		# corner radius (to inside face)
+set D [expr 8.0*$in2mm];		# Depth
+set B [expr 2.5*$in2mm]; 		# Flange width
+set L [expr 0.773*$in2mm];		# Lip
+set t [expr 0.059*$in2mm];		# section thickness for C-section	
+set r [expr 0.1875*$in2mm];		# corner radius (to inside face)
 set nfdw 50;		# number of fibers along web depth
 set nfbf 40;		# number of fibers along flange
 set nfL 10;		# number of fibers along lip
@@ -88,9 +91,13 @@ set numIntgrPts 5; # number of integration points along each element
 set BeamTransfTag 1;# associate a tag to column transformation			   
 geomTransf Corotational $BeamTransfTag 0 0 1;# define geometric transformation: performs a corotational geometric
 #transformation of beam stiffness and resisting force from the basic system to the global-coordinate system
+puts $y0;
+puts $z0;
 set cy 0.0;
-set cz -63.46;
+set cz $z0;
 set omg 0.0;
+puts $cy;
+puts $cz;
 # Define ELEMENTS
 #-------------------------------------------------------------
 for {set i 1} {$i<$endNode} {incr i 1} {
@@ -120,14 +127,14 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/CB_Mz10P.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/8CS2.5x059Mz200inP.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode 0 0 0 0 0 -1000000.0 0;
-  load $endNode 0 0 0 0 0 1000000.0 0;
+  load $startNode 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
+  load $endNode   0 0 0 0 0 [expr  4448.2216*25.4] 0;
 }
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
