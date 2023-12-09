@@ -143,11 +143,13 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.0002; #Displacement increment/decrement 
+set Dincr -0.0001; #Displacement increment/decrement 
 set IDctrlNode $middleNode
 set IDctrlDOF 4;
 set Dmax 10
-integrator ArcLength 1.0 1.0; #Use this for curve with peak
+#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+#                              node        dof        init   Jd min    max
+integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
 set ok [analyze 10000]; 
