@@ -188,6 +188,22 @@ for {set i 0} {$i<6} {incr i 1} {
     element ElasticTimoshenkoBeam [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
     element ElasticTimoshenkoBeam [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
     }
+    if 0 {
+    element dispBeamColumn [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 10001+$i] [expr 801+$i*3] [expr 701+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 11001+$i] [expr 701+$i*3] [expr 601+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 501+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 13001+$i] [expr 903+$i*3] [expr 803+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 14001+$i] [expr 803+$i*3] [expr 703+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 15001+$i] [expr 703+$i*3] [expr 603+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 16001+$i] [expr 603+$i*3] [expr 503+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 17001+$i] [expr 901+$i*3] [expr 902+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 18001+$i] [expr 902+$i*3] [expr 903+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
+    element dispBeamColumn [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
+    }
+    
+    #element dispBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 801+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
 }
 
 # define initial Perturbation Load
@@ -236,16 +252,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.0001; #Displacement increment/decrement 
+set Dincr -0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 100]; 
+set ok [analyze 1000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
