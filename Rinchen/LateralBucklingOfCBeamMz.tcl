@@ -14,7 +14,7 @@ file mkdir $dir;          # create data directory
 # define GEOMETRY
 #-------------------------------------------------------------
 set in2mm 25.4;
-set eleLen 10;
+set eleLen 13.128;
 #Nodes, NodeNumber, xCoord, yCoord, zCoord
 node 1	[expr $eleLen*0.0*$in2mm]	0	0
 node 2	[expr $eleLen*1.0*$in2mm]	0	0
@@ -111,7 +111,7 @@ element dispBeamColumn $elemID $nodeI $nodeJ $numIntgrPts $BeamSecTag $BeamTrans
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode 0 0 0 -242.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode 0 0 0 242.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -127,7 +127,7 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/8CS2.5x059Mz200inN.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/8CS2.5x059Mz262inP.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -147,9 +147,9 @@ set Dincr -0.0001; #Displacement increment/decrement
 set IDctrlNode $middleNode
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for positive branch
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr; #use this for negative branch
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
 set ok [analyze 10000]; 

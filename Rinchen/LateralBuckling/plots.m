@@ -1,6 +1,6 @@
 close all;clear;clc;
-CB_MzP=load('8CS2.5x059Mz200inP.out');
-CB_MzN=load('8CS2.5x059Mz200inN.out');
+CB_MzP=load('8CS2.5x059Mz262inP.out');
+CB_MzN=load('8CS2.5x059Mz262inN.out');
 plot(CB_MzN(:,5),CB_MzN(:,1))
 hold on
 plot(CB_MzP(:,5),CB_MzP(:,1))

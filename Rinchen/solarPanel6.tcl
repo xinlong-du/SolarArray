@@ -9,6 +9,8 @@ puts "Starting Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
 set startTime [clock clicks -milliseconds];
 #---------------------------------------------------------------------------
 wipe; # clear opensees model
+source DisplayPlane.tcl;		# procedure for displaying a plane in model
+source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source Csection.tcl;   # C-section with round corners
 model basic -ndm 3 -ndf 7;# 3 dimensions, 7 dof per node
 set dir solarPanel;  #set dir lateral buckling of C section
@@ -147,6 +149,9 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 recorder Node -file $dir/solarPurlin1N.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
 recorder Node -file $dir/solarPurlin2N.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
+# Define DISPLAY -------------------------------------------------------------
+DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape
+
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
@@ -156,6 +161,9 @@ pattern Plain 2 Linear {
   load $startNode2 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
   load $endNode2   0 0 0 0 0 [expr  4448.2216*25.4] 0;
 }
+
+recorder plot $dir/solarPurlin1N.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
+
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
 constraints Plain;           # how it handles boundary conditions
