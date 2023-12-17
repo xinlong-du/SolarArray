@@ -12,31 +12,31 @@ for i=1:length(nodeRec)
     nodeDispDiv{i}=nodeDisp(:,6*(i-1)+2:6*i+1);
 end
 
-nd1508=nodeDispDiv{find(nodeRec==1508)};
-nd1511=nodeDispDiv{find(nodeRec==1511)};
-nd1515=nodeDispDiv{find(nodeRec==1515)};
-nd1517=nodeDispDiv{find(nodeRec==1517)};
-nd1520=nodeDispDiv{find(nodeRec==1520)};
-nd1523=nodeDispDiv{find(nodeRec==1523)};
+nd1408=nodeDispDiv{find(nodeRec==1408)};
+nd1411=nodeDispDiv{find(nodeRec==1411)};
+nd1414=nodeDispDiv{find(nodeRec==1414)};
+nd1417=nodeDispDiv{find(nodeRec==1417)};
+nd1420=nodeDispDiv{find(nodeRec==1420)};
+nd1423=nodeDispDiv{find(nodeRec==1423)};
 
-nd1508LocY=(nd1508(:,3)*cos(30/180*pi)-nd1508(:,3)*sin(30/180*pi))*39.37; %m to in
-nd1511LocY=(nd1511(:,3)*cos(30/180*pi)-nd1511(:,3)*sin(30/180*pi))*39.37;
-nd1515LocY=(nd1515(:,3)*cos(30/180*pi)-nd1515(:,3)*sin(30/180*pi))*39.37;
-nd1517LocY=(nd1517(:,3)*cos(30/180*pi)-nd1517(:,3)*sin(30/180*pi))*39.37;
-nd1520LocY=(nd1520(:,3)*cos(30/180*pi)-nd1520(:,3)*sin(30/180*pi))*39.37;
-nd1523LocY=(nd1523(:,3)*cos(30/180*pi)-nd1523(:,3)*sin(30/180*pi))*39.37;
+nd1408LocY=(nd1408(:,3)*cos(30/180*pi)-nd1408(:,3)*sin(30/180*pi))*39.37; %m to in
+nd1411LocY=(nd1411(:,3)*cos(30/180*pi)-nd1411(:,3)*sin(30/180*pi))*39.37;
+nd1414LocY=(nd1414(:,3)*cos(30/180*pi)-nd1414(:,3)*sin(30/180*pi))*39.37;
+nd1417LocY=(nd1417(:,3)*cos(30/180*pi)-nd1417(:,3)*sin(30/180*pi))*39.37;
+nd1420LocY=(nd1420(:,3)*cos(30/180*pi)-nd1420(:,3)*sin(30/180*pi))*39.37;
+nd1423LocY=(nd1423(:,3)*cos(30/180*pi)-nd1423(:,3)*sin(30/180*pi))*39.37;
 
 hfig=figure;
 time=0.02:0.02:10;
-plot(time,nd1508LocY)
+plot(time,nd1408LocY)
 hold on
-plot(time,nd1511LocY)
-plot(time,nd1515LocY)
-plot(time,nd1517LocY)
-plot(time,nd1520LocY)
-plot(time,nd1523LocY)
+plot(time,nd1411LocY)
+plot(time,nd1414LocY)
+plot(time,nd1417LocY)
+plot(time,nd1420LocY)
+plot(time,nd1423LocY)
 set(gca,'FontSize',8,'FontName','Times New Roman')
-legend({'Panel 1','Panel 2','Panel 3','Panel 4','Panel 5','Panel 6'},'FontSize',8,'FontName','Times New Roman')
+legend({'Module 1','Module 2','Module 3','Module 4','Module 5','Module 6'},'FontSize',8,'FontName','Times New Roman')
 legend('location','southeast')
 xlabel('Time (s)','FontSize',8,'FontName','Times New Roman')
 ylabel('Displacement (in)','FontSize',8,'FontName','Times New Roman')
@@ -45,20 +45,20 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\highQtrDisp.';
+fileout='.\centerDisp2.';
 print(hfig,[fileout,'tif'],'-r300','-dtiff');
 
 hfig=figure;
 time=0.02:0.02:10;
-plot(time,nd1508LocY./nd1517LocY)
+plot(time,nd1408LocY./nd1417LocY)
 hold on
-plot(time,nd1511LocY./nd1517LocY)
-plot(time,nd1515LocY./nd1517LocY)
-plot(time,nd1517LocY./nd1517LocY)
-plot(time,nd1520LocY./nd1517LocY)
-plot(time,nd1523LocY./nd1517LocY)
+plot(time,nd1411LocY./nd1417LocY)
+plot(time,nd1414LocY./nd1417LocY)
+plot(time,nd1417LocY./nd1417LocY)
+plot(time,nd1420LocY./nd1417LocY)
+plot(time,nd1423LocY./nd1417LocY)
 set(gca,'FontSize',8,'FontName','Times New Roman')
-legend({'Panel 1/Panel 4','Panel 2/Panel 4','Panel 3/Panel 4','Panel 4/Panel 4','Panel 5/Panel 4','Panel 6/Panel 4'},'FontSize',8,'FontName','Times New Roman')
+legend({'Module 1/Module 4','Module 2/Module 4','Module 3/Module 4','Module 4/Module 4','Module 5/Module 4','Module 6/Module 4'},'FontSize',8,'FontName','Times New Roman')
 legend('location','southeast')
 xlabel('Time (s)','FontSize',8,'FontName','Times New Roman')
 ylabel('Displacement (in)','FontSize',8,'FontName','Times New Roman')
@@ -68,6 +68,6 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\highQtrRelaDisp.';
+fileout='.\centerRelaDisp.';
 print(hfig,[fileout,'tif'],'-r300','-dtiff');
 end
