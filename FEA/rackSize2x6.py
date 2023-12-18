@@ -211,11 +211,20 @@ print('Finished')
 # forces and displacements at mid span
 efLocEnd506=eleResponse(506, 'localForces')
 efLocEnd606=eleResponse(606, 'localForces')
+ndGloEnd509=nodeDisp(509);
+ndGloEnd608=nodeDisp(608);
 ndGloEnd609=nodeDisp(609);
 ndGloEnd610=nodeDisp(610);
+ndGloEnd611=nodeDisp(611);
+ndGloEnd709=nodeDisp(709);
 ndGloEnd809=nodeDisp(809);
 ndGloEnd810=nodeDisp(810);
+ndLocYend509=39.3701*ndGloEnd509[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd509[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend608=39.3701*ndGloEnd608[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd608[0]*math.sin(30/180*math.pi); #m to in
 ndLocYend609=39.3701*ndGloEnd609[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd609[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend610=39.3701*ndGloEnd610[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd610[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend611=39.3701*ndGloEnd611[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd611[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709[0]*math.sin(30/180*math.pi); #m to in
 
 #required strength for Cb=1
 reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.14/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
