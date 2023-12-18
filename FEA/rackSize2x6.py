@@ -80,10 +80,15 @@ node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
 node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(600, 1, 1, 1, 0, 0, 0);
-fix(619, 1, 0, 1, 0, 0, 0);
-fix(800, 1, 1, 1, 0, 0, 0);  
-fix(819, 1, 0, 1, 0, 0, 0);
+# fix(600, 1, 1, 1, 0, 0, 0);
+# fix(619, 1, 0, 1, 0, 0, 0);
+# fix(800, 1, 1, 1, 0, 0, 0);  
+# fix(819, 1, 0, 1, 0, 0, 0);
+
+fix(600, 1, 1, 1, 1, 1, 1);
+fix(619, 1, 1, 1, 1, 1, 1);
+fix(800, 1, 1, 1, 1, 1, 1);  
+fix(819, 1, 1, 1, 1, 1, 1);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -139,12 +144,12 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
-vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
-vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
-vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
-vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
+# vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
+# vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+# vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
+# vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
+# vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
+# vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
 
 # define loads-----------------------------------------------------------------
 # gravity loads
@@ -211,6 +216,52 @@ print('Finished')
 # forces and displacements at mid span
 efLocEnd506=eleResponse(506, 'localForces')
 efLocEnd606=eleResponse(606, 'localForces')
+
+efLocEnd5xx=[None]*13;
+efLocEnd6xx=[None]*13;
+for i in range (0,13):
+    efLocEnd5xx[i]=eleResponse(i+500, 'localForces');
+    efLocEnd6xx[i]=eleResponse(i+600, 'localForces');
+#%%
+moLocEnd5xx=[None]*14;
+moLocEnd6xx=[None]*14;
+for i in range (0,13):
+    moLocEnd5xx[i]=efLocEnd5xx[i][5];
+    moLocEnd6xx[i]=efLocEnd6xx[i][5];
+moLocEnd5xx[13]=-efLocEnd5xx[12][11];
+moLocEnd6xx[13]=-efLocEnd6xx[12][11];
+
+coordNdPurlin1=[None]*14;
+for i in range (0,14):
+    coordNdPurlin1[i]=nodeCoord(nPurlin1[i],2);
+
+coordNdPurlin1m=[x - coordNdPurlin1[0] for x in coordNdPurlin1];
+import matplotlib.pyplot as plt
+fig = plt.figure(figsize=(12,12))
+ax = fig.add_axes([0, 0, 1, 1])
+ax.plot(coordNdPurlin1m,moLocEnd5xx,linewidth=0.5)
+plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
+ax.tick_params(direction="in")
+ax.set_xlim(0.0, coordNdPurlin1m[13])
+ax.set_ylim(-3500,6500)
+plt.xticks([0.0,0.25*coordNdPurlin1m[13],0.5*coordNdPurlin1m[13],0.75*coordNdPurlin1m[13],coordNdPurlin1m[13]])
+plt.yticks(np.arange(-3500, 6500, 100))
+plt.grid()
+#plt.show()
+plt.ylabel('Mz (N-m)',fontsize=8)
+plt.xlabel('Y (m)',fontsize=8);
+file_name = 'momentFixedEnds'
+plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
+
+#%% calculate Cb
+Mmax=6103.0;
+Ma=650.0;
+Mb=3224.8;
+Mc=620.0;
+Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
+
+#%%
 ndGloEnd509=nodeDisp(509);
 ndGloEnd608=nodeDisp(608);
 ndGloEnd609=nodeDisp(609);
@@ -227,12 +278,13 @@ ndLocYend611=39.3701*ndGloEnd611[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd611
 ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709[0]*math.sin(30/180*math.pi); #m to in
 
 #required strength for Cb=1
-reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.14/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMoment=max([abs(number) for number in moLocEnd5xx]);
+reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
 
 #available strength for beam charts in AISI Manual
 ubLength=262.56; #in
 avaMoment=79; #=required strength, Section 12CS3.5x085
 
-wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+# wipe()
+# vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
 #------------------------------------------------------------------------------
