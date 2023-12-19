@@ -239,9 +239,9 @@ plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
 ax.tick_params(direction="in")
 ax.set_xlim(0.0, coordNdPurlin1m[13])
-ax.set_ylim(-3500,6500)
+ax.set_ylim(-9500,100)
 plt.xticks([0.0,0.25*coordNdPurlin1m[13],0.5*coordNdPurlin1m[13],0.75*coordNdPurlin1m[13],coordNdPurlin1m[13]])
-plt.yticks(np.arange(-3500, 6500, 100))
+plt.yticks(np.arange(-9500, 100, 100))
 plt.grid()
 #plt.show()
 plt.ylabel('Mz (N-m)',fontsize=8)
@@ -250,10 +250,10 @@ file_name = 'momentFixedEnds'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
 #%% calculate Cb
-Mmax=6103.3;
-Ma=650.0;
-Mb=3221.5;
-Mc=620.0;
+Mmax=9326.1;
+Ma=6750.0;
+Mb=9326.1;
+Mc=6720.0;
 Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
 
 #%%
@@ -274,7 +274,7 @@ ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709
 
 #required strength for Cb=1
 reqMoment=max([abs(number) for number in moLocEnd5xx]);
-reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.14/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
 
 #available strength for beam charts in AISI Manual
 ubLength=260.0; #in
