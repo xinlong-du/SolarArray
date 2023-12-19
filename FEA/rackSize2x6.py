@@ -262,9 +262,9 @@ file_name = 'momentFixedEnds'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
 #%% calculate Cb
-Mmax=6103.0;
+Mmax=6103.3;
 Ma=650.0;
-Mb=3224.8;
+Mb=3221.5;
 Mc=620.0;
 Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
 
