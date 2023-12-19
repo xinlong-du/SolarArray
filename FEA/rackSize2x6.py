@@ -20,7 +20,7 @@ model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
 #os.mkdir(dataDir);
 in2m=0.0254; #convert inch to meter
-g=9.8;       #gravitational acceleration (m/s2)
+g=9.8*1.2;       #gravitational acceleration (m/s2), 1.2 is for 1.2D+1.0W
 
 # MATERIAL properties----------------------------------------------------------
 Es = 2.0e11;		      #Steel Young's modulus
@@ -250,10 +250,10 @@ file_name = 'momentFixedEnds'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
 #%% calculate Cb
-Mmax=9326.1;
-Ma=6750.0;
-Mb=9326.1;
-Mc=6720.0;
+Mmax=9461.9;
+Ma=6850.0;
+Mb=9461.9;
+Mc=6820.0;
 Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
 
 #%%
