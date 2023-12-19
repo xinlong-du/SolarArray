@@ -36,17 +36,10 @@ rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
 # SECTION properties for purlin C-Section 12CS3.5x105 in AISI Manual (2002)
-# A_pu = 2.09*in2m**2;     #cross-sectional area
-# Iz_pu = 43.8*in2m**4;     #second moment of area about the local z-axis
-# Iy_pu = 3.07*in2m**4;    #second moment of area about the local y-axis
-# Jx_pu = 0.00769*in2m**4;  #torsional moment of inertia of section
-# mass_pu = A_pu*rho_s;     #mass per unit length
-
-# SECTION properties for purlin C-Section 8CS3.5x059 in AISI Manual (2002)
-A_pu = 0.940*in2m**2;     #cross-sectional area
-Iz_pu = 9.65*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 1.52*in2m**4;     #second moment of area about the local y-axis
-Jx_pu = 0.00109*in2m**4;  #torsional moment of inertia of section
+A_pu = 2.09*in2m**2;     #cross-sectional area
+Iz_pu = 43.8*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 3.07*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.00769*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -87,15 +80,10 @@ node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
 node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
-# fix(600, 1, 1, 1, 0, 0, 0);
-# fix(619, 1, 0, 1, 0, 0, 0);
-# fix(800, 1, 1, 1, 0, 0, 0);  
-# fix(819, 1, 0, 1, 0, 0, 0);
-
-fix(600, 1, 1, 1, 1, 1, 1);
-fix(619, 1, 1, 1, 1, 1, 1);
-fix(800, 1, 1, 1, 1, 1, 1);  
-fix(819, 1, 1, 1, 1, 1, 1);
+fix(600, 1, 1, 1, 0, 0, 0);
+fix(619, 1, 0, 1, 0, 0, 0);
+fix(800, 1, 1, 1, 0, 0, 0);  
+fix(819, 1, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -286,11 +274,11 @@ ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709
 
 #required strength for Cb=1
 reqMoment=max([abs(number) for number in moLocEnd5xx]);
-reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMoment=efLocEnd506[5]*0.0002248*39.3701/1.14/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
 
 #available strength for beam charts in AISI Manual
 ubLength=260.0; #in
-avaMoment=25.5; #=required strength, Section 8CS3.5x059
+avaMoment=79; #=required strength, Section 12CS3.5x105
 
 # wipe()
 # vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
