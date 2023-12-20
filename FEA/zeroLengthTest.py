@@ -104,22 +104,27 @@ uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
 uniaxialMaterial('Parallel', 105, *[9,10,11])
 
 # material for rotZ-----------------------------------------------------------
-Fy=40.0;
-E0=5.0e4;
-b=0.05;
+Fy=15.0;
+E0=5.0e3;
+b=0.2;
 uniaxialMaterial('Steel01', 12, Fy, E0, b)
 
-E=7.0e3;
-Fy=-1.0e7;
-gap=-0.03;
+E=8.1e3;
+Fy=1.0e7;
+gap=0.02;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
 
-fpc=-1.4e3;
-epsc0=-0.1;
-fpcu=0.0;
-epsU=-0.06;
-uniaxialMaterial('Concrete01',14,fpc,epsc0,fpcu,epsU)
+alpha=0.05;
+ko=100;
+n=2;
+gamma=0.7;
+beta=0.5;
+Ao=5;
+deltaA=-200;
+deltaNu=1600;
+deltaEta=0.1;
+uniaxialMaterial('BoucWen', 14, alpha, ko, n, gamma, beta, Ao, deltaA, deltaNu, deltaEta)
 
 uniaxialMaterial('Parallel', 106, *[12,13,14])
 
@@ -141,7 +146,7 @@ system('BandGeneral'); # how to store and solve the system of equations in the a
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
 #integrator('LoadControl', 0.1)
-dof=5;
+dof=6;
 if dof==1:
     Dincr=0.1e-3;
     nSteps=35;
@@ -158,8 +163,8 @@ elif dof==5:
     Dincr=0.05/50;
     nSteps=50;
 elif dof==6:
-    Dincr=-0.05/50
-    nSteps=55;
+    Dincr=0.05/100;
+    nSteps=100;
                                   #Node,  dof, 1st incr, Jd,  min,   max
 integrator('DisplacementControl',    2,   dof,   Dincr,    1,  Dincr, Dincr);
 analysis('Static');	# define type of analysis static or transient
@@ -276,10 +281,12 @@ elif dof==6:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(-abaRotZ[abaRotZ.columns[14]],-0.001*abaRotZ[abaRotZ.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotZ[abaRotZ.columns[14]],0.001*abaRotZ[abaRotZ.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
     ax.set_xlabel('Z rotation (rad)',fontsize=fig_font_size)
     ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/rotZ.tif', transparent=False, bbox_inches='tight', dpi=100)
+    ax.set_ylim([-50,50])
+    plt.savefig('./Data/springOutput/rotZlocal.tif', transparent=False, bbox_inches='tight', dpi=100)
