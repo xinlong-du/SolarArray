@@ -28,35 +28,41 @@ fix(1, 1, 1, 1, 1, 1, 1);
 
 # material for dispX-----------------------------------------------------------
 Fy=1500.0;
-E0=1.0e6;
+E0=7.0e6;
 b=0.0001;
 uniaxialMaterial('Steel01', 1, Fy, E0, b)
 
-E=1.95e7;
+E=2.55e7;
 Fy=-1.0e6;
-gap=-2.1e-3;
+gap=-1.8e-3;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
 
 uniaxialMaterial('Parallel', 101, *[1,2])
 
 # material for dispY-----------------------------------------------------------
-Fy=4000.0;
-E0=1.5e7;
-b=0.0001;
+Fy=2000.0;
+E0=6.0e6;
+b=0.45;
 uniaxialMaterial('Steel01', 3, Fy, E0, b)
 
-E=4.0e5;
-Eneg=1.95e8;
-eta=0.0;
-uniaxialMaterial('Elastic', 4, E, eta, Eneg)
+# E=4.0e5;
+# Eneg=1.95e8;
+# eta=0.0;
+# uniaxialMaterial('Elastic', 4, E, eta, Eneg)
+
+E=7.7e7;
+Fy=-1.0e6;
+gap=-2.7e-4;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
 
 uniaxialMaterial('Parallel', 102, *[3,4])
 
 # material for dispZ-----------------------------------------------------------
-Fy=1650.0;
+Fy=1600.0;
 E0=7.0e6;
-b=0.002;
+b=0.001;
 uniaxialMaterial('Steel01', 103, Fy, E0, b)
 
 # material for rotX-----------------------------------------------------------
@@ -140,16 +146,16 @@ system('BandGeneral'); # how to store and solve the system of equations in the a
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
 #integrator('LoadControl', 0.1)
-dof=6;
+dof=3;
 if dof==1:
     Dincr=0.1e-3;
-    nSteps=50;
+    nSteps=35;
 elif dof==2:
     Dincr=1.5e-3/50;
     nSteps=50;
 elif dof==3:
     Dincr=0.1e-3;
-    nSteps=48;
+    nSteps=50;
 elif dof==4:
     Dincr=0.01/50;
     nSteps=50;
@@ -181,7 +187,7 @@ wipe()
 file_name = './Data/zeroLengthTest.out'
 nodeDisps = np.loadtxt(file_name)
 
-abaqusData=pd.ExcelFile('jointResponse.xlsx');
+abaqusData=pd.ExcelFile('jointResponseVelBC.xlsx');
 
 # dispX------------------------------------------------------------------------
 if dof==1:
@@ -192,7 +198,7 @@ if dof==1:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispX[abaDispX.columns[3]],abaDispX[abaDispX.columns[5]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(0.001*abaDispX[abaDispX.columns[14]],abaDispX[abaDispX.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
@@ -209,7 +215,7 @@ elif dof==2:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispY[abaDispY.columns[4]],abaDispY[abaDispY.columns[6]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(0.001*abaDispY[abaDispY.columns[14]],abaDispY[abaDispY.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
@@ -226,7 +232,7 @@ elif dof==3:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispZ[abaDispZ.columns[3]],abaDispZ[abaDispZ.columns[5]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(0.001*abaDispZ[abaDispZ.columns[14]],abaDispZ[abaDispZ.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
@@ -234,14 +240,14 @@ elif dof==3:
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/dispZ.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==4:
-    abaRotX=pd.read_excel(abaqusData,'rotX2');
+    abaRotX=pd.read_excel(abaqusData,'rotX');
     
     fig = plt.figure(figsize=big_fig_size)
     ax = fig.add_axes([0, 0, 1, 1])
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(abaRotX[abaRotX.columns[0]],0.001*abaRotX[abaRotX.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotX[abaRotX.columns[6]],0.001*abaRotX[abaRotX.columns[3]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
@@ -249,14 +255,14 @@ elif dof==4:
     ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/rotX.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==5:
-    abaRotY=pd.read_excel(abaqusData,'rotY2');
+    abaRotY=pd.read_excel(abaqusData,'rotY');
     
     fig = plt.figure(figsize=big_fig_size)
     ax = fig.add_axes([0, 0, 1, 1])
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(abaRotY[abaRotY.columns[0]],0.001*abaRotY[abaRotY.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotY[abaRotY.columns[1]],0.001*abaRotY[abaRotY.columns[3]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
@@ -271,7 +277,7 @@ elif dof==6:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(-abaRotZ[abaRotZ.columns[0]],-0.001*abaRotZ[abaRotZ.columns[1]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(-abaRotZ[abaRotZ.columns[14]],-0.001*abaRotZ[abaRotZ.columns[13]],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
