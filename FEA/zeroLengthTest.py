@@ -46,11 +46,6 @@ E0=6.0e6;
 b=0.45;
 uniaxialMaterial('Steel01', 3, Fy, E0, b)
 
-# E=4.0e5;
-# Eneg=1.95e8;
-# eta=0.0;
-# uniaxialMaterial('Elastic', 4, E, eta, Eneg)
-
 E=7.7e7;
 Fy=-1.0e6;
 gap=-2.7e-4;
@@ -66,44 +61,44 @@ b=0.001;
 uniaxialMaterial('Steel01', 103, Fy, E0, b)
 
 # material for rotX-----------------------------------------------------------
-Fy=1.0e2;
-E0=9.9e4;
-b=0.1;
+Fy=17.0;
+E0=2.9e4;
+b=0.13;
 uniaxialMaterial('Steel01', 5, Fy, E0, b)
 
-E=2.0e3;
+E=1.0e4;
 Fy=1.0e7;
-gap=0.0;
+gap=0.0088;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
 
-E=2.8e4;
+E=3.5e4;
 Fy=-1.0e3;
-gap=-0.0;
+gap=-0.0075;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
 
-E=9.6e4;
-uniaxialMaterial('Elastic', 8, E)
+# E=9.6e4;
+# uniaxialMaterial('Elastic', 8, E)
 
-uniaxialMaterial('Parallel', 104, *[5,6,7,8])
+uniaxialMaterial('Parallel', 104, *[5,6,7])
 
 # material for rotY-----------------------------------------------------------
-Fy=80.0;
-E0=8.0e3;
-b=0.04;
+Fy=28.0;
+E0=8.9e3;
+b=0.005;
 uniaxialMaterial('Steel01', 9, Fy, E0, b)
 
-E=1.6e3;
-Fy=1.0e7;
-gap=0.022;
-eta=0.99999;
+E=5.6e3;
+Fy=30.0;
+gap=0.027;
+eta=0.1;
 uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
 
-E=1.6e3;
-Fy=-1.0e7;
-gap=-0.022;
-eta=0.99999;
+E=5.0e3;
+Fy=-30;
+gap=-0.017;
+eta=0.09;
 uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
 
 uniaxialMaterial('Parallel', 105, *[9,10,11])
@@ -146,7 +141,7 @@ system('BandGeneral'); # how to store and solve the system of equations in the a
 test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
 algorithm('Linear');
 #integrator('LoadControl', 0.1)
-dof=3;
+dof=5;
 if dof==1:
     Dincr=0.1e-3;
     nSteps=35;
@@ -161,7 +156,7 @@ elif dof==4:
     nSteps=50;
 elif dof==5:
     Dincr=0.05/50;
-    nSteps=46;
+    nSteps=50;
 elif dof==6:
     Dincr=-0.05/50
     nSteps=55;
@@ -240,7 +235,7 @@ elif dof==3:
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/dispZ.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==4:
-    abaRotX=pd.read_excel(abaqusData,'rotX');
+    abaRotX=pd.read_excel(abaqusData,'rotaX');
     
     fig = plt.figure(figsize=big_fig_size)
     ax = fig.add_axes([0, 0, 1, 1])
@@ -254,8 +249,10 @@ elif dof==4:
     ax.set_xlabel('X rotation (rad)',fontsize=fig_font_size)
     ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/rotX.tif', transparent=False, bbox_inches='tight', dpi=100)
+    ax.set_ylim([-40,40])
+    plt.savefig('./Data/springOutput/rotXlocal.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==5:
-    abaRotY=pd.read_excel(abaqusData,'rotY');
+    abaRotY=pd.read_excel(abaqusData,'rotaY');
     
     fig = plt.figure(figsize=big_fig_size)
     ax = fig.add_axes([0, 0, 1, 1])
@@ -269,8 +266,10 @@ elif dof==5:
     ax.set_xlabel('Y rotation (rad)',fontsize=fig_font_size)
     ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
     plt.savefig('./Data/springOutput/rotY.tif', transparent=False, bbox_inches='tight', dpi=100)
+    ax.set_ylim([-40,40])
+    plt.savefig('./Data/springOutput/rotYlocal.tif', transparent=False, bbox_inches='tight', dpi=100)
 elif dof==6:
-    abaRotZ=pd.read_excel(abaqusData,'rotZ2');
+    abaRotZ=pd.read_excel(abaqusData,'rotaZ2');
     
     fig = plt.figure(figsize=big_fig_size)
     ax = fig.add_axes([0, 0, 1, 1])
