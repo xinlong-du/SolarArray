@@ -4,12 +4,10 @@
 # Xinlong Du, 2022
 #
 # -----------------------------------------------------------------------------
-# set systemTime [clock seconds] 
-# puts "Starting Analysis: [clock format $systemTime -format "%d-%b-%Y %H:%M:%S"]"
-# set startTime [clock clicks -milliseconds];
 from openseespy.opensees import *
 import numpy as np
 import math
+import h5py
 
 # visulization
 import vfo.vfo as vfo
@@ -20,7 +18,7 @@ model('basic', '-ndm', 3, '-ndf', 6);
 dataDir = 'Data';
 #os.mkdir(dataDir);
 in2m=0.0254; #convert inch to meter
-g=9.8*1.2;       #gravitational acceleration (m/s2), 1.2 is for 1.2D+1.0W
+g=9.8;       #gravitational acceleration (m/s2), 1.2 is for 1.2D+1.0W
 
 # MATERIAL properties----------------------------------------------------------
 Es = 2.0e11;		      #Steel Young's modulus
@@ -130,6 +128,8 @@ for j in range (0,6):
     element('elasticBeamColumn', (24*i+19)*1000+j+1, *[501+i*700+j*3,  502+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', (24*i+20)*1000+j+1, *[502+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
 
+allNodeTags=getNodeTags();
+alleleTags=getEleTags();
 # render the model
 vfo.createODB(model="solarPanel", loadcase="static", Nmodes=6, deltaT=1)
 vfo.plot_model()
@@ -146,8 +146,7 @@ freq = omega/(2*math.pi);
 # vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
 # vfo.plot_modeshape(modenumber=6, scale=1); #plot mode shape 6
 
-# define loads-----------------------------------------------------------------
-# gravity loads
+# gravity analysis-------------------------------------------------------------
 #module frame, 0.1 is used to account for 10 steps in analyze(10)
 g_mfCorne=-0.1*mass_mf*g*(84.0/4/2+41.26/2/2)*in2m;  #nodes at corner
 g_mfMidEW=-0.1*mass_mf*g*(41.26/2)*in2m;             #nodes at middle of E-W direction
@@ -159,44 +158,28 @@ g_mCo=-0.1*g_m/32;     #corner, 4 in total
 g_mEd=-0.1*g_m/32*2;   #edge, 8 in total
 g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
-# wind pressure
-#pMax=-2352.8;
-pMax=2162.15;
-f_m=84.0*in2m*41.26*in2m*pMax;
-f_mCo=0.1*f_m/32;     #corner, 4 in total
-f_mEd=0.1*f_m/32*2;   #edge, 8 in total
-f_mIn=0.1*f_m/32*4;   #internal, 3 in total
-
 timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
 
 for i in range (0,1):
     for j in range (0,6):
-        load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(601+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(602+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(603+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(701+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(702+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(703+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(801+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(802+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(803+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(901+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(902+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(501+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(502+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(503+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(601+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(602+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(603+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(701+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(702+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(703+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(801+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(802+i*700+j*3, *[0.0, 0.0, g_mIn, 0.0, 0.0, 0.0]);
+        load(803+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(901+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(902+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(903+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
 
-# Define RECORDERS ------------------------------------------------------------
-allNodeTags=getNodeTags();
-alleleTags=getEleTags();
-
-eleRec=list(range(501,513))+list(range(601,613));
-recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-
-# define ANALYSIS PARAMETERS---------------------------------------------------
+# define ANALYSIS PARAMETERS
 constraints('Plain');  # how it handles boundary conditions
 numberer('RCM');	   # renumber dof's to minimize band-width 
 system('UmfPack'); # how to store and solve the system of equations in the analysis
@@ -206,6 +189,97 @@ integrator('LoadControl', 1)
 analysis('Static');	# define type of analysis static or transient
 analyze(10);
 print('Finished')
+
+# wind analysis----------------------------------------------------------------
+# load wind tunnel test DATA
+CpList=[None]*12;
+dtNormList=[None]*12;
+filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
+with h5py.File(filename, "r") as f:
+    # get the key of interest; may or may NOT be a group
+    a_group_key0 = list(f.keys())[0]
+    a_group_key30 = list(f.keys())[1]
+    a_group_key60 = list(f.keys())[2]
+    a_group_key90 = list(f.keys())[3]
+    # get the object names in the group and returns as a list
+    objNames = list(f[a_group_key0])
+    # preferred methods to get dataset values
+    CpList[0] = f[a_group_key0]['Row1'][()]  # returns as a numpy array
+    CpList[1] = f[a_group_key30]['Row1'][()]
+    CpList[2] = f[a_group_key60]['Row1'][()]
+    CpList[3] = f[a_group_key90]['Row1'][()]
+    dtNormList[0] = f[a_group_key0]['dtNorm'][()]
+    dtNormList[1] = f[a_group_key30]['dtNorm'][()]
+    dtNormList[2] = f[a_group_key60]['dtNorm'][()]
+    dtNormList[3] = f[a_group_key90]['dtNorm'][()]
+
+filename = "../../../RWDI/Wind Tunnel Data/tilt_p30deg.hdf5"
+with h5py.File(filename, "r") as f:
+    # get the key of interest; may or may NOT be a group
+    a_group_key180 = list(f.keys())[0]
+    a_group_key150 = list(f.keys())[1]
+    a_group_key120 = list(f.keys())[2]
+    # get the object names in the group and returns as a list
+    objNames = list(f[a_group_key180])
+    # preferred methods to get dataset values
+    CpList[6] = f[a_group_key180]['Row7'][()]
+    CpList[5] = f[a_group_key150]['Row7'][()]
+    CpList[4] = f[a_group_key120]['Row7'][()]
+    dtNormList[6] = f[a_group_key180]['dtNorm'][()]
+    dtNormList[5] = f[a_group_key150]['dtNorm'][()]
+    dtNormList[4] = f[a_group_key120]['dtNorm'][()]
+
+for i in range(7,12):
+    CpList[i]=CpList[12-i]; #may need deep copy
+    dtNormList[i]=dtNormList[12-i];
+
+dirList=['0','30','60','90','120','150','180','210','240','270','300','330'];
+
+# specify wind direction and speed for analysis
+i=0;        #direction
+Uasce=80.0; #mph, 3-sec gust at 10m height
+U=Uasce*0.44704/1.52/1.15; #convert mph to m/s, to hourly mean, to 3m height
+Cp=CpList[i];
+dtNorm=dtNormList[i];
+dirID=dirList[i];
+
+L=169.25*in2m;
+dt=dtNorm*L/U;
+rho_air=1.226;
+p=0.5*rho_air*U*U*Cp[1000:None,:];
+
+f_m=84.0*in2m*41.26*in2m*p;
+f_mList=f_m.T.tolist();
+f_mCo=1.0/32;     #corner, 4 in total
+f_mEd=1.0/32*2;   #edge, 8 in total
+f_mIn=1.0/32*4;   #internal, 3 in total
+
+taps=[12,13,16,17];   #tap IDs 13,14,17,18
+for tap in taps:
+    timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
+    pattern('Plain',tap,tap);
+
+    for j in range (0,6):
+        load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(701+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(702+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(703+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+        load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+
+# Define RECORDERS ------------------------------------------------------------
+eleRec=list(range(501,513))+list(range(601,613));
+recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # postprocessing---------------------------------------------------------------
 # forces and displacements at mid span

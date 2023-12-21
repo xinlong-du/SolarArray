@@ -172,21 +172,21 @@ pattern('Plain', 10000, 10000);
 
 for i in range (0,1):
     for j in range (0,6):
-        load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(601+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(602+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(603+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(701+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(702+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(703+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(801+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(802+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.sin(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
-        load(803+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
-        load(901+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
-        load(902+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.sin(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
-        load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.sin(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(601+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(602+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(603+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(701+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(702+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(703+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(801+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(802+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi)+g_mIn, 0.0, 0.0, 0.0]);
+        load(803+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidNS, 0.0, 0.0, 0.0]);
+        load(901+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
+        load(902+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
+        load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 allNodeTags=getNodeTags();
