@@ -250,110 +250,94 @@ p=0.5*rho_air*U*U*Cp[1000:None,:];
 
 f_m=84.0*in2m*41.26*in2m*p;
 f_mList=f_m.T.tolist();
-f_mCo=1.0/32;     #corner, 4 in total
+f_mCo=1.0/32;     #corner, 8 in total for one module
 f_mEd=1.0/32*2;   #edge, 8 in total
-f_mIn=1.0/32*4;   #internal, 3 in total
+f_mIn=1.0/32*4;   #internal, 2 in total
 
-taps=[12,13,16,17];   #tap IDs 13,14,17,18
-for tap in taps:
-    timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
-    pattern('Plain',tap,tap);
+# tap ID 13
+tap=12;
+timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
+pattern('Plain',tap,tap);
 
-    for j in range (0,6):
-        load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(701+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(702+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(703+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+for j in range (0,3):
+    load(701+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(702+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(703+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+
+# tap ID 14
+tap=13;
+timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
+pattern('Plain',tap,tap);
+
+for j in range (0,3):
+    load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(701+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(702+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(703+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+
+# tap ID 17
+tap=16;
+timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
+pattern('Plain',tap,tap);
+
+for j in range (3,6):
+    load(701+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(702+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(703+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    
+# tap ID 18
+tap=17;
+timeSeries('Path',tap,'-dt',dt,'-values',*f_mList[tap],'-prependZero');
+pattern('Plain',tap,tap);
+
+for j in range (3,6):
+    load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(701+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(702+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    load(703+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 eleRec=list(range(501,513))+list(range(601,613));
 recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
 recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *allNodeTags, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
-# postprocessing---------------------------------------------------------------
-# forces and displacements at mid span
-efLocEnd506=eleResponse(506, 'localForces')
-efLocEnd606=eleResponse(606, 'localForces')
+# define DAMPING
+rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
 
-efLocEnd5xx=[None]*13;
-efLocEnd6xx=[None]*13;
-for i in range (0,13):
-    efLocEnd5xx[i]=eleResponse(i+500, 'localForces');
-    efLocEnd6xx[i]=eleResponse(i+600, 'localForces');
-#%%
-moLocEnd5xx=[None]*14;
-moLocEnd6xx=[None]*14;
-for i in range (0,13):
-    moLocEnd5xx[i]=efLocEnd5xx[i][5];
-    moLocEnd6xx[i]=efLocEnd6xx[i][5];
-moLocEnd5xx[13]=-efLocEnd5xx[12][11];
-moLocEnd6xx[13]=-efLocEnd6xx[12][11];
+# define ANALYSIS PARAMETERS---------------------------------------------------
+wipeAnalysis();
+constraints('Plain');  # how it handles boundary conditions
+numberer('RCM');	   # renumber dof's to minimize band-width 
+system('UmfPack');     # how to store and solve the system of equations in the analysis
+test('NormDispIncr', 1.0e-08, 1000); # determine if convergence has been achieved at the end of an iteration step
+algorithm('KrylovNewton');
+integrator('Newmark', 0.5, 0.25);
+analysis('Transient'); # define type of analysis static or transient
+ok = analyze(500, 0.02);
+print('Finished')
 
-coordNdPurlin1=[None]*14;
-for i in range (0,14):
-    coordNdPurlin1[i]=nodeCoord(nPurlin1[i],2);
-
-coordNdPurlin1m=[x - coordNdPurlin1[0] for x in coordNdPurlin1];
-import matplotlib.pyplot as plt
-fig = plt.figure(figsize=(12,12))
-ax = fig.add_axes([0, 0, 1, 1])
-ax.plot(coordNdPurlin1m,moLocEnd5xx,linewidth=0.5)
-plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
-ax.tick_params(direction="in")
-ax.set_xlim(0.0, coordNdPurlin1m[13])
-ax.set_ylim(-9500,100)
-plt.xticks([0.0,0.25*coordNdPurlin1m[13],0.5*coordNdPurlin1m[13],0.75*coordNdPurlin1m[13],coordNdPurlin1m[13]])
-plt.yticks(np.arange(-9500, 100, 100))
-plt.grid()
-#plt.show()
-plt.ylabel('Mz (N-m)',fontsize=8)
-plt.xlabel('Y (m)',fontsize=8);
-file_name = 'momentFixedEnds'
-plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
-
-#%% calculate Cb
-Mmax=9461.9;
-Ma=6850.0;
-Mb=9461.9;
-Mc=6820.0;
-Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
-
-#%%
-ndGloEnd509=nodeDisp(509);
-ndGloEnd608=nodeDisp(608);
-ndGloEnd609=nodeDisp(609);
-ndGloEnd610=nodeDisp(610);
-ndGloEnd611=nodeDisp(611);
-ndGloEnd709=nodeDisp(709);
-ndGloEnd809=nodeDisp(809);
-ndGloEnd810=nodeDisp(810);
-ndLocYend509=39.3701*ndGloEnd509[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd509[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend608=39.3701*ndGloEnd608[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd608[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend609=39.3701*ndGloEnd609[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd609[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend610=39.3701*ndGloEnd610[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd610[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend611=39.3701*ndGloEnd611[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd611[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709[0]*math.sin(30/180*math.pi); #m to in
-
-#required strength for Cb=1
-reqMoment=max([abs(number) for number in moLocEnd5xx]);
-reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
-
-#available strength for beam charts in AISI Manual
-ubLength=260.0; #in
-avaMoment=79; #=required strength, Section 12CS3.5x105
-
-# wipe()
-# vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+wipe()
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=10)
 #------------------------------------------------------------------------------
