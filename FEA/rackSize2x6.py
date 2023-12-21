@@ -239,21 +239,26 @@ plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
 ax.tick_params(direction="in")
 ax.set_xlim(0.0, coordNdPurlin1m[13])
-ax.set_ylim(-9500,100)
+ax.set_ylim(-13500,100)
 plt.xticks([0.0,0.25*coordNdPurlin1m[13],0.5*coordNdPurlin1m[13],0.75*coordNdPurlin1m[13],coordNdPurlin1m[13]])
-plt.yticks(np.arange(-9500, 100, 100))
+plt.yticks(np.arange(-13500, 100, 100))
 plt.grid()
 #plt.show()
 plt.ylabel('Mz (N-m)',fontsize=8)
 plt.xlabel('Y (m)',fontsize=8);
-file_name = 'momentFixedEnds'
+file_name = 'momentPin1'
+plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
+
+ax.set_ylim(-13500,-9500)
+plt.yticks(np.arange(-13500, -9500, 100))
+file_name = 'momentPin2'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
 #%% calculate Cb
-Mmax=9461.9;
-Ma=6850.0;
-Mb=9461.9;
-Mc=6820.0;
+Mmax=13469.5;
+Ma=9750.0;
+Mb=13469.5;
+Mc=9720.0;
 Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
 
 #%%
