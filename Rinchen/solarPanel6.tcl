@@ -69,18 +69,20 @@ set BeamSecTag 3
 # define MATERIALS
 #----------------------------------------------------------------
 set IDsteel 1; # Identifier for material
-set Fy 50000.0; # Yield stress -Use very large yield stress for elastic buckling analysis
+set Fy 379.0; # Yield stress -Use very large yield stress for elastic buckling analysis
 set Es 200000.0; # Elastic modulus
 set Bs 0.001;		# strain-hardening ratio 
 set G [expr $Es/(2*(1+0.3))]; # Shear modulus
 uniaxialMaterial Steel01 $IDsteel $Fy $Es $Bs;	# build steel01 material
 
-set Em [expr 70.0e3];       #Glass Young's modulus for module
+set Em 70000.0;       #Glass Young's modulus for module
 set nu_m 0.22;              #Glass Poisson's ratio
 set rho_m [expr 2500.0e-12];#Glass mass density
-set Emf [expr 68.3e3];      #Aluminum Young's modules (module frame)
+set Emf 68000.3;      #Aluminum Young's modules (module frame)
 set Gmf [expr $Emf/2./(1+0.3)];#Shear modulus of aluminum
 set rho_mf [expr 2690.0e-12];  #Aluminum mass density
+puts "rho_m $rho_m"
+puts "rho_mf $rho_mf"
 
 # define SECTION DIMENSION AND FIBER DIVISION
 #----------------------------------------------------------------
@@ -161,57 +163,27 @@ for {set i 0} {$i<6} {incr i 1} {
     }
 
     #if 0 {
-    element elasticBeamColumn [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 10001+$i] [expr 801+$i*3] [expr 701+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 11001+$i] [expr 701+$i*3] [expr 601+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 501+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 13001+$i] [expr 903+$i*3] [expr 803+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 14001+$i] [expr 803+$i*3] [expr 703+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 15001+$i] [expr 703+$i*3] [expr 603+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 16001+$i] [expr 603+$i*3] [expr 503+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 17001+$i] [expr 901+$i*3] [expr 902+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 18001+$i] [expr 902+$i*3] [expr 903+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 40.0 0.0 0.0 0.0;
-    element elasticBeamColumn [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 40.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 10001+$i] [expr 801+$i*3] [expr 701+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 11001+$i] [expr 701+$i*3] [expr 601+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 501+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 13001+$i] [expr 903+$i*3] [expr 803+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 14001+$i] [expr 803+$i*3] [expr 703+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 15001+$i] [expr 703+$i*3] [expr 603+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 16001+$i] [expr 603+$i*3] [expr 503+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 17001+$i] [expr 901+$i*3] [expr 902+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 18001+$i] [expr 902+$i*3] [expr 903+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 0.0 0.0 0.0 0.0;
+    element elasticBeamColumn [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $BeamTransfTag 0.0 0.0 0.0 0.0;
     #}
-    if 0 {
-    element ElasticTimoshenkoBeam [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 10001+$i] [expr 801+$i*3] [expr 701+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 11001+$i] [expr 701+$i*3] [expr 601+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 12001+$i] [expr 601+$i*3] [expr 501+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 13001+$i] [expr 903+$i*3] [expr 803+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 14001+$i] [expr 803+$i*3] [expr 703+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 15001+$i] [expr 703+$i*3] [expr 603+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 16001+$i] [expr 603+$i*3] [expr 503+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $rafterTransfTag;
-    element ElasticTimoshenkoBeam [expr 17001+$i] [expr 901+$i*3] [expr 902+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
-    element ElasticTimoshenkoBeam [expr 18001+$i] [expr 902+$i*3] [expr 903+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
-    element ElasticTimoshenkoBeam [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
-    element ElasticTimoshenkoBeam [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $Emf $Gmf $A_mf $Jx_mf $Iy_mf $Iz_mf $A_mf $A_mf $BeamTransfTag;
-    }
-    if 0 {
-    element dispBeamColumn [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 10001+$i] [expr 801+$i*3] [expr 701+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 11001+$i] [expr 701+$i*3] [expr 601+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 501+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 13001+$i] [expr 903+$i*3] [expr 803+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 14001+$i] [expr 803+$i*3] [expr 703+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 15001+$i] [expr 703+$i*3] [expr 603+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 16001+$i] [expr 603+$i*3] [expr 503+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 17001+$i] [expr 901+$i*3] [expr 902+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 18001+$i] [expr 902+$i*3] [expr 903+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 19001+$i] [expr 501+$i*3] [expr 502+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
-    element dispBeamColumn [expr 20001+$i] [expr 502+$i*3] [expr 503+$i*3] $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
-    }
-    
-    #element dispBeamColumn [expr 12001+$i] [expr 601+$i*3] [expr 801+$i*3] $numIntgrPts $BeamSecTag $rafterTransfTag  $y0  $z0  $omg  $cy  $cz;
 }
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 -242.5 0 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 -242.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -24200.5 0 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -24200.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -227,8 +199,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1N.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2N.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1Nyield.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2Nyield.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # Define DISPLAY -------------------------------------------------------------
 DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape
