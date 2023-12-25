@@ -21,6 +21,11 @@ file mkdir $dir;          # create data directory
 set in2mm 25.4;
 
 for {set i 0} {$i<6} {incr i 1} {
+    node [expr 301+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
+    node [expr 303+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
+    node [expr 401+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
+    node [expr 403+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
+
     node [expr 501+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
     node [expr 502+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
     node [expr 503+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
@@ -38,27 +43,27 @@ for {set i 0} {$i<6} {incr i 1} {
     node [expr 903+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
 }
 
-node 600 [expr   -5.0*$in2mm] 0.0 [expr 21.0*$in2mm]
-node 619 [expr 257.56*$in2mm] 0.0 [expr 21.0*$in2mm]
-node 800 [expr   -5.0*$in2mm] 0.0 [expr 63.0*$in2mm]
-node 819 [expr 257.56*$in2mm] 0.0 [expr 63.0*$in2mm]
+node 300 [expr   -5.0*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
+node 319 [expr 257.56*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
+node 400 [expr   -5.0*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
+node 419 [expr 257.56*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
 
 # define BOUNDARY CONDITIONS (single point constraint)
 #----------------------------------------------------------
 # NodeID,dispX,dispY,dispZ,rotX,RotY,RotZ, Warping 
-fix 600 0 1 1 1 0 0 0; #temp, need to be modified
-fix 609 1 0 0 0 0 0 0;
-fix 619 0 1 1 1 0 0 0;
-fix 800 0 1 1 1 0 0 0;
-fix 809 1 0 0 0 0 0 0;
-fix 819 0 1 1 1 0 0 0; 			
+fix 300 0 1 1 1 0 0 0; #temp, need to be modified
+fix 309 1 0 0 0 0 0 0;
+fix 319 0 1 1 1 0 0 0;
+fix 400 0 1 1 1 0 0 0;
+fix 409 1 0 0 0 0 0 0;
+fix 419 0 1 1 1 0 0 0; 			
 #-------------------------------------------------------
-set startNode1  600
-set middleNode1 609
-set endNode1    619
-set startNode2  800
-set middleNode2 809
-set endNode2    819
+set startNode1  300
+set middleNode1 309
+set endNode1    319
+set startNode2  400
+set middleNode2 409
+set endNode2    419
 
 # Define ELEMENTS & SECTIONS
 #-------------------------------------------------------------
@@ -93,6 +98,12 @@ set Iy_mf 9841.7;   #second moment of area about the local y-axis
 #torsional moment of inertia of section: hollow section     + open section
 set Jx_mf [expr (4*319.8657*319.8657*(1.37+1.67+1.67+1.42)/4/74.21+11.96*2.01**3/3+4.96*1.36**3/3+17.86*1.42**3/3)];
 set mass_mf [expr $A_mf*$rho_mf];     #mass per unit length
+
+# SECTION properties for rigid offsets
+set A_ro  [expr $A_mf*100.0];    #cross-sectional area
+set Iz_ro [expr $Iz_mf*10000.0]; #second moment of area about the local z-axis
+set Iy_ro [expr $Iz_mf*10000.0]; #second moment of area about the local y-axis
+set Jx_ro [expr $Jx_mf*10000.0];
 
 # SECTION properties for module
 set moduleSecTag 100;
@@ -135,9 +146,12 @@ puts $cy;
 puts $cz;
 # Define ELEMENTS
 #-------------------------------------------------------------
-set nPurlin1 {600 601 603 604 606 607 609 610 612 613 615 616 618 619}; #nodes of purlin # 1
-set nPurlin2 {800 801 803 804 806 807 809 810 812 813 815 816 818 819}; #nodes of purlin # 2
+set nPurlin1 {300 301 303 304 306 307 309 310 312 313 315 316 318 319}; #nodes of purlin # 1
+set nPurlin2 {400 401 403 404 406 407 409 410 412 413 415 416 418 419}; #nodes of purlin # 2
+set nMfPurl1 {601 603 604 606 607 609 610 612 613 615 616 618}; #nodes of module frame connecting to purlin # 1
+set nMfPurl2 {801 803 804 806 807 809 810 812 813 815 816 818}; #nodes of module frame connecting to purlin # 2
 
+# purlins
 for {set i 0} {$i<13} {incr i 1} {
 set elem1ID [expr $i+100];
 set node1I [lindex $nPurlin1 $i];
@@ -147,6 +161,18 @@ set node2I [lindex $nPurlin2 $i];
 set node2J [lindex $nPurlin2 [expr $i+1]];
 element dispBeamColumn $elem1ID $node1I $node1J $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;
 element dispBeamColumn $elem2ID $node2I $node2J $numIntgrPts $BeamSecTag $BeamTransfTag  $y0  $z0  $omg  $cy  $cz;	
+} 
+
+# rigid offset
+for {set i 0} {$i<12} {incr i 1} {
+set elem1ID [expr $i+300];
+set node1I [lindex $nPurlin1 [expr $i+1]];
+set node1J [lindex $nMfPurl1 $i];
+set elem2ID [expr $i+400];
+set node2I [lindex $nPurlin2 [expr $i+1]];
+set node2J [lindex $nMfPurl2 $i];
+element elasticBeamColumn $elem1ID $node1I $node1J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
+element elasticBeamColumn $elem2ID $node2I $node2J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;  
 } 
 
 for {set i 0} {$i<6} {incr i 1} {
@@ -199,8 +225,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1Nyield.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2Nyield.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1NyieldOffset.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2NyieldOffset.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # Define DISPLAY -------------------------------------------------------------
 DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape

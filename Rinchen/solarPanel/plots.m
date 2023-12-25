@@ -10,8 +10,8 @@ purlin2N=load('solarPurlin2N.out');
 % panel2N=load('solarPanel2N.out');
 % panel1N=load('solarPanel1Nstiff0.1.out');
 % panel2N=load('solarPanel2Nstiff0.1.out');
-panel1N=load('solarPanel1Nyield.out');
-panel2N=load('solarPanel2Nyield.out');
+panel1N=load('solarPanel1NyieldOffset.out');
+panel2N=load('solarPanel2NyieldOffset.out');
 
 hfig=figure;
 plot([-1 1],[ltbAISI ltbAISI],'b-','LineWidth',1)
@@ -39,5 +39,5 @@ figWidth=3.5;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\purlinBuckleN.';
+fileout='.\figures\purlinBuckleNoffset.';
 print(hfig,[fileout,'tif'],'-r300','-dtiff');
