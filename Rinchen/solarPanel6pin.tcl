@@ -231,7 +231,7 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+#DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
@@ -254,8 +254,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoP.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoP.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoPdc.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoPdc.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -267,7 +267,7 @@ pattern Plain 2 Linear {
   load $endNode2   0 0 0 0 0 [expr -4448.2216*25.4] 0;
 }
 
-recorder plot $dir/solarPanel1yield2OffsetPinTwPmoP.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
+#recorder plot $dir/solarPanel1yield2OffsetPinTwPmoP.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
 
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
@@ -276,16 +276,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.00001; #Displacement increment/decrement 
+set Dincr 0.0001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-integrator ArcLength 1.0 1.0; #Use this for curve with peak
+#integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 1000]; 
+set ok [analyze 5000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
