@@ -29,10 +29,10 @@ proc DisplayPlane {ShapeType dAmp viewPlane {nEigen 0}  {quadrant 0}} {
 
 
 	if  {$viewPlane =="3D" } {
-		set uMin $Zmin+$Xmin
+		set uMin $Zmin+$Xmin+4000
 		set uMax $Zmax+$Xmax
-		set vMin $Ymin
-		set vMax $Ymax
+		set vMin $Ymin-1000
+		set vMax $Ymax+500
 		set wMin -10000
 		set wMax 10000
 		vup 0 1 0; # dirn defining up direction of view plane
