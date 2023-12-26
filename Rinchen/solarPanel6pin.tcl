@@ -46,6 +46,11 @@ for {set i 0} {$i<6} {incr i 1} {
     node [expr 901+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
     node [expr 902+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
     node [expr 903+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
+
+    node [expr 1001+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
+    node [expr 1003+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
+    node [expr 1101+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
+    node [expr 1103+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
 }
 
 node 100 [expr   -5.0*$in2mm] [expr -4.0*$in2mm] [expr (21.0-2.33)*$in2mm]
@@ -155,8 +160,10 @@ set nPurlin1 {100 101 103 104 106 107 109 110 112 113 115 116 118 119}; #nodes o
 set nPurlin2 {200 201 203 204 206 207 209 210 212 213 215 216 218 219}; #nodes of purlin # 2
 set nPurlMf1 {301 303 304 306 307 309 310 312 313 315 316 318}; #nodes of purlin # 1
 set nPurlMf2 {401 403 404 406 407 409 410 412 413 415 416 418}; #nodes of purlin # 2
-set nMfPurl1 {601 603 604 606 607 609 610 612 613 615 616 618}; #nodes of module frame connecting to purlin # 1
-set nMfPurl2 {801 803 804 806 807 809 810 812 813 815 816 818}; #nodes of module frame connecting to purlin # 2
+set nModFra1 {601 603 604 606 607 609 610 612 613 615 616 618}; #nodes of module frame connecting to purlin # 1
+set nModFra2 {801 803 804 806 807 809 810 812 813 815 816 818}; #nodes of module frame connecting to purlin # 2
+set nMfPurl1 {1001 1003 1004 1006 1007 1009 1010 1012 1013 1015 1016 1018}; #nodes of module frame connecting to purlin # 1
+set nMfPurl2 {1101 1103 1104 1106 1107 1109 1110 1112 1113 1115 1116 1118}; #nodes of module frame connecting to purlin # 2
 
 # purlins
 for {set i 0} {$i<13} {incr i 1} {
@@ -188,6 +195,10 @@ element elasticBeamColumn $elem1ID $node1I $node1J $A_ro $Emf $Gmf $Jx_ro $Iy_ro
 element elasticBeamColumn $elem2ID $node2I $node2J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;  
 element elasticBeamColumn $elem3ID $node3I $node3J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
 element elasticBeamColumn $elem4ID $node4I $node4J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
+set node5 [lindex $nModFra1 $i];
+set node6 [lindex $nModFra2 $i];
+equalDOF $node3I $node5 1 2 3;
+equalDOF $node4I $node6 1 2 3;
 } 
 
 for {set i 0} {$i<6} {incr i 1} {
@@ -223,8 +234,8 @@ for {set i 0} {$i<6} {incr i 1} {
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 24200.5 0 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 24200.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 2420.5 0 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 2420.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -240,8 +251,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetTwPmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetTwPmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # Define DISPLAY -------------------------------------------------------------
 DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape
@@ -256,7 +267,7 @@ pattern Plain 2 Linear {
   load $endNode2   0 0 0 0 0 [expr  4448.2216*25.4] 0;
 }
 
-recorder plot $dir/solarPanel1yield2OffsetTwPmoN.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
+recorder plot $dir/solarPanel1yield2OffsetPinTwPmoN.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
 
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
