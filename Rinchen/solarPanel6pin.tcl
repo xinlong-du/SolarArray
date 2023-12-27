@@ -254,17 +254,17 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoPdc2.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoPdc2.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoNdc.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoNdc.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode1 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode1   0 0 0 0 0 [expr -4448.2216*25.4] 0;
-  load $startNode2 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode2   0 0 0 0 0 [expr -4448.2216*25.4] 0;
+  load $startNode1 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
+  load $endNode1   0 0 0 0 0 [expr  4448.2216*25.4] 0;
+  load $startNode2 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
+  load $endNode2   0 0 0 0 0 [expr  4448.2216*25.4] 0;
 }
 
 #recorder plot $dir/solarPanel1yield2OffsetPinTwPmoP.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
