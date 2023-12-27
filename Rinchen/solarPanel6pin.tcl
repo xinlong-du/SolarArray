@@ -237,8 +237,8 @@ for {set i 0} {$i<6} {incr i 1} {
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 2420.5 0 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 2420.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -2420.5 0 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -2420.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -254,8 +254,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwPmoNdc.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwPmoNdc.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -280,12 +280,12 @@ set Dincr 0.00001; #Displacement increment/decrement
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 100]; 
+set ok [analyze 2000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -321,7 +321,7 @@ if {$ok != 0} {
           };	# end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-
+if 0 {
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
 constraints Plain;           # how it handles boundary conditions
@@ -374,7 +374,7 @@ if {$ok != 0} {
           };  # end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-
+}
 set finishTime [clock clicks -milliseconds];
 puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
 set systemTime [clock seconds] 
