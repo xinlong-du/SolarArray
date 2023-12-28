@@ -237,8 +237,8 @@ for {set i 0} {$i<6} {incr i 1} {
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 -240.25 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 -240.25 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -24.25 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -24.25 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -254,17 +254,17 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoP.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoP.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode1 0 0 0 0 0 [expr  4448.2216*25.4]; #the applied reference load is 1 kip-in
-  load $endNode1   0 0 0 0 0 [expr -4448.2216*25.4];
-  load $startNode2 0 0 0 0 0 [expr  4448.2216*25.4]; #the applied reference load is 1 kip-in
-  load $endNode2   0 0 0 0 0 [expr -4448.2216*25.4];
+  load $startNode1 0 0 0 0 0 [expr -4448.2216*25.4]; #the applied reference load is 1 kip-in
+  load $endNode1   0 0 0 0 0 [expr  4448.2216*25.4];
+  load $startNode2 0 0 0 0 0 [expr -4448.2216*25.4]; #the applied reference load is 1 kip-in
+  load $endNode2   0 0 0 0 0 [expr  4448.2216*25.4];
 }
 
 #recorder plot $dir/solarPanel1yield2OffsetPinTwPmoP.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
