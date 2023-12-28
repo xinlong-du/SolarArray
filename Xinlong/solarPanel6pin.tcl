@@ -21,15 +21,15 @@ file mkdir $dir;          # create data directory
 set in2mm 25.4;
 
 for {set i 0} {$i<6} {incr i 1} {
-    node [expr 101+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr (21.0-2.33)*$in2mm]
-    node [expr 103+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr (21.0-2.33)*$in2mm]
-    node [expr 201+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr (63.0-2.33)*$in2mm]
-    node [expr 203+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr (63.0-2.33)*$in2mm]
+    node [expr 101+3*$i] [expr   (0.0+42.26*$i)*$in2mm] -50.0 [expr (21.0*$in2mm-48.6907)]
+    node [expr 103+3*$i] [expr (41.26+42.26*$i)*$in2mm] -50.0 [expr (21.0*$in2mm-48.6907)]
+    node [expr 201+3*$i] [expr   (0.0+42.26*$i)*$in2mm] -50.0 [expr (63.0*$in2mm-48.6907)]
+    node [expr 203+3*$i] [expr (41.26+42.26*$i)*$in2mm] -50.0 [expr (63.0*$in2mm-48.6907)]
 
-    node [expr 301+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
-    node [expr 303+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 21.0*$in2mm]
-    node [expr 401+3*$i] [expr   (0.0+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
-    node [expr 403+3*$i] [expr (41.26+42.26*$i)*$in2mm] [expr -4.0*$in2mm] [expr 63.0*$in2mm]
+    node [expr 301+3*$i] [expr   (0.0+42.26*$i)*$in2mm] -50.0 [expr 21.0*$in2mm]
+    node [expr 303+3*$i] [expr (41.26+42.26*$i)*$in2mm] -50.0 [expr 21.0*$in2mm]
+    node [expr 401+3*$i] [expr   (0.0+42.26*$i)*$in2mm] -50.0 [expr 63.0*$in2mm]
+    node [expr 403+3*$i] [expr (41.26+42.26*$i)*$in2mm] -50.0 [expr 63.0*$in2mm]
 
     node [expr 501+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
     node [expr 502+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
@@ -53,10 +53,10 @@ for {set i 0} {$i<6} {incr i 1} {
     node [expr 1103+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
 }
 
-node 100 [expr   -5.0*$in2mm] [expr -4.0*$in2mm] [expr (21.0-2.33)*$in2mm]
-node 119 [expr 257.56*$in2mm] [expr -4.0*$in2mm] [expr (21.0-2.33)*$in2mm]
-node 200 [expr   -5.0*$in2mm] [expr -4.0*$in2mm] [expr (63.0-2.33)*$in2mm]
-node 219 [expr 257.56*$in2mm] [expr -4.0*$in2mm] [expr (63.0-2.33)*$in2mm]
+node 100 [expr   -5.0*$in2mm] -50.0 [expr (21.0*$in2mm-48.6907)]
+node 119 [expr 257.56*$in2mm] -50.0 [expr (21.0*$in2mm-48.6907)]
+node 200 [expr   -5.0*$in2mm] -50.0 [expr (63.0*$in2mm-48.6907)]
+node 219 [expr 257.56*$in2mm] -50.0 [expr (63.0*$in2mm-48.6907)]
 
 # define BOUNDARY CONDITIONS (single point constraint)
 #----------------------------------------------------------
@@ -237,8 +237,8 @@ for {set i 0} {$i<6} {incr i 1} {
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 -2420.5 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 -2420.5 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -240.25 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -240.25 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -276,16 +276,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.00001; #Displacement increment/decrement 
+set Dincr -0.000005; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-integrator ArcLength 1.0 1.0; #Use this for curve with peak
+#integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 2000]; 
+set ok [analyze 500]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -321,7 +321,7 @@ if {$ok != 0} {
           };	# end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-if 0 {
+#if 0 {
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
 constraints Plain;           # how it handles boundary conditions
@@ -329,7 +329,7 @@ numberer Plain;        # renumber dof's to minimize band-width
 system BandGeneral;      # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.0001; #Displacement increment/decrement 
+set Dincr -0.0001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
@@ -338,7 +338,7 @@ set Dmax 10
 integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static ;     # define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 5000]; 
+set ok [analyze 10000]; 
 if {$ok != 0} {  
   # if analysis fails, we try some other stuff, performance is slower inside this loop
   set Dstep 0.0;
@@ -374,7 +374,7 @@ if {$ok != 0} {
           };  # end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-}
+#}
 set finishTime [clock clicks -milliseconds];
 puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
 set systemTime [clock seconds] 

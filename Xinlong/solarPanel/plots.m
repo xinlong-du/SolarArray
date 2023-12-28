@@ -1,27 +1,16 @@
 close all;clear;clc;
-ltbAISI=11.6; %length=262 in
-yldAISI=93;   %Fy=55 ksi
+ltbAISI=13.9; %length=262 in
 
 %% simulation data
-purlin1N=load('solarPurlin1N.out');
-purlin2N=load('solarPurlin2N.out');
-purlin1P=load('../LateralBuckling/8CS2.5x059Mz262inP.out');
-%purlin2P=load('solarPurlin2P.out');
+purlin1N=load('../LateralBuckling/100CS75x3Mz6669mmNnoT.out');
 
-% panel1N=load('solarPanel1N.out');
-% panel2N=load('solarPanel2N.out');
-% panel1N=load('solarPanel1Nstiff0.1.out');
-% panel2N=load('solarPanel2Nstiff0.1.out');
 panel1N=load('solarPanel1yield2OffsetPinTwNmoP.out');
 panel2N=load('solarPanel2yield2OffsetPinTwNmoP.out');
 
 hfig=figure;
 plot([-1 1],[ltbAISI ltbAISI],'b-','LineWidth',1)
 hold on
-plot([-1 1],[yldAISI yldAISI],'b--','LineWidth',1)
-
 plot(purlin1N(:,5),purlin1N(:,1),'k-')
-plot(purlin1P(:,5),purlin1P(:,1),'r--')
 plot(panel1N(:,5),panel1N(:,1),'k-o','MarkerIndices',1:100:length(panel1N))
 plot(panel2N(:,5),panel2N(:,1),'r--*','MarkerIndices',1:100:length(panel2N))
 
@@ -30,7 +19,7 @@ plot(panel2N(:,5),panel2N(:,1),'r--*','MarkerIndices',1:100:length(panel2N))
 % xticks(-1.5:0.25:1.5)
 % yticks(0:2:20)
 set(gca,'FontSize',8,'FontName','Times New Roman')
-legend({'LTB AISI','Yield AISI','Single purlin TwN','Single purlin TwP','Purlin 1 with panel','Purlin 2 with panel'},...
+legend({'LTB AISI','Single purlin TwN','Purlin 1 with panel','Purlin 2 with panel'},...
     'FontSize',8,'FontName','Times New Roman')
 legend('Location','west')
 xlabel('Twist angle at midspan (rad)')
