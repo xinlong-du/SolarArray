@@ -35,13 +35,13 @@ for {set i 0} {$i<6} {incr i 1} {
     node [expr 502+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
     node [expr 503+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 0.0*$in2mm]
     node [expr 601+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
-    #node [expr 602+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
+    node [expr 602+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
     node [expr 603+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 21.0*$in2mm]
     node [expr 701+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 42.0*$in2mm]
-    #node [expr 702+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 42.0*$in2mm]
+    node [expr 702+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 42.0*$in2mm]
     node [expr 703+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 42.0*$in2mm]
     node [expr 801+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
-    #node [expr 802+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
+    node [expr 802+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
     node [expr 803+3*$i] [expr (41.26+42.26*$i)*$in2mm] 0.0 [expr 63.0*$in2mm]
     node [expr 901+3*$i] [expr   (0.0+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
     node [expr 902+3*$i] [expr (20.63+42.26*$i)*$in2mm] 0.0 [expr 84.0*$in2mm]
@@ -203,16 +203,16 @@ equalDOF $node4I $node6 1 2 3;
 
 for {set i 0} {$i<6} {incr i 1} {
     #                    elemID               node1          node2          node3          node4 counter-clockwise
-    if 0 {
-    element ShellMITC4 [expr 1001+$i] [expr 501+$i*3] [expr 601+$i*3] [expr 602+$i*3] [expr 502+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 2001+$i] [expr 601+$i*3] [expr 701+$i*3] [expr 702+$i*3] [expr 602+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 3001+$i] [expr 701+$i*3] [expr 801+$i*3] [expr 802+$i*3] [expr 702+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 4001+$i] [expr 801+$i*3] [expr 901+$i*3] [expr 902+$i*3] [expr 802+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 5001+$i] [expr 502+$i*3] [expr 602+$i*3] [expr 603+$i*3] [expr 503+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 6001+$i] [expr 602+$i*3] [expr 702+$i*3] [expr 703+$i*3] [expr 603+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 7001+$i] [expr 702+$i*3] [expr 802+$i*3] [expr 803+$i*3] [expr 703+$i*3] $moduleSecTag;
-    element ShellMITC4 [expr 8001+$i] [expr 802+$i*3] [expr 902+$i*3] [expr 903+$i*3] [expr 803+$i*3] $moduleSecTag;
-    }
+    #if 0 {
+    element ShellNLDKGQ [expr 1001+$i] [expr 501+$i*3] [expr 502+$i*3] [expr 602+$i*3] [expr 601+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 2001+$i] [expr 601+$i*3] [expr 602+$i*3] [expr 702+$i*3] [expr 701+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 3001+$i] [expr 701+$i*3] [expr 702+$i*3] [expr 802+$i*3] [expr 801+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 4001+$i] [expr 801+$i*3] [expr 802+$i*3] [expr 902+$i*3] [expr 901+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 5001+$i] [expr 502+$i*3] [expr 503+$i*3] [expr 603+$i*3] [expr 602+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 6001+$i] [expr 602+$i*3] [expr 603+$i*3] [expr 703+$i*3] [expr 702+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 7001+$i] [expr 702+$i*3] [expr 703+$i*3] [expr 803+$i*3] [expr 802+$i*3] $moduleSecTag;
+    element ShellNLDKGQ [expr 8001+$i] [expr 802+$i*3] [expr 803+$i*3] [expr 903+$i*3] [expr 902+$i*3] $moduleSecTag;
+    #}
 
     #if 0 {
     element elasticBeamColumn [expr 9001+$i]  [expr 901+$i*3] [expr 801+$i*3] $A_mf $Emf $Gmf $Jx_mf $Iy_mf $Iz_mf $rafterTransfTag 0.0 0.0 0.0 0.0;
@@ -231,7 +231,7 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-#DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
@@ -254,8 +254,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinShellTwNmoN2.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinShellTwNmoN2.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -285,7 +285,7 @@ set Dmax 10
 integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 500]; 
+set ok [analyze 5000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;

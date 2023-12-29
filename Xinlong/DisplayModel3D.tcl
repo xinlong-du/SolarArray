@@ -86,7 +86,7 @@ proc DisplayModel3D { {ShapeType nill} {dAmp 5}  {xLoc 0} {yLoc 0} {xPixels 0} {
 		DisplayPlane $ShapeType $dAmp $viewPlane 
 		set viewPlane 3D
 		set windowTitle $windowTitle0$viewPlane
-		recorder display $windowTitle $xLoc1 $yLoc1 $xPixels $yPixels  -wipe ; # display recorder
+		recorder display $windowTitle $xLoc1 $yLoc1 $ScreenResolutionX $ScreenResolutionY  -wipe ; # display recorder
 		DisplayPlane $ShapeType $dAmp $viewPlane 
 	} else {
 		recorder display $windowTitle $xLoc $yLoc $xPixels $yPixels -nowipe; # display recorder
