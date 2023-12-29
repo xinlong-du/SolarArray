@@ -30,13 +30,13 @@ fix(1, 1, 1, 1, 1, 1, 1);
 
 # material for dispX-----------------------------------------------------------
 Fy=1500.0;
-E0=7.0e6;
+E0=7000.0;
 b=0.0001;
 uniaxialMaterial('Steel01', 1, Fy, E0, b)
 
-E=2.55e7;
+E=2.55e4;
 Fy=-1.0e6;
-gap=-1.8e-3;
+gap=-1.8;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
 
@@ -44,13 +44,13 @@ uniaxialMaterial('Parallel', 101, *[1,2])
 
 # material for dispY-----------------------------------------------------------
 Fy=2000.0;
-E0=6.0e6;
+E0=6.0e3;
 b=0.45;
 uniaxialMaterial('Steel01', 3, Fy, E0, b)
 
-E=7.7e7;
+E=7.7e4;
 Fy=-1.0e6;
-gap=-2.7e-4;
+gap=-0.27;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
 
@@ -58,24 +58,24 @@ uniaxialMaterial('Parallel', 102, *[3,4])
 
 # material for dispZ-----------------------------------------------------------
 Fy=1600.0;
-E0=7.0e6;
+E0=7.0e3;
 b=0.001;
 uniaxialMaterial('Steel01', 103, Fy, E0, b)
 
 # material for rotX-----------------------------------------------------------
-Fy=17.0;
-E0=2.9e4;
+Fy=17000.0;
+E0=2.9e7;
 b=0.13;
 uniaxialMaterial('Steel01', 5, Fy, E0, b)
 
-E=1.0e4;
-Fy=1.0e7;
+E=1.0e7;
+Fy=1.0e10;
 gap=0.0088;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
 
-E=3.5e4;
-Fy=-1.0e3;
+E=3.5e7;
+Fy=-1.0e6;
 gap=-0.0075;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
@@ -83,19 +83,19 @@ uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
 uniaxialMaterial('Parallel', 104, *[5,6,7])
 
 # material for rotY-----------------------------------------------------------
-Fy=28.0;
-E0=8.9e3;
+Fy=28000.0;
+E0=8.9e6;
 b=0.005;
 uniaxialMaterial('Steel01', 9, Fy, E0, b)
 
-E=5.6e3;
-Fy=30.0;
+E=5.6e6;
+Fy=30000.0;
 gap=0.027;
 eta=0.1;
 uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
 
-E=5.0e3;
-Fy=-30;
+E=5.0e6;
+Fy=-30000.0;
 gap=-0.017;
 eta=0.09;
 uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
@@ -103,26 +103,26 @@ uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
 uniaxialMaterial('Parallel', 105, *[9,10,11])
 
 # material for rotZ-----------------------------------------------------------
-Fy=15.0;
-E0=5.0e3;
+Fy=15000.0;
+E0=5.0e6;
 b=0.2;
 uniaxialMaterial('Steel01', 12, Fy, E0, b)
 
-E=8.1e3;
-Fy=1.0e7;
+E=8.1e6;
+Fy=1.0e10;
 gap=0.02;
 eta=0.99999;
 uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
 
 alpha=0.05;
-ko=100;
-n=2;
-gamma=0.7;
+ko=170000.0;
+n=2.0;
+gamma=0.9;
 beta=0.5;
-Ao=5;
-deltaA=-200;
-deltaNu=1600;
-deltaEta=0.1;
+Ao=0.5;
+deltaA=-0.5;
+deltaNu=10.0;
+deltaEta=0.001;
 uniaxialMaterial('BoucWen', 14, alpha, ko, n, gamma, beta, Ao, deltaA, deltaNu, deltaEta)
 
 uniaxialMaterial('Parallel', 106, *[12,13,14])
@@ -147,13 +147,13 @@ algorithm('Linear');
 #integrator('LoadControl', 0.1)
 dof=6;
 if dof==1:
-    Dincr=0.1e-3;
+    Dincr=0.1;
     nSteps=35;
 elif dof==2:
-    Dincr=1.5e-3/50;
+    Dincr=1.5/50;
     nSteps=50;
 elif dof==3:
-    Dincr=0.1e-3;
+    Dincr=0.1;
     nSteps=50;
 elif dof==4:
     Dincr=0.01/50;
@@ -197,15 +197,15 @@ if dof==1:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispX[abaDispX.columns[14]][9:],abaDispX[abaDispX.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaDispX[abaDispX.columns[14]][9:],abaDispX[abaDispX.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
-    ax.set_xlabel('X displacement (m)',fontsize=fig_font_size)
+    ax.set_xlabel('X displacement (mm)',fontsize=fig_font_size)
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/dispX.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmdispX.tif', transparent=False, bbox_inches='tight', dpi=200)
     ax.set_ylim([-10000,2500])
-    plt.savefig('./Data/springOutput/dispXlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmdispXlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
 elif dof==2:
     abaDispY=pd.read_excel(abaqusData,'dispY2');
     
@@ -214,15 +214,15 @@ elif dof==2:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispY[abaDispY.columns[14]][9:],abaDispY[abaDispY.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaDispY[abaDispY.columns[14]][9:],abaDispY[abaDispY.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
-    ax.set_xlabel('Y displacement (m)',fontsize=fig_font_size)
+    ax.set_xlabel('Y displacement (mm)',fontsize=fig_font_size)
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/dispY.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmdispY.tif', transparent=False, bbox_inches='tight', dpi=200)
     ax.set_ylim([-20000,6000])
-    plt.savefig('./Data/springOutput/dispYlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmdispYlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
 elif dof==3:
     abaDispZ=pd.read_excel(abaqusData,'dispZ2');
     
@@ -231,13 +231,13 @@ elif dof==3:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(0.001*abaDispZ[abaDispZ.columns[14]][9:],abaDispZ[abaDispZ.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaDispZ[abaDispZ.columns[14]][9:],abaDispZ[abaDispZ.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
-    ax.set_xlabel('Z displacement (m)',fontsize=fig_font_size)
+    ax.set_xlabel('Z displacement (mm)',fontsize=fig_font_size)
     ax.set_ylabel('Force (N)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/dispZ.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmdispZ.tif', transparent=False, bbox_inches='tight', dpi=200)
 elif dof==4:
     abaRotX=pd.read_excel(abaqusData,'rotaX');
     
@@ -246,16 +246,16 @@ elif dof==4:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(abaRotX[abaRotX.columns[6]][9:],0.001*abaRotX[abaRotX.columns[3]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotX[abaRotX.columns[6]][9:],abaRotX[abaRotX.columns[3]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     plt.xticks([-0.01,-0.005,0.0,0.005,0.01])
     ax=plt.gca()
     ax.set_xlabel('X rotation (rad)',fontsize=fig_font_size)
-    ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/rotX.tif', transparent=False, bbox_inches='tight', dpi=200)
+    ax.set_ylabel('Moment (N.mm)',fontsize=fig_font_size)
+    plt.savefig('./Data/springOutput/0mmrotX.tif', transparent=False, bbox_inches='tight', dpi=200)
     ax.set_ylim([-40,40])
-    plt.savefig('./Data/springOutput/rotXlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmrotXlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
 elif dof==5:
     abaRotY=pd.read_excel(abaqusData,'rotaY');
     
@@ -264,15 +264,15 @@ elif dof==5:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(abaRotY[abaRotY.columns[1]][9:],0.001*abaRotY[abaRotY.columns[3]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotY[abaRotY.columns[1]][9:],abaRotY[abaRotY.columns[3]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
     ax.set_xlabel('Y rotation (rad)',fontsize=fig_font_size)
-    ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/rotY.tif', transparent=False, bbox_inches='tight', dpi=200)
+    ax.set_ylabel('Moment (N.mm)',fontsize=fig_font_size)
+    plt.savefig('./Data/springOutput/0mmrotY.tif', transparent=False, bbox_inches='tight', dpi=200)
     ax.set_ylim([-40,40])
-    plt.savefig('./Data/springOutput/rotYlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmrotYlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
 elif dof==6:
     abaRotZ=pd.read_excel(abaqusData,'rotaZ2');
     
@@ -281,12 +281,12 @@ elif dof==6:
     plt.rc('xtick', labelsize=fig_font_size)    # fontsize of the tick labels
     plt.rc('ytick', labelsize=fig_font_size)    # fontsize of the tick labels
     ax.tick_params(direction="in")
-    ax.plot(abaRotZ[abaRotZ.columns[14]][9:],0.001*abaRotZ[abaRotZ.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
+    ax.plot(abaRotZ[abaRotZ.columns[14]][9:],abaRotZ[abaRotZ.columns[13]][9:],linewidth=plt_line_width,color='b',label='Abaqus solid ele.')
     ax.plot(nodeDisps[:,dof],nodeDisps[:,0],linewidth=plt_line_width,color='r',linestyle='--',label='OpenSees springs')
     plt.legend(loc="lower right")
     ax=plt.gca()
     ax.set_xlabel('Z rotation (rad)',fontsize=fig_font_size)
-    ax.set_ylabel('Moment (N.m)',fontsize=fig_font_size)
-    plt.savefig('./Data/springOutput/rotZ.tif', transparent=False, bbox_inches='tight', dpi=200)
+    ax.set_ylabel('Moment (N.mm)',fontsize=fig_font_size)
+    plt.savefig('./Data/springOutput/0mmrotZ.tif', transparent=False, bbox_inches='tight', dpi=200)
     ax.set_ylim([-50,50])
-    plt.savefig('./Data/springOutput/rotZlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
+    plt.savefig('./Data/springOutput/0mmrotZlocal.tif', transparent=False, bbox_inches='tight', dpi=200)
