@@ -240,8 +240,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetTwPmoP.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetTwPmoP.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetTwPmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetTwPmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # Define DISPLAY -------------------------------------------------------------
 #DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape
@@ -250,10 +250,10 @@ recorder Node -file $dir/solarPanel2yield2OffsetTwPmoP.out -time -node $middleNo
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode1 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode1   0 0 0 0 0 [expr -4448.2216*25.4] 0;
-  load $startNode2 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode2   0 0 0 0 0 [expr -4448.2216*25.4] 0;
+  load $startNode1 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
+  load $endNode1   0 0 0 0 0 [expr  4448.2216*25.4] 0;
+  load $startNode2 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
+  load $endNode2   0 0 0 0 0 [expr  4448.2216*25.4] 0;
 }
 
 #recorder plot $dir/solarPanel1yield2OffsetTwPmoN.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
@@ -269,12 +269,12 @@ set Dincr 0.000001; #Displacement increment/decrement
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 0.1; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 500]; 
+set ok [analyze 50000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -310,7 +310,7 @@ if {$ok != 0} {
           };	# end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-#if 0 {
+if 0 {
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
 constraints Plain;           # how it handles boundary conditions
@@ -363,7 +363,7 @@ if {$ok != 0} {
           };  # end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-#}
+}
 set finishTime [clock clicks -milliseconds];
 puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
 set systemTime [clock seconds] 
