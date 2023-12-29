@@ -99,6 +99,105 @@ set rho_mf [expr 2690.0e-12];  #Aluminum mass density
 puts "rho_m $rho_m"
 puts "rho_mf $rho_mf"
 
+# material for dispX-----------------------------------------------------------
+Fy=1500.0;
+E0=7000.0;
+b=0.0001;
+uniaxialMaterial('Steel01', 1, Fy, E0, b)
+
+E=2.55e4;
+Fy=-1.0e6;
+gap=-1.8;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 101, *[1,2])
+
+# material for dispY-----------------------------------------------------------
+Fy=2000.0;
+E0=6.0e3;
+b=0.45;
+uniaxialMaterial('Steel01', 3, Fy, E0, b)
+
+E=7.7e4;
+Fy=-1.0e6;
+gap=-0.27;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 102, *[3,4])
+
+# material for dispZ-----------------------------------------------------------
+Fy=1600.0;
+E0=7.0e3;
+b=0.001;
+uniaxialMaterial('Steel01', 103, Fy, E0, b)
+
+# material for rotX-----------------------------------------------------------
+Fy=17000.0;
+E0=2.9e7;
+b=0.13;
+uniaxialMaterial('Steel01', 5, Fy, E0, b)
+
+E=1.0e7;
+Fy=1.0e10;
+gap=0.0088;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
+
+E=3.5e7;
+Fy=-1.0e6;
+gap=-0.0075;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 104, *[5,6,7])
+
+# material for rotY-----------------------------------------------------------
+Fy=28000.0;
+E0=8.9e6;
+b=0.005;
+uniaxialMaterial('Steel01', 9, Fy, E0, b)
+
+E=5.6e6;
+Fy=30000.0;
+gap=0.027;
+eta=0.1;
+uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
+
+E=5.0e6;
+Fy=-30000.0;
+gap=-0.017;
+eta=0.09;
+uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
+
+uniaxialMaterial('Parallel', 105, *[9,10,11])
+
+# material for rotZ-----------------------------------------------------------
+Fy=15000.0;
+E0=5.0e6;
+b=0.2;
+uniaxialMaterial('Steel01', 12, Fy, E0, b)
+
+E=8.1e6;
+Fy=1.0e10;
+gap=0.02;
+eta=0.99999;
+uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
+
+alpha=0.05;
+ko=170000.0;
+n=2.0;
+gamma=0.9;
+beta=0.5;
+Ao=0.5;
+deltaA=-0.5;
+deltaNu=10.0;
+deltaEta=0.001;
+uniaxialMaterial('BoucWen', 14, alpha, ko, n, gamma, beta, Ao, deltaA, deltaNu, deltaEta)
+
+uniaxialMaterial('Parallel', 106, *[12,13,14])
+
 # define SECTION DIMENSION AND FIBER DIVISION
 #----------------------------------------------------------------
 # SECTION properties for module frames
