@@ -83,7 +83,7 @@ set BeamSecTag 3
  
 # define MATERIALS
 #----------------------------------------------------------------
-set IDsteel 1; # Identifier for material
+set IDsteel 1001; # Identifier for material
 set Fy 379.0; # Yield stress -Use very large yield stress for elastic buckling analysis
 set Es 200000.0; # Elastic modulus
 set Bs 0.001;		# strain-hardening ratio 
@@ -100,103 +100,103 @@ puts "rho_m $rho_m"
 puts "rho_mf $rho_mf"
 
 # material for dispX-----------------------------------------------------------
-Fy=1500.0;
-E0=7000.0;
-b=0.0001;
-uniaxialMaterial('Steel01', 1, Fy, E0, b)
+set Fy 1500.0;
+set E0 7000.0;
+set b  0.0001;
+uniaxialMaterial Steel01 1 $Fy $E0 $b;
 
-E=2.55e4;
-Fy=-1.0e6;
-gap=-1.8;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
+set E  [expr 2.55e4];
+set Fy [expr -1.0e6];
+set gap -1.8;
+set eta 0.99999;
+uniaxialMaterial ElasticPPGap 2 $E $Fy $gap $eta;
 
-uniaxialMaterial('Parallel', 101, *[1,2])
+uniaxialMaterial Parallel 101 1 2;
 
 # material for dispY-----------------------------------------------------------
-Fy=2000.0;
-E0=6.0e3;
-b=0.45;
-uniaxialMaterial('Steel01', 3, Fy, E0, b)
+set Fy 2000.0;
+set E0 [expr 6.0e3];
+set b  0.45;
+uniaxialMaterial Steel01 3 $Fy $E0 $b;
 
-E=7.7e4;
-Fy=-1.0e6;
-gap=-0.27;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
+set E [expr 7.7e4];
+set Fy [expr -1.0e6];
+set gap -0.27;
+set eta 0.99999;
+uniaxialMaterial ElasticPPGap 4 $E $Fy $gap $eta;
 
-uniaxialMaterial('Parallel', 102, *[3,4])
+uniaxialMaterial Parallel 102 3 4;
 
 # material for dispZ-----------------------------------------------------------
-Fy=1600.0;
-E0=7.0e3;
-b=0.001;
-uniaxialMaterial('Steel01', 103, Fy, E0, b)
+set Fy 1600.0;
+set E0 [expr 7.0e3];
+set b 0.001;
+uniaxialMaterial Steel01 103 $Fy $E0 $b;
 
 # material for rotX-----------------------------------------------------------
-Fy=17000.0;
-E0=2.9e7;
-b=0.13;
-uniaxialMaterial('Steel01', 5, Fy, E0, b)
+set Fy 17000.0;
+set E0 [expr 2.9e7];
+set b 0.13;
+uniaxialMaterial Steel01 5 $Fy $E0 $b;
 
-E=1.0e7;
-Fy=1.0e10;
-gap=0.0088;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
+set E [expr 1.0e7];
+set Fy [expr 1.0e10];
+set gap 0.0088;
+set eta 0.99999;
+uniaxialMaterial ElasticPPGap 6 $E $Fy $gap $eta;
 
-E=3.5e7;
-Fy=-1.0e6;
-gap=-0.0075;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
+set E [expr 3.5e7];
+set Fy [expr -1.0e6];
+set gap -0.0075;
+set eta 0.99999;
+uniaxialMaterial ElasticPPGap 7 $E $Fy $gap $eta;
 
-uniaxialMaterial('Parallel', 104, *[5,6,7])
+uniaxialMaterial Parallel 104 5 6 7;
 
 # material for rotY-----------------------------------------------------------
-Fy=28000.0;
-E0=8.9e6;
-b=0.005;
-uniaxialMaterial('Steel01', 9, Fy, E0, b)
+set Fy 28000.0;
+set E0 [expr 8.9e6];
+set b 0.005;
+uniaxialMaterial Steel01 9 $Fy $E0 $b;
 
-E=5.6e6;
-Fy=30000.0;
-gap=0.027;
-eta=0.1;
-uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
+set E [expr 5.6e6];
+set Fy 30000.0;
+set gap 0.027;
+set eta 0.1;
+uniaxialMaterial ElasticPPGap 10 $E $Fy $gap $eta;
 
-E=5.0e6;
-Fy=-30000.0;
-gap=-0.017;
-eta=0.09;
-uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
+set E [expr 5.0e6];
+set Fy -30000.0;
+set gap -0.017;
+set eta 0.09;
+uniaxialMaterial ElasticPPGap 11 $E $Fy $gap $eta;
 
-uniaxialMaterial('Parallel', 105, *[9,10,11])
+uniaxialMaterial Parallel 105 9 10 11;
 
 # material for rotZ-----------------------------------------------------------
-Fy=15000.0;
-E0=5.0e6;
-b=0.2;
-uniaxialMaterial('Steel01', 12, Fy, E0, b)
+set Fy 15000.0;
+set E0 [expr 5.0e6];
+set b 0.2;
+uniaxialMaterial Steel01 12 $Fy $E0 $b;
 
-E=8.1e6;
-Fy=1.0e10;
-gap=0.02;
-eta=0.99999;
-uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
+set E [expr 8.1e6];
+set Fy [expr 1.0e10];
+set gap 0.02;
+set eta 0.99999;
+uniaxialMaterial ElasticPPGap 13 $E $Fy $gap $eta;
 
-alpha=0.05;
-ko=170000.0;
-n=2.0;
-gamma=0.9;
-beta=0.5;
-Ao=0.5;
-deltaA=-0.5;
-deltaNu=10.0;
-deltaEta=0.001;
-uniaxialMaterial('BoucWen', 14, alpha, ko, n, gamma, beta, Ao, deltaA, deltaNu, deltaEta)
+set alpha 0.05;
+set ko 170000.0;
+set n 2.0;
+set gamma 0.9;
+set beta 0.5;
+set Ao 0.5;
+set deltaA -0.5;
+set deltaNu 10.0;
+set deltaEta 0.001;
+uniaxialMaterial BoucWen 14 $alpha $ko $n $gamma $beta $Ao $deltaA $deltaNu $deltaEta;
 
-uniaxialMaterial('Parallel', 106, *[12,13,14])
+uniaxialMaterial Parallel 106 12 13 14;
 
 # define SECTION DIMENSION AND FIBER DIVISION
 #----------------------------------------------------------------
@@ -353,8 +353,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinSpringTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinSpringTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
