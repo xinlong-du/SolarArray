@@ -197,8 +197,8 @@ element elasticBeamColumn $elem3ID $node3I $node3J $A_ro $Emf $Gmf $Jx_ro $Iy_ro
 element elasticBeamColumn $elem4ID $node4I $node4J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
 set node5 [lindex $nModFra1 $i];
 set node6 [lindex $nModFra2 $i];
-equalDOF $node3I $node5 1 2 3;
-equalDOF $node4I $node6 1 2 3;
+equalDOF $node3I $node5 1 2 3 4 5 6;
+equalDOF $node4I $node6 1 2 3 4 5 6;
 } 
 
 for {set i 0} {$i<6} {incr i 1} {
@@ -231,14 +231,14 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-#DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+DisplayModel3D DeformedShape 1.5;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 -24.25 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 -24.25 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -2400.25 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -2400.25 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -254,8 +254,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetFRTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetFRTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -276,13 +276,13 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.000005; #Displacement increment/decrement 
+set Dincr -0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
 set ok [analyze 500]; 
