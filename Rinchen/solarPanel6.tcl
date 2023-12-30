@@ -269,12 +269,12 @@ set Dincr 0.000001; #Displacement increment/decrement
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-integrator ArcLength 1.0 0.1; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
 #integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 50000]; 
+set ok [analyze 500]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -310,7 +310,7 @@ if {$ok != 0} {
           };	# end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-if 0 {
+#if 0 {
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
 constraints Plain;           # how it handles boundary conditions
@@ -318,7 +318,7 @@ numberer Plain;        # renumber dof's to minimize band-width
 system BandGeneral;      # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.0001; #Displacement increment/decrement 
+set Dincr 0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
@@ -327,7 +327,7 @@ set Dmax 10
 integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static ;     # define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 5000]; 
+set ok [analyze 50000]; 
 if {$ok != 0} {  
   # if analysis fails, we try some other stuff, performance is slower inside this loop
   set Dstep 0.0;
@@ -363,7 +363,7 @@ if {$ok != 0} {
           };  # end while loop
   };      # end if ok !0
 #-----------------------------------------------------------------------
-}
+#}
 set finishTime [clock clicks -milliseconds];
 puts "Time taken: [expr ($finishTime-$startTime)/1000] sec"
 set systemTime [clock seconds] 
