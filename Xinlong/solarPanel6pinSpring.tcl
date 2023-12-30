@@ -96,8 +96,6 @@ set rho_m [expr 2500.0e-12];#Glass mass density
 set Emf 68000.3;      #Aluminum Young's modules (module frame)
 set Gmf [expr $Emf/2./(1+0.3)];#Shear modulus of aluminum
 set rho_mf [expr 2690.0e-12];  #Aluminum mass density
-puts "rho_m $rho_m"
-puts "rho_mf $rho_mf"
 
 # material for dispX-----------------------------------------------------------
 set Fy 1500.0;
@@ -107,8 +105,6 @@ uniaxialMaterial Steel01 1 $Fy $E0 $b;
 
 set E  [expr 2.55e4];
 set Fy [expr -1.0e6];
-puts "E $E"
-puts "Fy $Fy"
 set gap -1.8;
 set eta 0.99999;
 uniaxialMaterial ElasticPPGap 2 $E $Fy $gap $eta;
@@ -123,8 +119,6 @@ uniaxialMaterial Steel01 3 $Fy $E0 $b;
 
 set E [expr 7.7e4];
 set Fy [expr -1.0e6];
-puts "E $E"
-puts "Fy $Fy"
 set gap -0.27;
 set eta 0.99999;
 uniaxialMaterial ElasticPPGap 4 $E $Fy $gap $eta;
@@ -250,13 +244,13 @@ geomTransf Corotational $BeamTransfTag 0 0 1;# define geometric transformation: 
 set rafterTransfTag 2;# associate a tag to module frame transformation, parallel to rafter			   
 geomTransf Corotational $rafterTransfTag 1 0 0;# define geometric transformation: performs a corotational geometric
 #transformation of beam stiffness and resisting force from the basic system to the global-coordinate system
-puts $y0;
-puts $z0;
+puts "y0 $y0";
+puts "z0 $z0";
 set cy 0.0;
 set cz $z0;
 set omg 0.0;
-puts $cy;
-puts $cz;
+puts "cy $cy";
+puts "cz $cz";
 # Define ELEMENTS
 #-------------------------------------------------------------
 set nPurlin1 {100 101 103 104 106 107 109 110 112 113 115 116 118 119}; #nodes of purlin # 1
@@ -317,14 +311,6 @@ for {set i 0} {$i<12} {incr i 2} {
     set node8I [lindex $nMfPurl2 [expr $i+1]];
     set node8J [lindex $nModFra2 [expr $i+1]];
     element zeroLength [expr $i+850] $node8I $node8J -mat 101 102 103 104 105 106 -dir 1 2 3 4 5 6 -orient  1 0 0 0 1 0;
-    puts "node5I $node5I"
-    puts "node5J $node5J"
-    puts "node6I $node6I"
-    puts "node6J $node6J"
-    puts "node7I $node7I"
-    puts "node7J $node7J"
-    puts "node8I $node8I"
-    puts "node8J $node8J"
 }
 
 for {set i 0} {$i<6} {incr i 1} {
@@ -357,7 +343,7 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+DisplayModel3D DeformedShape 1.5;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
@@ -380,8 +366,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinSpringTwNmoN2.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinSpringTwNmoN2.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinSpringTwNmoN3.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinSpringTwNmoN3.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -402,7 +388,7 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.000001; #Displacement increment/decrement 
+set Dincr -0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
@@ -455,7 +441,7 @@ numberer Plain;        # renumber dof's to minimize band-width
 system BandGeneral;      # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.00001; #Displacement increment/decrement 
+set Dincr -0.0001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10

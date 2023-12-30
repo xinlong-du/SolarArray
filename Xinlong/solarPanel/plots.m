@@ -4,15 +4,15 @@ ltbAISI=13.9; %length=262 in
 %% simulation data
 purlin1N=load('../LateralBuckling/100CS75x3Mz6669mmNnoT.out');
 
-panel1N=load('solarPanel1yield2OffsetPinSpringTwNmoN2.out');
-panel2N=load('solarPanel2yield2OffsetPinSpringTwNmoN2.out');
+panel1N=load('solarPanel1yield2OffsetPinSpringTwNmoN3.out');
+panel2N=load('solarPanel2yield2OffsetPinSpringTwNmoN3.out');
 
 hfig=figure;
 plot([-1 1],[ltbAISI ltbAISI],'b-','LineWidth',1)
 hold on
 plot(purlin1N(:,5),purlin1N(:,1),'k-')
-plot(panel1N(:,5),panel1N(:,1),'k-o','MarkerIndices',1:100:length(panel1N))
-plot(panel2N(:,5),panel2N(:,1),'r--*','MarkerIndices',1:100:length(panel2N))
+plot(panel1N(:,5),panel1N(:,1),'k-o','MarkerIndices',1:1000:length(panel1N))
+plot(panel2N(:,5),panel2N(:,1),'r--*','MarkerIndices',1:1000:length(panel2N))
 
 % xlim([-0.1 0])
 % ylim([0 20])
@@ -30,5 +30,5 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\purlinBuckle2offsetPinSpringTwNmoN2.';
+fileout='.\figures\purlinBuckle2offsetPinSpringTwNmoN3.';
 print(hfig,[fileout,'tif'],'-r300','-dtiff');
