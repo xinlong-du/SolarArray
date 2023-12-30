@@ -58,7 +58,7 @@ set BeamSecTag 3
 # define MATERIALS
 #----------------------------------------------------------------
 set IDsteel 1; # Identifier for material
-set Fy 50000.0; # Yield stress -Use very large yield stress for elastic buckling analysis
+set Fy 379.0; # Yield stress -Use very large yield stress for elastic buckling analysis
 set Es 200000.0; # Elastic modulus
 set Bs 0.001;		# strain-hardening ratio 
 set G [expr $Es/(2*(1+0.3))]; # Shear modulus
@@ -107,27 +107,9 @@ set nodeJ [expr $i+1]
 element dispBeamColumn $elemID $nodeI $nodeJ $numIntgrPts $ColSecTagFiber $BeamTransfTag  $y0  $z0;	
 } 
 
-# define initial Perturbation Load
-#------------------------------------------------------------- 
-pattern Plain 1 Linear {
-  # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode 0 0 0 -24.25 0 0;#+242.5 for positive branch;  
-  }
-
-constraints Plain;  # Constraint handler -how it handles boundary conditions
-numberer Plain;	    # Renumbers DoF to minimize band-width (optimization)
-system BandGeneral; # System of equations solver
-test NormDispIncr 1.0e-8 50;
-algorithm NewtonLineSearch 0.6;# use Newton's solution algorithm: updates tangent stiffness at every iteration
-integrator LoadControl 1.0 ;
-analysis Static; 
-analyze 10; 
-
-loadConst -time 0.0; # maintains the load constant for the reminder of the analysis and resets the current time to 0
-
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/100CS75x3Mz6669mmNnoT.out -time -node $middleNode -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/yld100CS75x3Mz6669mmNnoT.out -time -node $middleNode -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
