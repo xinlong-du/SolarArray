@@ -107,6 +107,8 @@ uniaxialMaterial Steel01 1 $Fy $E0 $b;
 
 set E  [expr 2.55e4];
 set Fy [expr -1.0e6];
+puts "E $E"
+puts "Fy $Fy"
 set gap -1.8;
 set eta 0.99999;
 uniaxialMaterial ElasticPPGap 2 $E $Fy $gap $eta;
@@ -121,6 +123,8 @@ uniaxialMaterial Steel01 3 $Fy $E0 $b;
 
 set E [expr 7.7e4];
 set Fy [expr -1.0e6];
+puts "E $E"
+puts "Fy $Fy"
 set gap -0.27;
 set eta 0.99999;
 uniaxialMaterial ElasticPPGap 4 $E $Fy $gap $eta;
@@ -294,11 +298,34 @@ element elasticBeamColumn $elem1ID $node1I $node1J $A_ro $Emf $Gmf $Jx_ro $Iy_ro
 element elasticBeamColumn $elem2ID $node2I $node2J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;  
 element elasticBeamColumn $elem3ID $node3I $node3J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
 element elasticBeamColumn $elem4ID $node4I $node4J $A_ro $Emf $Gmf $Jx_ro $Iy_ro $Iz_ro $rafterTransfTag 0.0 0.0 0.0 0.0;
-set node5 [lindex $nModFra1 $i];
-set node6 [lindex $nModFra2 $i];
-equalDOF $node3I $node5 1 2 3;
-equalDOF $node4I $node6 1 2 3;
+#set node5 [lindex $nModFra1 $i];
+#set node6 [lindex $nModFra2 $i];
+#equalDOF $node3I $node5 1 2 3;
+#equalDOF $node4I $node6 1 2 3;
 } 
+
+for {set i 0} {$i<12} {incr i 2} {
+    set node5I [lindex $nMfPurl1 $i];
+    set node5J [lindex $nModFra1 $i];
+    element zeroLength [expr $i+700] $node5I $node5J -mat 101 102 103 104 105 106 -dir 1 2 3 4 5 6 -orient -1 0 0 0 1 0;
+    set node6I [lindex $nMfPurl2 $i];
+    set node6J [lindex $nModFra2 $i];
+    element zeroLength [expr $i+750] $node6I $node6J -mat 101 102 103 104 105 106 -dir 1 2 3 4 5 6 -orient -1 0 0 0 1 0;
+    set node7I [lindex $nMfPurl1 [expr $i+1]];
+    set node7J [lindex $nModFra1 [expr $i+1]];
+    element zeroLength [expr $i+800] $node7I $node7J -mat 101 102 103 104 105 106 -dir 1 2 3 4 5 6 -orient  1 0 0 0 1 0;
+    set node8I [lindex $nMfPurl2 [expr $i+1]];
+    set node8J [lindex $nModFra2 [expr $i+1]];
+    element zeroLength [expr $i+850] $node8I $node8J -mat 101 102 103 104 105 106 -dir 1 2 3 4 5 6 -orient  1 0 0 0 1 0;
+    puts "node5I $node5I"
+    puts "node5J $node5J"
+    puts "node6I $node6I"
+    puts "node6J $node6J"
+    puts "node7I $node7I"
+    puts "node7J $node7J"
+    puts "node8I $node8I"
+    puts "node8J $node8J"
+}
 
 for {set i 0} {$i<6} {incr i 1} {
     #                    elemID               node1          node2          node3          node4 counter-clockwise
@@ -330,7 +357,7 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-#DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
@@ -353,8 +380,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinSpringTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinSpringTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetPinSpringTwNmoN2.out -time -node $middleNode1 -dof 1 2 3 4 5 6 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetPinSpringTwNmoN2.out -time -node $middleNode2 -dof 1 2 3 4 5 6 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
@@ -375,16 +402,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.000005; #Displacement increment/decrement 
+set Dincr -0.000001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
-#integrator ArcLength 1.0 1.0; #Use this for curve with peak
+integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 500]; 
+set ok [analyze 5000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -428,7 +455,7 @@ numberer Plain;        # renumber dof's to minimize band-width
 system BandGeneral;      # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.0001; #Displacement increment/decrement 
+set Dincr -0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
