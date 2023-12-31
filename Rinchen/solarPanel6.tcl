@@ -223,8 +223,8 @@ for {set i 0} {$i<6} {incr i 1} {
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 24200.5 0 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 24200.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 -24200.5 0 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 -24200.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -240,8 +240,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetTwPmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetTwPmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel1yield2OffsetTwNmoN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPanel2yield2OffsetTwNmoN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # Define DISPLAY -------------------------------------------------------------
 #DisplayModel3D DeformedShape;	 # options: DeformedShape NodeNumbers ModeShape
@@ -265,7 +265,7 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.000001; #Displacement increment/decrement 
+set Dincr -0.00001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
@@ -274,7 +274,7 @@ integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 500]; 
+set ok [analyze 1000]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
@@ -318,7 +318,7 @@ numberer Plain;        # renumber dof's to minimize band-width
 system BandGeneral;      # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.00001; #Displacement increment/decrement 
+set Dincr -0.0001; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
 set IDctrlDOF 4;
 set Dmax 10
