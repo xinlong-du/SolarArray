@@ -57,7 +57,7 @@ section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
 i=0;
-for j in range (0,6):
+for j in range (0,11):
     node(501+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
     node(502+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
     node(503+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
@@ -74,16 +74,16 @@ for j in range (0,6):
     node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
     node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
 
-node(600, -105.5808*in2m, (-99.2500-5.0)*in2m, 31.0611*in2m)
-node(619, -105.5808*in2m, (153.3100+5.0)*in2m, 31.0611*in2m)
-node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
-node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
+node(110,  -69.2423*in2m, 0.0, 52.1209*in2m)
+node(111, -105.5808*in2m, 0.0, 31.0611*in2m)
+node(210,  -69.2423*in2m, 265.3600*in2m, 52.1209*in2m)
+node(211, -105.5808*in2m, 265.3600*in2m, 31.0611*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(600, 1, 1, 1, 0, 0, 0);
-fix(619, 1, 0, 1, 0, 0, 0);
-fix(800, 1, 1, 1, 0, 0, 0);  
-fix(819, 1, 0, 1, 0, 0, 0);
+fix(110, 1, 1, 1, 0, 0, 0);
+fix(210, 1, 0, 1, 0, 0, 0);
+fix(111, 1, 1, 1, 0, 0, 0);  
+fix(211, 1, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -95,9 +95,10 @@ vecxz = [0.0-(-88.0), 0.0, 92.25-41.25]; #local z' direction (nodes 104 - 107)
 geomTransf('Linear', purlinTransfTag, *vecxz);
 
 # purlins
-nPurlin1 = [600,601,603,604,606,607,609,610,612,613,615,616,618,619]; #nodes of purlin # 1
-nPurlin2 = [800,801,803,804,806,807,809,810,812,813,815,816,818,819]; #nodes of purlin # 2
-for i in range (0,13):
+nPurlin1 = [601,603,604,606,607,111,609,610,612,613,615,616,618,619,621,622,624,625,211,627,628,630,631,633]; #nodes of purlin # 1
+nPurlin2 = [801,803,804,806,807,110,809,810,812,813,815,816,818,819,821,822,824,825,210,827,828,830,831,833]; #nodes of purlin # 2
+
+for i in range (0,23):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
     element('elasticBeamColumn', i+500, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
@@ -106,7 +107,7 @@ for i in range (0,13):
 
 # modules and module frames
 i=0;
-for j in range (0,6):
+for j in range (0,11):
     #                    elemID               node1          node2          node3          node4 counter-clockwise
     element('ShellMITC4',(24*i+1)*1000+j+1, *[501+i*700+j*3, 601+i*700+j*3, 602+i*700+j*3, 502+i*700+j*3], moduleSecTag)
     element('ShellMITC4',(24*i+2)*1000+j+1, *[601+i*700+j*3, 701+i*700+j*3, 702+i*700+j*3, 602+i*700+j*3], moduleSecTag)
@@ -171,7 +172,7 @@ timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
 
 for i in range (0,1):
-    for j in range (0,6):
+    for j in range (0,11):
         load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
         load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi)+g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
         load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi)+g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
@@ -285,6 +286,6 @@ reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1
 ubLength=260.0; #in
 avaMoment=79; #=required strength, Section 12CS3.5x105
 
-# wipe()
-# vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+wipe()
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
 #------------------------------------------------------------------------------
