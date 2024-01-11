@@ -35,11 +35,11 @@ Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
 rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-# SECTION properties for purlin C-Section 12CS3.5x105 in AISI Manual (2002)
-A_pu = 2.09*in2m**2;     #cross-sectional area
-Iz_pu = 43.8*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 3.07*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.00769*in2m**4;  #torsional moment of inertia of section
+# SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
+A_pu = 0.822*in2m**2;     #cross-sectional area
+Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
@@ -101,9 +101,9 @@ nPurlin2 = [801,803,804,806,807,110,809,810,812,813,815,816,818,819,821,822,824,
 for i in range (0,23):
     # purlin # 1
     #                            elemID   nodeI  nodeJ
-    element('elasticBeamColumn', i+500, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+501, *[nPurlin1[i], nPurlin1[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     # purlin # 2
-    element('elasticBeamColumn', i+600, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+    element('elasticBeamColumn', i+601, *[nPurlin2[i], nPurlin2[i+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
 
 # modules and module frames
 i=0;
@@ -140,8 +140,8 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-# vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-# vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=1, scale=2); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=2); #plot mode shape 2
 # vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 # vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 # vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
@@ -161,8 +161,8 @@ g_mEd=-0.1*g_m/32*2;   #edge, 8 in total
 g_mIn=-0.1*g_m/32*4;   #internal, 3 in total
 
 # wind pressure
-#pMax=-2352.8;
-pMax=2162.15;
+#pMax=-1165.6;
+pMax=1131.9;
 f_m=84.0*in2m*41.26*in2m*pMax;
 f_mCo=0.1*f_m/32;     #corner, 4 in total
 f_mEd=0.1*f_m/32*2;   #edge, 8 in total
@@ -210,14 +210,14 @@ print('Finished')
 
 # postprocessing---------------------------------------------------------------
 # forces and displacements at mid span
-efLocEnd506=eleResponse(506, 'localForces')
-efLocEnd606=eleResponse(606, 'localForces')
+efLocEnd512=eleResponse(512, 'localForces')
+efLocEnd612=eleResponse(612, 'localForces')
 
 efLocEnd5xx=[None]*13;
 efLocEnd6xx=[None]*13;
 for i in range (0,13):
-    efLocEnd5xx[i]=eleResponse(i+500, 'localForces');
-    efLocEnd6xx[i]=eleResponse(i+600, 'localForces');
+    efLocEnd5xx[i]=eleResponse(i+506, 'localForces');
+    efLocEnd6xx[i]=eleResponse(i+606, 'localForces');
 #%%
 moLocEnd5xx=[None]*14;
 moLocEnd6xx=[None]*14;
@@ -229,7 +229,7 @@ moLocEnd6xx[13]=-efLocEnd6xx[12][11];
 
 coordNdPurlin1=[None]*14;
 for i in range (0,14):
-    coordNdPurlin1[i]=nodeCoord(nPurlin1[i],2);
+    coordNdPurlin1[i]=nodeCoord(nPurlin1[i+5],2);
 
 coordNdPurlin1m=[x - coordNdPurlin1[0] for x in coordNdPurlin1];
 import matplotlib.pyplot as plt
@@ -240,9 +240,9 @@ plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
 plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
 ax.tick_params(direction="in")
 ax.set_xlim(0.0, coordNdPurlin1m[13])
-ax.set_ylim(-13500,100)
+#ax.set_ylim(-13500,100)
 plt.xticks([0.0,0.25*coordNdPurlin1m[13],0.5*coordNdPurlin1m[13],0.75*coordNdPurlin1m[13],coordNdPurlin1m[13]])
-plt.yticks(np.arange(-13500, 100, 100))
+#plt.yticks(np.arange(-13500, 100, 100))
 plt.grid()
 #plt.show()
 plt.ylabel('Mz (N-m)',fontsize=8)
@@ -250,42 +250,41 @@ plt.xlabel('Y (m)',fontsize=8);
 file_name = 'momentPin1'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
-ax.set_ylim(-13500,-9500)
-plt.yticks(np.arange(-13500, -9500, 100))
+ax.set_ylim(-3500,-1000)
+plt.yticks(np.arange(-3500, -1000, 50))
 file_name = 'momentPin2'
 plt.savefig('./'+file_name+'.tif', transparent=False, bbox_inches='tight', dpi=100)
 
 #%% calculate Cb
-Mmax=13469.5;
-Ma=9750.0;
-Mb=13469.5;
-Mc=9720.0;
+Mmax=4321.3;
+Ma=1350.0;
+Mb=(3171.7+3087.2)/2;
+Mc=1425.0;
 Cb=12.5*Mmax/(2.5*Mmax+3*Ma+4*Mb+3*Mc);
 
 #%%
-ndGloEnd509=nodeDisp(509);
-ndGloEnd608=nodeDisp(608);
-ndGloEnd609=nodeDisp(609);
-ndGloEnd610=nodeDisp(610);
-ndGloEnd611=nodeDisp(611);
-ndGloEnd709=nodeDisp(709);
-ndGloEnd809=nodeDisp(809);
-ndGloEnd810=nodeDisp(810);
-ndLocYend509=39.3701*ndGloEnd509[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd509[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend608=39.3701*ndGloEnd608[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd608[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend609=39.3701*ndGloEnd609[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd609[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend610=39.3701*ndGloEnd610[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd610[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend611=39.3701*ndGloEnd611[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd611[0]*math.sin(30/180*math.pi); #m to in
-ndLocYend709=39.3701*ndGloEnd709[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd709[0]*math.sin(30/180*math.pi); #m to in
+ndGloEnd516=nodeDisp(516);
+ndGloEnd518=nodeDisp(518);
+ndGloEnd616=nodeDisp(616);
+ndGloEnd618=nodeDisp(618);
+ndGloEnd716=nodeDisp(716);
+ndGloEnd718=nodeDisp(718);
+ndGloEnd816=nodeDisp(816);
+ndGloEnd818=nodeDisp(818);
+ndLocYend516=39.3701*ndGloEnd516[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd516[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend616=39.3701*ndGloEnd616[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd616[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend716=39.3701*ndGloEnd716[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd716[0]*math.sin(30/180*math.pi); #m to in
+ndLocYend816=39.3701*ndGloEnd816[2]*math.cos(30/180*math.pi)-39.3701*ndGloEnd816[0]*math.sin(30/180*math.pi); #m to in
 
 #required strength for Cb=1
 reqMoment=max([abs(number) for number in moLocEnd5xx]);
-reqMoment=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. 1.67 converts Cb=1.67 to Cb=1. 0.9 is for phi_b=0.9
+reqMomentLTB=reqMoment*0.0002248*39.3701/Cb/0.9; #N-m to kip-in. converts Cb=1.7 to Cb=1. phi_b=0.9
+reqMomentYLD=reqMoment*0.0002248*39.3701/0.95;   #N-m to kip-in. phi_b=0.95
 
 #available strength for beam charts in AISI Manual
-ubLength=260.0; #in
+ubLength=265.36; #in
 avaMoment=79; #=required strength, Section 12CS3.5x105
 
-wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+#wipe()
+#vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=10)
 #------------------------------------------------------------------------------
