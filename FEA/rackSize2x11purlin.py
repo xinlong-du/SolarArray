@@ -35,11 +35,18 @@ Gmf = Emf/2./(1+nu);      #Shear modulus of aluminum
 rho_mf = 2690.0;          #Aluminum mass density
 
 # Define  SECTIONS ------------------------------------------------------------
-# SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-A_pu = 0.822*in2m**2;     #cross-sectional area
-Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
-Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
-Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
+# SECTION properties for purlin C-Section 8CS3.5x065 in AISI Manual (2002)
+# A_pu = 1.040*in2m**2;     #cross-sectional area
+# Iz_pu = 10.6*in2m**4;     #second moment of area about the local z-axis
+# Iy_pu = 1.680*in2m**4;    #second moment of area about the local y-axis
+# Jx_pu = 0.00146*in2m**4;  #torsional moment of inertia of section
+# mass_pu = A_pu*rho_s;     #mass per unit length
+
+# SECTION properties for purlin C-Section 4CS2.5x059 in AISI Manual (2002)
+A_pu = 0.538*in2m**2;     #cross-sectional area
+Iz_pu = 1.35*in2m**4;     #second moment of area about the local z-axis
+Iy_pu = 0.331*in2m**4;    #second moment of area about the local y-axis
+Jx_pu = 0.000625*in2m**4;  #torsional moment of inertia of section
 mass_pu = A_pu*rho_s;     #mass per unit length
 
 # SECTION properties for module frames
