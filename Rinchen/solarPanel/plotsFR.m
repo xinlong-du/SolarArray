@@ -3,11 +3,16 @@ ltbAISI=11.6; %length=262 in
 yldAISI=93;   %Fy=55 ksi
 
 %% simulation data without panels
-purlin1N=load('solarPurlin1N.out');
-purlin2N=load('solarPurlin2N.out');
+panel1N=load('solarPurlin1N.out'); %initial perturbation is not exactly at the midspan
+panel2N=load('solarPurlin2N.out');
+purlin1N=load('../LateralBuckling/8CS2.5x059Mz262inN.out');
 purlin1P=load('../LateralBuckling/8CS2.5x059Mz262inP.out');
 %purlin2P=load('solarPurlin2P.out');
-
+plot(panel1N(:,5),panel1N(:,1))
+hold on
+plot(panel2N(:,5),panel2N(:,1))
+plot(purlin1N(:,5),purlin1N(:,1))
+legend('purlin 1','purlin 2','single purlin')
 % panel1N=load('solarPanel1N.out');
 % panel2N=load('solarPanel2N.out');
 % panel1N=load('solarPanel1Nstiff0.1.out');
