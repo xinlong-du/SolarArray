@@ -237,8 +237,8 @@ DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
 #------------------------------------------------------------- 
 pattern Plain 1 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $middleNode1 0 0 0 -2420.5 0 0 0;#+242.5 for positive branch; 
-  load $middleNode2 0 0 0 -2420.5 0 0 0;#+242.5 for positive branch;  
+  load $middleNode1 0 0 0 2420.5 0 0 0;#+242.5 for positive branch; 
+  load $middleNode2 0 0 0 2420.5 0 0 0;#+242.5 for positive branch;  
   }
 
 constraints Plain;  # Constraint handler -how it handles boundary conditions
@@ -254,8 +254,8 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPurlin1PinTwNdispYN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPurlin2PinTwNdispYN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPurlin1PinTwPdispYN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPurlin2PinTwPdispYN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
