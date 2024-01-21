@@ -13,7 +13,7 @@ source DisplayPlane.tcl;		# procedure for displaying a plane in model
 source DisplayModel3D.tcl;		# procedure for displaying 3D perspectives of model
 source Csection.tcl;   # C-section with round corners
 model basic -ndm 3 -ndf 7;# 3 dimensions, 7 dof per node
-set dir solarPanel;  #set dir lateral buckling of C section
+set dir solarPanelTest;  #set dir lateral buckling of C section
 file mkdir $dir;          # create data directory
 
 # define GEOMETRY
@@ -120,10 +120,10 @@ set moduleSecTag 100;
 set h 4.96; #depth of module
 section ElasticMembranePlateSection $moduleSecTag $Em $nu_m $h $rho_m;
 
-set D [expr 8.0*$in2mm];		# Depth
+set D [expr 6.0*$in2mm];		# Depth
 set B [expr 2.5*$in2mm]; 		# Flange width
-set L [expr 0.773*$in2mm];		# Lip
-set t [expr 0.059*$in2mm];		# section thickness for C-section	
+set L [expr 0.788*$in2mm];		# Lip
+set t [expr 0.065*$in2mm];		# section thickness for C-section	
 set r [expr 0.1875*$in2mm];		# corner radius (to inside face)
 set nfdw 50;		# number of fibers along web depth
 set nfbf 40;		# number of fibers along flange
@@ -231,7 +231,7 @@ for {set i 0} {$i<6} {incr i 1} {
 }
 
 # Define DISPLAY -------------------------------------------------------------
-#DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
+DisplayModel3D DeformedShape;  # options: DeformedShape NodeNumbers ModeShape
 
 # define initial Perturbation Load
 #------------------------------------------------------------- 
@@ -254,17 +254,15 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/solarPanel1yield2OffsetPinTwNmoP.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
-recorder Node -file $dir/solarPanel2yield2OffsetPinTwNmoP.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPurlin1PinTwNdispYN.out -time -node $middleNode1 -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/solarPurlin2PinTwNdispYN.out -time -node $middleNode2 -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode1 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode1   0 0 0 0 0 [expr -4448.2216*25.4] 0;
-  load $startNode2 0 0 0 0 0 [expr  4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode2   0 0 0 0 0 [expr -4448.2216*25.4] 0;
+  load $middleNode1 0 -4448.2216 0 0 0 0 0; #the applied reference load is 1 kip
+  load $middleNode2 0 -4448.2216 0 0 0 0 0;
 }
 
 #recorder plot $dir/solarPanel1yield2OffsetPinTwPmoP.out Displ-X 1200 10 300 300 -columns 5 1; # a window to plot the nodal displacements versus time
@@ -276,16 +274,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr 0.00001; #Displacement increment/decrement 
+set Dincr -0.1; #Displacement increment/decrement 
 set IDctrlNode $middleNode1;
-set IDctrlDOF 4;
+set IDctrlDOF 2;
 set Dmax 10
-integrator ArcLength 1.0 1.0; #Use this for curve with peak
+#integrator ArcLength 1.0 1.0; #Use this for curve with peak
 #                              node        dof        init   Jd min    max
-#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
+integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 2000]; 
+set ok [analyze 305]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
