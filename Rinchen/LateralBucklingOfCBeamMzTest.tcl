@@ -66,10 +66,10 @@ uniaxialMaterial Steel01 $IDsteel $Fy $Es $Bs;	# build steel01 material
 
 # define SECTION DIMENSION AND FIBER DIVISION
 #----------------------------------------------------------------
-set D [expr 8.0*$in2mm];		# Depth
+set D [expr 6.0*$in2mm];		# Depth
 set B [expr 2.5*$in2mm]; 		# Flange width
-set L [expr 0.773*$in2mm];		# Lip
-set t [expr 0.059*$in2mm];		# section thickness for C-section	
+set L [expr 0.788*$in2mm];		# Lip
+set t [expr 0.065*$in2mm];		# section thickness for C-section	
 set r [expr 0.1875*$in2mm];		# corner radius (to inside face)
 set nfdw 50;		# number of fibers along web depth
 set nfbf 40;		# number of fibers along flange
@@ -127,14 +127,13 @@ loadConst -time 0.0; # maintains the load constant for the reminder of the analy
 
 # define RECORDERS
 #-------------------------------------------------------------
-recorder Node -file $dir/8CS2.5x059Mz262inP.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
+recorder Node -file $dir/6CS2.5x065L262inFY.out -time -node $middleNode -dof 1 2 3 4 5 6 7 disp;
 
 # define second stage main Load (Moment at the two ends)
 #------------------------------------------------------------- 
 pattern Plain 2 Linear {
   # NodeID, Fx, Fy, Fz, Mx, My, Mz, Bx
-  load $startNode 0 0 0 0 0 [expr -4448.2216*25.4] 0; #the applied reference load is 1 kip-in
-  load $endNode   0 0 0 0 0 [expr  4448.2216*25.4] 0;
+  load $middleNode 0 -4448.2216 0 0 0 0 0; #the applied reference load is 1 kip
 }
 # define ANALYSIS PARAMETERS
 #------------------------------------------------------------------------------------
@@ -143,16 +142,16 @@ numberer Plain;		     # renumber dof's to minimize band-width
 system BandGeneral;	     # how to store and solve the system of equations in the analysis
 test NormDispIncr 1.0e-8 50 0; # determine if convergence has been achieved at the end of an iteration step
 algorithm NewtonLineSearch 0.8;
-set Dincr -0.0001; #Displacement increment/decrement 
+set Dincr -0.1; #Displacement increment/decrement 
 set IDctrlNode $middleNode
-set IDctrlDOF 4;
+set IDctrlDOF 2;
 set Dmax 10
-integrator ArcLength 1.0 1.0; #Use this for positive branch
+#integrator ArcLength 1.0 1.0; #Use this for positive branch
 #                              node        dof        init   Jd min    max
-#integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr; #use this for negative branch
+integrator DisplacementControl $IDctrlNode $IDctrlDOF $Dincr 1  $Dincr $Dincr; #use this for negative branch
 analysis Static	;			# define type of analysis static or transient
 variable algorithmTypeStatic Newton
-set ok [analyze 10000]; 
+set ok [analyze 305]; 
 if {$ok != 0} {  
 	# if analysis fails, we try some other stuff, performance is slower inside this loop
 	set Dstep 0.0;
