@@ -163,19 +163,22 @@ freq = omega/(2*math.pi);
 # define loads-----------------------------------------------------------------
 # actuator force
 f_m=1.0; #Newton
+f_p=-1.0;
 
 timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
-load(609, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-load(809, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(607, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(807, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(612, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(812, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
 
 eleRec=list(range(501,513))+list(range(601,613));
-recorder('Element', '-file', f'{dataDir}/test6PeleForce.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Node', '-file', f'{dataDir}/test6PnodeDisp.out', '-time', '-node', *[609,809], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Element', '-file', f'{dataDir}/testAllCases2/test6PeleForceTwist.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Node', '-file', f'{dataDir}/testAllCases2/test6PnodeDispTwist.out', '-time', '-node', *[607,807,612,812], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -186,7 +189,7 @@ algorithm('Linear');
 #integrator('LoadControl', 1)
 nodeTag=609;
 dof=3;
-incr=-0.0005;
+incr=-0.000001;
 integrator('DisplacementControl', nodeTag, dof, incr)
 analysis('Static');	# define type of analysis static or transient
 analyze(53);
@@ -271,5 +274,5 @@ ubLength=260.0; #in
 avaMoment=79; #=required strength, Section 12CS3.5x105
 
 wipe()
-vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=5)
+vfo.plot_deformedshape(model="solarPanel", loadcase="static", scale=10)
 #------------------------------------------------------------------------------
