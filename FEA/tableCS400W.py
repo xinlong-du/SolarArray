@@ -38,11 +38,11 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     rho_mf = 2690.0;          #Aluminum mass density
     
     # Define  SECTIONS ------------------------------------------------------------
-    # SECTION properties for purlin C-Section 8CS2.5x059 in AISI Manual (2002)
-    A_pu = 0.822*in2m**2;     #cross-sectional area
-    Iz_pu = 7.79*in2m**4;     #second moment of area about the local z-axis
-    Iy_pu = 0.674*in2m**4;    #second moment of area about the local y-axis
-    Jx_pu = 0.000954*in2m**4;  #torsional moment of inertia of section
+    # SECTION properties for purlin C-Section 6CS2.5x065 in AISI Manual (2002)
+    A_pu = 0.776*in2m**2;     #cross-sectional area
+    Iz_pu = 4.36*in2m**4;     #second moment of area about the local z-axis
+    Iy_pu = 0.677*in2m**4;    #second moment of area about the local y-axis
+    Jx_pu = 0.00109*in2m**4;  #torsional moment of inertia of section
     mass_pu = A_pu*rho_s;     #mass per unit length
     
     # SECTION properties for rafter HAT Section 6HU3x060 in AISI Manual (2002)
@@ -450,9 +450,9 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     nodeRec=list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
     eleRec=list(range(701,724))+list(range(801,824));
     springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
-    recorder('Node', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-    recorder('Element', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
-    recorder('Element', '-file', f'{dataDir}/testAllCases/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
+    recorder('Node', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+    recorder('Element', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
+    recorder('Element', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
     
     # define DAMPING
     rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -549,6 +549,8 @@ for i in range(0,12):
     Cp=CpList[i];
     dtNorm=dtNormList[i];
     dirID=dirList[i];
-    for j in range(0,10):
-        U=UList[j];
-        runDynamicAnalysis(Cp,U,dtNorm,dirID,str(j))
+    U=96.0*0.44704/1.52/1.18; #mph to 3-sec m/s to hourly m/s to 3m-height m/s
+    runDynamicAnalysis(Cp,U,dtNorm,dirID,'9')
+    # for j in range(0,10):
+    #     U=UList[j];
+    #     runDynamicAnalysis(Cp,U,dtNorm,dirID,str(j))
