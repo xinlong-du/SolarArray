@@ -292,9 +292,9 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     nRafter=[11,10,9,8];
     for i in range (0,4):
         nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+66));
-        nPurlin[i].insert(58,400+nRafter[i])
+        nPurlin[i].insert(59,400+nRafter[i])
         nPurlin[i].insert(40,300+nRafter[i])
-        nPurlin[i].insert(25,200+nRafter[i])
+        nPurlin[i].insert(26,200+nRafter[i])
         nPurlin[i].insert(7,100+nRafter[i])
     
     for i in range (0,4):
