@@ -222,10 +222,12 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
             node(901+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
             node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
             node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
-            node(1001+700*i+2*j,(-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-            node(1002+700*i+2*j,(-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
-            node(1101+700*i+2*j, (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
-            node(1102+700*i+2*j, (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+            node(1001+700*i+3*j,(-105.5808+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+            node(1002+700*i+3*j,(-105.5808+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+            node(1003+700*i+3*j,(-105.5808+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (31.0611+43.2185*i)*in2m)
+            node(1101+700*i+3*j, (-69.2423+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+            node(1102+700*i+3*j, (-69.2423+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
+            node(1103+700*i+3*j, (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
     
     # intersection of external braces
     node(1901, 0.0, 132.6800*in2m, 51.6250*in2m)
@@ -285,21 +287,21 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
         element('elasticBeamColumn', 112+100*i, *[103+100*i, 107+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
     
     # purlins
-    nPurlin=[[0]*48]*4; #nodes of purlins
+    nPurlin=[[0]*70]*4; #nodes of purlins
     rowPurlin=[1001,1101,1701,1801];
     nRafter=[11,10,9,8];
     for i in range (0,4):
-        nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+44));
-        nPurlin[i].insert(39,400+nRafter[i])
-        nPurlin[i].insert(27,300+nRafter[i])
-        nPurlin[i].insert(17,200+nRafter[i])
-        nPurlin[i].insert(5,100+nRafter[i])
+        nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+66));
+        nPurlin[i].insert(58,400+nRafter[i])
+        nPurlin[i].insert(40,300+nRafter[i])
+        nPurlin[i].insert(25,200+nRafter[i])
+        nPurlin[i].insert(7,100+nRafter[i])
     
     for i in range (0,4):
-        for j in range (0,23):
+        for j in range (0,34):
             #                            elemID         nodeI          nodeJ
             element('elasticBeamColumn', i*100+501+j, *[nPurlin[i][j], nPurlin[i][j+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
-            element('elasticBeamColumn', i*100+501+j+24, *[nPurlin[i][j+24], nPurlin[i][j+1+24]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
+            element('elasticBeamColumn', i*100+501+j+35, *[nPurlin[i][j+35], nPurlin[i][j+1+35]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     
     # modules and module frames
     for i in range (0,2):
@@ -326,10 +328,10 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
             element('elasticBeamColumn', (24*i+18)*1000+j+1, *[902+i*700+j*3,  903+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
             element('elasticBeamColumn', (24*i+19)*1000+j+1, *[501+i*700+j*3,  502+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
             element('elasticBeamColumn', (24*i+20)*1000+j+1, *[502+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
-            element('zeroLength', (24*i+21)*1000+j+1, *[1001+i*700+j*2, 601+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
-            element('zeroLength', (24*i+22)*1000+j+1, *[1002+i*700+j*2, 603+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
-            element('zeroLength', (24*i+23)*1000+j+1, *[1101+i*700+j*2, 801+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
-            element('zeroLength', (24*i+24)*1000+j+1, *[1102+i*700+j*2, 803+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
+            element('zeroLength', (24*i+21)*1000+j+1, *[1001+i*700+j*3, 601+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+            element('zeroLength', (24*i+22)*1000+j+1, *[1003+i*700+j*3, 603+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
+            element('zeroLength', (24*i+23)*1000+j+1, *[1101+i*700+j*3, 801+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx1, *vecyp);
+            element('zeroLength', (24*i+24)*1000+j+1, *[1103+i*700+j*3, 803+i*700+j*3], '-mat', *[101,102,103,104,105,106], '-dir', *[1,2,3,4,5,6], '-orient', *vecx2, *vecyp);
             
     # external braces
     for i in range(0,2):
@@ -342,8 +344,8 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     alleleTags=getEleTags();
     
     # render the model
-    # vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
-    # vfo.plot_model()
+    vfo.createODB(model="tableCS400W", loadcase="windDir0", Nmodes=6, deltaT=1)
+    vfo.plot_model()
     
     # eigen ANALYSIS---------------------------------------------------------------
     eigenValues = eigen(12);
@@ -450,8 +452,8 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
             load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
     
     # define RECORDERS ------------------------------------------------------------
-    nodeRec=list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
-    eleRec=list(range(701,724))+list(range(801,824));
+    nodeRec=list(range(1701,1734))+list(range(1801,1834))+list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
+    eleRec=list(range(701,735))+list(range(801,835));
     springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
     recorder('Node', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
     recorder('Element', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
@@ -469,7 +471,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     algorithm('KrylovNewton');
     integrator('Newmark', 0.5, 0.25);
     analysis('Transient'); # define type of analysis static or transient
-    ok = analyze(500, 0.02);
+    ok = analyze(750, 0.02);
     print('Finished')
     
     #%% output forces on joints at the last time step, used for verification-------
