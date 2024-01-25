@@ -89,97 +89,100 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     # define springs---------------------------------------------------------------
     # material for dispX-----------------------------------------------------------
     Fy=1500.0;
-    E0=1.0e6;
+    E0=7.0e6;
     b=0.0001;
     uniaxialMaterial('Steel01', 1, Fy, E0, b)
     
-    E=1.95e7;
+    E=2.55e7;
     Fy=-1.0e6;
-    gap=-2.1e-3;
+    gap=-1.8e-3;
     eta=0.99999;
     uniaxialMaterial('ElasticPPGap', 2, E, Fy, gap, eta)
     
     uniaxialMaterial('Parallel', 101, *[1,2])
     
     # material for dispY-----------------------------------------------------------
-    Fy=4000.0;
-    E0=1.5e7;
-    b=0.0001;
+    Fy=2000.0;
+    E0=6.0e6;
+    b=0.45;
     uniaxialMaterial('Steel01', 3, Fy, E0, b)
     
-    E=4.0e5;
-    Eneg=1.95e8;
-    eta=0.0;
-    uniaxialMaterial('Elastic', 4, E, eta, Eneg)
+    E=7.7e7;
+    Fy=-1.0e6;
+    gap=-2.7e-4;
+    eta=0.99999;
+    uniaxialMaterial('ElasticPPGap', 4, E, Fy, gap, eta)
     
     uniaxialMaterial('Parallel', 102, *[3,4])
     
     # material for dispZ-----------------------------------------------------------
-    Fy=1650.0;
+    Fy=1600.0;
     E0=7.0e6;
-    b=0.002;
+    b=0.001;
     uniaxialMaterial('Steel01', 103, Fy, E0, b)
     
     # material for rotX-----------------------------------------------------------
-    Fy=1.0e2;
-    E0=9.9e4;
-    b=0.1;
+    Fy=17.0;
+    E0=2.9e4;
+    b=0.13;
     uniaxialMaterial('Steel01', 5, Fy, E0, b)
     
-    E=2.0e3;
+    E=1.0e4;
     Fy=1.0e7;
-    gap=0.0;
+    gap=0.0088;
     eta=0.99999;
     uniaxialMaterial('ElasticPPGap', 6, E, Fy, gap, eta)
     
-    E=2.8e4;
+    E=3.5e4;
     Fy=-1.0e3;
-    gap=-0.0;
+    gap=-0.0075;
     eta=0.99999;
     uniaxialMaterial('ElasticPPGap', 7, E, Fy, gap, eta)
     
-    E=9.6e4;
-    uniaxialMaterial('Elastic', 8, E)
-    
-    uniaxialMaterial('Parallel', 104, *[5,6,7,8])
+    uniaxialMaterial('Parallel', 104, *[5,6,7])
     
     # material for rotY-----------------------------------------------------------
-    Fy=80.0;
-    E0=8.0e3;
-    b=0.04;
+    Fy=28.0;
+    E0=8.9e3;
+    b=0.005;
     uniaxialMaterial('Steel01', 9, Fy, E0, b)
     
-    E=1.6e3;
-    Fy=1.0e7;
-    gap=0.022;
-    eta=0.99999;
+    E=5.6e3;
+    Fy=30.0;
+    gap=0.027;
+    eta=0.1;
     uniaxialMaterial('ElasticPPGap', 10, E, Fy, gap, eta)
     
-    E=1.6e3;
-    Fy=-1.0e7;
-    gap=-0.022;
-    eta=0.99999;
+    E=5.0e3;
+    Fy=-30;
+    gap=-0.017;
+    eta=0.09;
     uniaxialMaterial('ElasticPPGap', 11, E, Fy, gap, eta)
     
     uniaxialMaterial('Parallel', 105, *[9,10,11])
     
     # material for rotZ-----------------------------------------------------------
-    Fy=40.0;
-    E0=5.0e4;
-    b=0.05;
+    Fy=15.0;
+    E0=5.0e3;
+    b=0.2;
     uniaxialMaterial('Steel01', 12, Fy, E0, b)
     
-    E=7.0e3;
-    Fy=-1.0e7;
-    gap=-0.03;
+    E=8.1e3;
+    Fy=1.0e7;
+    gap=0.02;
     eta=0.99999;
     uniaxialMaterial('ElasticPPGap', 13, E, Fy, gap, eta)
     
-    fpc=-1.4e3;
-    epsc0=-0.1;
-    fpcu=0.0;
-    epsU=-0.06;
-    uniaxialMaterial('Concrete01',14,fpc,epsc0,fpcu,epsU)
+    alpha=0.05;
+    ko=100;
+    n=2;
+    gamma=0.7;
+    beta=0.5;
+    Ao=5;
+    deltaA=-200;
+    deltaNu=1600;
+    deltaEta=0.1;
+    uniaxialMaterial('BoucWen', 14, alpha, ko, n, gamma, beta, Ao, deltaA, deltaNu, deltaEta)
     
     uniaxialMaterial('Parallel', 106, *[12,13,14])
     
@@ -450,9 +453,9 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     nodeRec=list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
     eleRec=list(range(701,724))+list(range(801,824));
     springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
-    recorder('Node', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
-    recorder('Element', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
-    recorder('Element', '-file', f'{dataDir}/testAllCases2/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
+    recorder('Node', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+    recorder('Element', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
+    recorder('Element', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
     
     # define DAMPING
     rayleigh(0.0,0.0,0.0,2*0.02/(eigenValues[0]**0.5));
@@ -538,9 +541,9 @@ for i in range(7,12):
     dtNormList[i]=dtNormList[12-i];
 
 #%% load wind speed information
-filename='../../WindAnalysis/FiguresDeg30/CTspdPb30.txt';
+filename='../../WindAnalysis/FiguresDeg30TX/CTspdPb30.txt';
 dirSpdDura=np.loadtxt(filename);
-dirSpd=0.44704*dirSpdDura[:,0]; #convert mph to m/s
+dirSpd=0.44704/1.52/1.18*dirSpdDura[:,0]; #convert mph to 3-sec m/s to hourly m/s to 3m-height m/s
 dirList=['0','30','60','90','120','150','180','210','240','270','300','330'];
 
 #%% run analysis
@@ -549,8 +552,6 @@ for i in range(0,12):
     Cp=CpList[i];
     dtNorm=dtNormList[i];
     dirID=dirList[i];
-    U=96.0*0.44704/1.52/1.18; #mph to 3-sec m/s to hourly m/s to 3m-height m/s
-    runDynamicAnalysis(Cp,U,dtNorm,dirID,'9')
-    # for j in range(0,10):
-    #     U=UList[j];
-    #     runDynamicAnalysis(Cp,U,dtNorm,dirID,str(j))
+    for j in range(0,10):
+        U=UList[j]; 
+        runDynamicAnalysis(Cp,U,dtNorm,dirID,str(j))
