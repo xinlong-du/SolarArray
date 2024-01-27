@@ -2,6 +2,8 @@ close all; clear; clc;
 %% load data
 filename='../../../WindAnalysis/FiguresDeg30TX/CTspdPb30.txt';
 spdDura=load(filename);
+spdVec=spdDura(:,1);
+spdMat=reshape(spdVec,[10,12]);
 duraDiv=floor(spdDura(:,2)/10);      %10 is for 10s duration of simulation data 
 duraDiv=floor(duraDiv/min(duraDiv)); %the final counts should multiply 51
 duraDiv=reshape(duraDiv,[10,12]);
