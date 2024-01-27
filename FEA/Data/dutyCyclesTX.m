@@ -25,13 +25,13 @@ figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
 set(gca,'YScale','log')
 
-edges2=0:0.2:2.2;
+edges2=0:0.1:2.2;
 bins=51*sum(hist,2);
-bins2=zeros(11,1);
-for i=0:9
-    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+bins2=zeros(22,1);
+for i=0:20
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
 end
-bins2(10+1)=sum(bins(10*100+1:end));
+bins2(21+1)=sum(bins(21*50+1:end));
 
 hfig=figure;
 histogram('BinEdges',edges2,'BinCounts',bins2)
@@ -40,6 +40,7 @@ ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
 xticks(0:0.2:2.2)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
 figHeight=3;
@@ -55,13 +56,13 @@ figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
 set(gca,'YScale','log')
 
-edges2=0:0.2:2.4;
+edges2=0:0.1:2.4;
 bins=51*sum(hist,2);
-bins2=zeros(12,1);
-for i=0:10
-    bins2(i+1)=sum(bins(i*67+1:i*67+67));
+bins2=zeros(24,1);
+for i=0:22
+    bins2(i+1)=sum(bins(i*33+1:i*33+33));
 end
-bins2(11+1)=sum(bins(11*67+1:end));
+bins2(23+1)=sum(bins(23*33+1:end));
 
 hfig=figure;
 histogram('BinEdges',edges2,'BinCounts',bins2)
@@ -70,6 +71,7 @@ ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
 xticks(0:0.2:2.4)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
 figHeight=3;
@@ -85,13 +87,13 @@ figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
 set(gca,'YScale','log')
 
-edges2=0:0.2:1.6;
+edges2=0:0.1:1.6;
 bins=51*sum(hist,2);
-bins2=zeros(8,1);
-for i=0:6
-    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+bins2=zeros(16,1);
+for i=0:14
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
 end
-bins2(7+1)=sum(bins(7*100+1:end));
+bins2(15+1)=sum(bins(15*50+1:end));
 
 hfig=figure;
 histogram('BinEdges',edges2,'BinCounts',bins2)
@@ -100,6 +102,7 @@ ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
 xticks(0:0.2:2.4)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
 figHeight=3;
@@ -115,13 +118,13 @@ figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
 set(gca,'YScale','log')
 
-edges2=0:0.2:1.8;
+edges2=0:0.1:1.8;
 bins=51*sum(hist,2);
-bins2=zeros(9,1);
-for i=0:7
-    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+bins2=zeros(18,1);
+for i=0:16
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
 end
-bins2(8+1)=sum(bins(8*100+1:end));
+bins2(17+1)=sum(bins(17*50+1:end));
 
 hfig=figure;
 histogram('BinEdges',edges2,'BinCounts',bins2)
@@ -130,6 +133,7 @@ ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
 xticks(0:0.2:2.4)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
 figHeight=3;
