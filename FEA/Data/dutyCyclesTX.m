@@ -20,11 +20,27 @@ for i=0:30:330
     end
 end
 
+ndLocYsAllAll=cell(4,1);
+for i=0:30:330
+    for j=0:9
+        filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
+        nodeDisp=load(filename);
+        [ndLocYs]=forceDispResp(nodeDisp(251:end,:));
+        for k=1:4
+            ndLocYsAllAll{k}=[ndLocYsAllAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
+        end
+    end
+end
+
 %% disp at node 1714
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{1}*39.37,fs); %convert m to inch
+[cA,histA,edgesA,rmmA,idxA] = rainflow(ndLocYsAllAll{1}*39.37,fs); %convert m to inch
 figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+figure
+histogram('BinEdges',edgesA','BinCounts',51*sum(histA,2))
 set(gca,'YScale','log')
 
 edges2=0:0.1:2.2;
@@ -35,7 +51,17 @@ for i=0:20
 end
 bins2(21+1)=sum(bins(21*50+1:end));
 
+edgesA2=0:0.1:2.2;
+binsA=51*sum(histA,2);
+binsA2=zeros(22,1);
+for i=0:20
+    binsA2(i+1)=sum(binsA(i*100+1:i*100+100));
+end
+binsA2(21+1)=sum(binsA(21*100+1:end));
+
 hfig=figure;
+histogram('BinEdges',edgesA2,'BinCounts',binsA2)
+hold on
 histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
@@ -48,14 +74,18 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\nd1714Disp.';
+fileout='.\figures\nd1714DispComp.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% disp at node 1717
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{2}*39.37,fs); %convert m to inch
+[cA,histA,edgesA,rmmA,idxA] = rainflow(ndLocYsAllAll{2}*39.37,fs); %convert m to inch
 figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+figure
+histogram('BinEdges',edgesA','BinCounts',51*sum(histA,2))
 set(gca,'YScale','log')
 
 edges2=0:0.1:2.4;
@@ -66,7 +96,17 @@ for i=0:22
 end
 bins2(23+1)=sum(bins(23*33+1:end));
 
+edgesA2=0:0.1:2.4;
+binsA=51*sum(histA,2);
+binsA2=zeros(24,1);
+for i=0:22
+    binsA2(i+1)=sum(binsA(i*100+1:i*100+100));
+end
+binsA2(23+1)=sum(binsA(23*100+1:end));
+
 hfig=figure;
+histogram('BinEdges',edgesA2,'BinCounts',binsA2)
+hold on
 histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
@@ -79,14 +119,18 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\nd1717Disp.';
+fileout='.\figures\nd1717DispComp.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% disp at node 1814
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{3}*39.37,fs); %convert m to inch
+[cA,histA,edgesA,rmmA,idxA] = rainflow(ndLocYsAllAll{3}*39.37,fs); %convert m to inch
 figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+figure
+histogram('BinEdges',edgesA','BinCounts',51*sum(histA,2))
 set(gca,'YScale','log')
 
 edges2=0:0.1:1.6;
@@ -97,7 +141,17 @@ for i=0:14
 end
 bins2(15+1)=sum(bins(15*50+1:end));
 
+edgesA2=0:0.1:1.6;
+binsA=51*sum(histA,2);
+binsA2=zeros(16,1);
+for i=0:14
+    binsA2(i+1)=sum(binsA(i*200+1:i*200+200));
+end
+binsA2(15+1)=sum(binsA(15*200+1:end));
+
 hfig=figure;
+histogram('BinEdges',edgesA2,'BinCounts',binsA2)
+hold on
 histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
@@ -110,14 +164,18 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\nd1814Disp.';
+fileout='.\figures\nd1814DispComp.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% disp at node 1817
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{4}*39.37,fs); %convert m to inch
+[cA,histA,edgesA,rmmA,idxA] = rainflow(ndLocYsAllAll{4}*39.37,fs); %convert m to inch
 figure
 histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+figure
+histogram('BinEdges',edgesA','BinCounts',51*sum(histA,2))
 set(gca,'YScale','log')
 
 edges2=0:0.1:1.8;
@@ -128,7 +186,17 @@ for i=0:16
 end
 bins2(17+1)=sum(bins(17*50+1:end));
 
+edgesA2=0:0.1:1.8;
+binsA=51*sum(histA,2);
+binsA2=zeros(18,1);
+for i=0:16
+    binsA2(i+1)=sum(binsA(i*100+1:i*100+100));
+end
+binsA2(17+1)=sum(binsA(17*100+1:end));
+
 hfig=figure;
+histogram('BinEdges',edgesA2,'BinCounts',binsA2)
+hold on
 histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
@@ -141,7 +209,7 @@ figWidth=6;
 figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
-fileout='.\figures\nd1817Disp.';
+fileout='.\figures\nd1817DispComp.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %%
