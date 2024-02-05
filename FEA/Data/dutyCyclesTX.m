@@ -88,21 +88,21 @@ figure
 histogram('BinEdges',edgesA','BinCounts',51*sum(histA,2))
 set(gca,'YScale','log')
 
-edges2=0:0.1:2.4;
+edges2=0:0.09:2.43;
 bins=51*sum(hist,2);
-bins2=zeros(24,1);
-for i=0:22
-    bins2(i+1)=sum(bins(i*33+1:i*33+33));
+bins2=zeros(27,1);
+for i=0:25
+    bins2(i+1)=sum(bins(i*30+1:i*30+30));
 end
-bins2(23+1)=sum(bins(23*33+1:end));
+bins2(26+1)=sum(bins(26*30+1:end));
 
-edgesA2=0:0.1:2.4;
+edgesA2=0:0.09:2.43;
 binsA=51*sum(histA,2);
-binsA2=zeros(24,1);
-for i=0:22
-    binsA2(i+1)=sum(binsA(i*100+1:i*100+100));
+binsA2=zeros(27,1);
+for i=0:25
+    binsA2(i+1)=sum(binsA(i*90+1:i*90+90));
 end
-binsA2(23+1)=sum(binsA(23*100+1:end));
+binsA2(26+1)=sum(binsA(26*90+1:end));
 
 hfig=figure;
 histogram('BinEdges',edgesA2,'BinCounts',binsA2)
@@ -112,7 +112,7 @@ xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
-xticks(0:0.2:2.4)
+xticks(0:0.18:2.43)
 yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
