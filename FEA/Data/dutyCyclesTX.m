@@ -32,6 +32,90 @@ for i=0:30:330
     end
 end
 
+%% duty cycles for bending
+meanLocY=(ndLocYsAllAll{1}+ndLocYsAllAll{2}+ndLocYsAllAll{3}+ndLocYsAllAll{4})*39.37/4.0; %convert m to inch
+%plot(meanLocY)
+fs=1/0.02;
+[c,hist,edges,rmm,idx] = rainflow(meanLocY,fs);
+figure
+histogram('BinEdges',edges'/2,'BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.05:0.95;
+bins=51*sum(hist,2);
+bins2=zeros(19,1);
+for i=0:17
+    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+end
+bins2(18+1)=sum(bins(18*100+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Displacement (in.)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.1:1.0)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\bendingDisp.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
+%% duty cycles for twist
+nd1714m1814=ndLocYsAllAll{1}*39.37-ndLocYsAllAll{3}*39.37;
+nd1717m1817=ndLocYsAllAll{2}*39.37-ndLocYsAllAll{4}*39.37;
+rot1417=nd1714m1814/42.0-nd1717m1817/42.0;
+
+[c,hist,edges,rmm,idx] = rainflow(rot1417,fs);
+hfig=figure;
+histogram('BinEdges',edges','BinCounts',sum(hist,2))
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+%xticks(0:0.0006:0.0036)
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\rot1417.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
+twistDisp=rot1417/2.0*21.0; %displacement for one actuator
+[c,hist,edges,rmm,idx] = rainflow(twistDisp,fs);
+figure
+histogram('BinEdges',edges'/2,'BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.0015:0.02;
+bins=51*sum(hist,2);
+bins2=zeros(13,1);
+for i=0:11
+    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+end
+bins2(12+1)=sum(bins(12*100+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Displacement (in.)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+%xticks(0:0.1:1.0)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\twistDisp.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
 %% disp at node 1714
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{1}*39.37,fs); %convert m to inch
