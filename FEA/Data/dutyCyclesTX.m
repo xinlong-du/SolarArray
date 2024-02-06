@@ -8,19 +8,20 @@ duraDiv=floor(spdDura(:,2)/10);      %10 is for 10s duration of simulation data
 duraDiv=floor(duraDiv/min(duraDiv)); %the final counts should multiply 51
 duraDiv=reshape(duraDiv,[10,12]);
 
-ndLocYsAll=cell(8,1);
-for i=0:30:330
-    for j=2:9
-        filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
-        nodeDisp=load(filename);
-        [ndLocYs]=forceDispResp(nodeDisp(251:end,:));
-        for k=1:8
-            ndLocYsAll{k}=[ndLocYsAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
-        end
-    end
-end
+% ndLocYsAll=cell(8,1);
+% for i=0:30:330
+%     for j=2:9
+%         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
+%         nodeDisp=load(filename);
+%         [ndLocYs]=forceDispResp(nodeDisp(251:end,:));
+%         for k=1:8
+%             ndLocYsAll{k}=[ndLocYsAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
+%         end
+%     end
+% end
 
 ndLocYsAllAll=cell(8,1);
+springOfIntAll=cell(2,1);
 for i=0:30:330
     for j=0:9
         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
@@ -29,8 +30,46 @@ for i=0:30:330
         for k=1:8
             ndLocYsAllAll{k}=[ndLocYsAllAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
         end
+        filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'springResp.out');
+        springs=load(filename);
+        [springOfInt]=springResp(springs(251:end,:));
+        springOfInt48005=springOfInt{1}(:,6);
+        springOfInt47006=springOfInt{2}(:,6);
+        springOfIntAll{1}=[springOfIntAll{1};repmat(springOfInt48005,duraDiv(j+1,i/30+1),1)];
+        springOfIntAll{2}=[springOfIntAll{2};repmat(springOfInt47006,duraDiv(j+1,i/30+1),1)];
     end
 end
+
+%% duty cycles for springs
+fs=1/0.02;
+[c,hist,edges,rmm,idx] = rainflow(springOfIntAll{1},fs);
+figure
+histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.0001:0.0025;
+bins=51*sum(hist,2);
+bins2=zeros(25,1);
+for i=0:23
+    bins2(i+1)=sum(bins(i*200+1:i*200+200));
+end
+bins2(24+1)=sum(bins(24*200+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.0002:0.0025)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\springRot48005.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% duty cycles for bending
 fs=1/0.02;
@@ -361,4 +400,15 @@ nd1816LocY=nd1816(:,3)*cos(30/180*pi)-nd1816(:,1)*sin(30/180*pi);
 nd1817LocY=nd1817(:,3)*cos(30/180*pi)-nd1817(:,1)*sin(30/180*pi);
 
 ndLocYs={nd1714LocY;nd1717LocY;nd1814LocY;nd1817LocY;nd1715LocY;nd1716LocY;nd1815LocY;nd1816LocY};
+end
+
+function [springOfInt]=springResp(springs)
+springRec=[21001:21022,22001:22022,23001:23022,24001:24022,45001:45022,46001:46022,47001:47022,48001:48022]';
+springRespDiv=cell(length(springRec),1);
+for i=1:length(springRec)
+    springRespDiv{i}=springs(:,12*(i-1)+2:12*i+1);
+end
+spring48005=springRespDiv{find(springRec==48005)};
+spring47006=springRespDiv{find(springRec==47006)};
+springOfInt={spring48005;spring47006};
 end
