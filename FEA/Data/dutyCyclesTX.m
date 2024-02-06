@@ -71,6 +71,37 @@ set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
 fileout='.\figures\springRot48005.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
+%% duty cycles for springs
+fs=1/0.02;
+[c,hist,edges,rmm,idx] = rainflow(springOfIntAll{2},fs);
+figure
+histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.0001:0.0027;
+bins=51*sum(hist,2);
+bins2=zeros(27,1);
+for i=0:25
+    bins2(i+1)=sum(bins(i*200+1:i*200+200));
+end
+bins2(26+1)=sum(bins(26*200+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.0002:0.0027)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\springRot47006.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
 %% duty cycles for bending
 fs=1/0.02;
 nd1814m1815=ndLocYsAllAll{3}*39.37-ndLocYsAllAll{7}*39.37;
