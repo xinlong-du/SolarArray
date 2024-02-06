@@ -139,6 +139,37 @@ set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
 fileout='.\figures\bendingRot.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
+%% duty cycles for bending displacements
+disp18xx=rot18xx/2*110.15;
+[c,hist,edges,rmm,idx] = rainflow(disp18xx,fs);
+figure
+histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.01:0.28;
+bins=51*sum(hist,2);
+bins2=zeros(28,1);
+for i=0:26
+    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+end
+bins2(27+1)=sum(bins(27*100+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.02:0.28)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\bendingDisp2.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
 %%
 meanLocY=(ndLocYsAllAll{1}+ndLocYsAllAll{2}+ndLocYsAllAll{3}+ndLocYsAllAll{4})*39.37/4.0; %convert m to inch
 %plot(meanLocY)
@@ -177,13 +208,23 @@ nd1717m1817=ndLocYsAllAll{2}*39.37-ndLocYsAllAll{4}*39.37;
 rot1417=nd1714m1814/42.0-nd1717m1817/42.0;
 
 [c,hist,edges,rmm,idx] = rainflow(rot1417,fs);
+
+edges2=0:0.00015:0.0038;
+bins=51*sum(hist,2);
+bins2=zeros(25,1);
+for i=0:23
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
+end
+bins2(24+1)=sum(bins(24*50+1:end));
+
 hfig=figure;
-histogram('BinEdges',edges','BinCounts',sum(hist,2))
+histogram('BinEdges',edges2,'BinCounts',bins2)
 xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
-%xticks(0:0.0006:0.0036)
+xticks(0:0.0003:0.0038)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
 % save figure
 figWidth=6;
 figHeight=3;
