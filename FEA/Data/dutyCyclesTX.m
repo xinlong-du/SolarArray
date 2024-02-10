@@ -20,14 +20,14 @@ duraDiv=reshape(duraDiv,[10,12]);
 %     end
 % end
 
-ndLocYsAllAll=cell(8,1);
+ndLocYsAllAll=cell(12,1);
 springOfIntAll=cell(2,1);
 for i=0:30:330
     for j=0:9
         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
         nodeDisp=load(filename);
         [ndLocYs]=forceDispResp(nodeDisp(251:end,:));
-        for k=1:8
+        for k=1:12
             ndLocYsAllAll{k}=[ndLocYsAllAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
         end
         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'springResp.out');
@@ -263,6 +263,67 @@ set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
 fileout='.\figures\twistDisp.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
+%% duty cycles for twist at table edge
+nd1702m1802=ndLocYsAllAll{9}*39.37-ndLocYsAllAll{11}*39.37;
+nd1705m1805=ndLocYsAllAll{10}*39.37-ndLocYsAllAll{12}*39.37;
+rot0205=nd1702m1802/42.0-nd1705m1805/42.0;
+
+[c,hist,edges,rmm,idx] = rainflow(rot0205,fs);
+
+edges2=0:0.0005:0.0185;
+bins=51*sum(hist,2);
+bins2=zeros(37,1);
+for i=0:35
+    bins2(i+1)=sum(bins(i*25+1:i*25+25));
+end
+bins2(36+1)=sum(bins(36*25+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.001:0.0185)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\rot0205.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
+twistDisp=rot0205/2.0*21.0; %displacement for one actuator
+[c,hist,edges,rmm,idx] = rainflow(twistDisp,fs);
+figure
+histogram('BinEdges',edges'/2,'BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.005:0.1;
+bins=51*sum(hist,2);
+bins2=zeros(20,1);
+for i=0:18
+    bins2(i+1)=sum(bins(i*50+1:i*50+50));
+end
+bins2(19+1)=sum(bins(19*50+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Displacement (in.)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+%xticks(0:0.1:1.0)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\twistDispEdge.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
 %% disp at node 1714
 fs=1/0.02;
 [c,hist,edges,rmm,idx] = rainflow(ndLocYsAll{1}*39.37,fs); %convert m to inch
@@ -453,25 +514,34 @@ for i=1:length(nodeRec)
 end
 
 %% nodal displacement
+nd1702=nodeDispDiv{find(nodeRec==1702)};
+nd1705=nodeDispDiv{find(nodeRec==1705)};
 nd1714=nodeDispDiv{find(nodeRec==1714)};
 nd1715=nodeDispDiv{find(nodeRec==1715)};
 nd1716=nodeDispDiv{find(nodeRec==1716)};
 nd1717=nodeDispDiv{find(nodeRec==1717)};
+nd1802=nodeDispDiv{find(nodeRec==1802)};
+nd1805=nodeDispDiv{find(nodeRec==1805)};
 nd1814=nodeDispDiv{find(nodeRec==1814)};
 nd1815=nodeDispDiv{find(nodeRec==1815)};
 nd1816=nodeDispDiv{find(nodeRec==1816)};
 nd1817=nodeDispDiv{find(nodeRec==1817)};
 
+nd1702LocY=nd1702(:,3)*cos(30/180*pi)-nd1702(:,1)*sin(30/180*pi);
+nd1705LocY=nd1705(:,3)*cos(30/180*pi)-nd1705(:,1)*sin(30/180*pi);
 nd1714LocY=nd1714(:,3)*cos(30/180*pi)-nd1714(:,1)*sin(30/180*pi);
 nd1715LocY=nd1715(:,3)*cos(30/180*pi)-nd1715(:,1)*sin(30/180*pi);
 nd1716LocY=nd1716(:,3)*cos(30/180*pi)-nd1716(:,1)*sin(30/180*pi);
 nd1717LocY=nd1717(:,3)*cos(30/180*pi)-nd1717(:,1)*sin(30/180*pi);
+nd1802LocY=nd1802(:,3)*cos(30/180*pi)-nd1802(:,1)*sin(30/180*pi);
+nd1805LocY=nd1805(:,3)*cos(30/180*pi)-nd1805(:,1)*sin(30/180*pi);
 nd1814LocY=nd1814(:,3)*cos(30/180*pi)-nd1814(:,1)*sin(30/180*pi);
 nd1815LocY=nd1815(:,3)*cos(30/180*pi)-nd1815(:,1)*sin(30/180*pi);
 nd1816LocY=nd1816(:,3)*cos(30/180*pi)-nd1816(:,1)*sin(30/180*pi);
 nd1817LocY=nd1817(:,3)*cos(30/180*pi)-nd1817(:,1)*sin(30/180*pi);
 
-ndLocYs={nd1714LocY;nd1717LocY;nd1814LocY;nd1817LocY;nd1715LocY;nd1716LocY;nd1815LocY;nd1816LocY};
+ndLocYs={nd1714LocY;nd1717LocY;nd1814LocY;nd1817LocY;nd1715LocY;nd1716LocY;nd1815LocY;nd1816LocY;...
+    nd1702LocY;nd1705LocY;nd1802LocY;nd1805LocY};
 end
 
 function [springOfInt]=springResp(springs)
