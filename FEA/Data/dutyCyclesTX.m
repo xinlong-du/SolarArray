@@ -20,14 +20,14 @@ duraDiv=reshape(duraDiv,[10,12]);
 %     end
 % end
 
-ndLocYsAllAll=cell(12,1);
+ndLocYsAllAll=cell(14,1);
 springOfIntAll=cell(2,1);
 for i=0:30:330
     for j=0:9
         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'nodeDisp.out');
         nodeDisp=load(filename);
         [ndLocYs]=forceDispResp(nodeDisp(251:end,:));
-        for k=1:12
+        for k=1:14
             ndLocYsAllAll{k}=[ndLocYsAllAll{k};repmat(ndLocYs{k},duraDiv(j+1,i/30+1),1)];
         end
         filename=strcat('./testAllcases3/dir',num2str(i),'spd',num2str(j),'springResp.out');
@@ -125,7 +125,7 @@ bins2(25+1)=sum(bins(25*100+1:end));
 
 hfig=figure;
 histogram('BinEdges',edges2,'BinCounts',bins2)
-xlabel('Displacement range (in.)','FontSize',8,'FontName','Times New Roman')
+xlabel('Rotation range (in.)','FontSize',8,'FontName','Times New Roman')
 ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
 set(gca,'YScale','log')
 set(gca,'FontSize',8,'FontName','Times New Roman')
@@ -137,6 +137,43 @@ figHeight=3;
 set(hfig,'PaperUnits','inches');
 set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
 fileout='.\figures\bendingRot.';
+print(hfig,[fileout,'tif'],'-r200','-dtiff');
+
+%% duty cycles for bending at table edge
+fs=1/0.02;
+nd1802m1803=ndLocYsAllAll{11}*39.37-ndLocYsAllAll{13}*39.37;
+nd1804m1805=ndLocYsAllAll{14}*39.37-ndLocYsAllAll{12}*39.37;
+rot18xx=nd1802m1803/20.63-nd1804m1805/20.63;
+figure
+rainflow(rot18xx,fs)
+
+[c,hist,edges,rmm,idx] = rainflow(rot18xx,fs);
+figure
+histogram('BinEdges',edges','BinCounts',51*sum(hist,2))
+set(gca,'YScale','log')
+
+edges2=0:0.00002:0.00048;
+bins=51*sum(hist,2);
+bins2=zeros(24,1);
+for i=0:22
+    bins2(i+1)=sum(bins(i*100+1:i*100+100));
+end
+bins2(23+1)=sum(bins(23*100+1:end));
+
+hfig=figure;
+histogram('BinEdges',edges2,'BinCounts',bins2)
+xlabel('Rotation range (rad)','FontSize',8,'FontName','Times New Roman')
+ylabel('Cycle counts','FontSize',8,'FontName','Times New Roman')
+set(gca,'YScale','log')
+set(gca,'FontSize',8,'FontName','Times New Roman')
+xticks(0:0.00002:0.00048)
+yticks([1 10 1e2 1e3 1e4 1e5 1e6 1e7 1e8])
+% save figure
+figWidth=6;
+figHeight=3;
+set(hfig,'PaperUnits','inches');
+set(hfig,'PaperPosition',[0 0 figWidth figHeight]);
+fileout='.\figures\bendingRotEdge.';
 print(hfig,[fileout,'tif'],'-r200','-dtiff');
 
 %% duty cycles for bending displacements
@@ -521,6 +558,8 @@ nd1715=nodeDispDiv{find(nodeRec==1715)};
 nd1716=nodeDispDiv{find(nodeRec==1716)};
 nd1717=nodeDispDiv{find(nodeRec==1717)};
 nd1802=nodeDispDiv{find(nodeRec==1802)};
+nd1803=nodeDispDiv{find(nodeRec==1803)};
+nd1804=nodeDispDiv{find(nodeRec==1804)};
 nd1805=nodeDispDiv{find(nodeRec==1805)};
 nd1814=nodeDispDiv{find(nodeRec==1814)};
 nd1815=nodeDispDiv{find(nodeRec==1815)};
@@ -534,6 +573,8 @@ nd1715LocY=nd1715(:,3)*cos(30/180*pi)-nd1715(:,1)*sin(30/180*pi);
 nd1716LocY=nd1716(:,3)*cos(30/180*pi)-nd1716(:,1)*sin(30/180*pi);
 nd1717LocY=nd1717(:,3)*cos(30/180*pi)-nd1717(:,1)*sin(30/180*pi);
 nd1802LocY=nd1802(:,3)*cos(30/180*pi)-nd1802(:,1)*sin(30/180*pi);
+nd1803LocY=nd1803(:,3)*cos(30/180*pi)-nd1803(:,1)*sin(30/180*pi);
+nd1804LocY=nd1804(:,3)*cos(30/180*pi)-nd1804(:,1)*sin(30/180*pi);
 nd1805LocY=nd1805(:,3)*cos(30/180*pi)-nd1805(:,1)*sin(30/180*pi);
 nd1814LocY=nd1814(:,3)*cos(30/180*pi)-nd1814(:,1)*sin(30/180*pi);
 nd1815LocY=nd1815(:,3)*cos(30/180*pi)-nd1815(:,1)*sin(30/180*pi);
@@ -541,7 +582,7 @@ nd1816LocY=nd1816(:,3)*cos(30/180*pi)-nd1816(:,1)*sin(30/180*pi);
 nd1817LocY=nd1817(:,3)*cos(30/180*pi)-nd1817(:,1)*sin(30/180*pi);
 
 ndLocYs={nd1714LocY;nd1717LocY;nd1814LocY;nd1817LocY;nd1715LocY;nd1716LocY;nd1815LocY;nd1816LocY;...
-    nd1702LocY;nd1705LocY;nd1802LocY;nd1805LocY};
+    nd1702LocY;nd1705LocY;nd1802LocY;nd1805LocY;nd1803LocY;nd1804LocY};
 end
 
 function [springOfInt]=springResp(springs)
