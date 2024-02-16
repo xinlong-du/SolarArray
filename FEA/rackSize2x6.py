@@ -88,10 +88,10 @@ for j in range (0,6):
     node(902+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
     node(903+700*i+3*j,  (-51.0730+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (62.6508+43.2185*i)*in2m)
 
-node(600, -105.5808*in2m, (-99.2500-5.0)*in2m, 31.0611*in2m)
-node(619, -105.5808*in2m, (153.3100+5.0)*in2m, 31.0611*in2m)
-node(800,  -69.2423*in2m, (-99.2500-5.0)*in2m, 52.1209*in2m)
-node(819,  -69.2423*in2m, (153.3100+5.0)*in2m, 52.1209*in2m)
+node(600, -105.5808*in2m, (-99.2500-15.72)*in2m, 31.0611*in2m)
+node(619, -105.5808*in2m, (153.3100+15.72)*in2m, 31.0611*in2m)
+node(800,  -69.2423*in2m, (-99.2500-15.72)*in2m, 52.1209*in2m)
+node(819,  -69.2423*in2m, (153.3100+15.72)*in2m, 52.1209*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
 fix(600, 1, 1, 1, 0, 0, 0);
@@ -153,8 +153,8 @@ eigenValues = eigen(12);
 omega = np.sqrt(eigenValues);
 freq = omega/(2*math.pi);
 
-# vfo.plot_modeshape(modenumber=1, scale=1); #plot mode shape 1
-# vfo.plot_modeshape(modenumber=2, scale=1); #plot mode shape 2
+vfo.plot_modeshape(modenumber=1, scale=2); #plot mode shape 1
+vfo.plot_modeshape(modenumber=2, scale=2); #plot mode shape 2
 # vfo.plot_modeshape(modenumber=3, scale=1); #plot mode shape 3
 # vfo.plot_modeshape(modenumber=4, scale=1); #plot mode shape 4
 # vfo.plot_modeshape(modenumber=5, scale=1); #plot mode shape 5
