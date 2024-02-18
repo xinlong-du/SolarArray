@@ -70,6 +70,19 @@ h = 4.96*0.001; #depth of module
 section('ElasticMembranePlateSection', moduleSecTag, Em, nu_m, h, rho_m)
 
 # define NODES-----------------------------------------------------------------
+node(101, -93.9523*in2m, -114.9700*in2m, -4.1151*in2m)
+node(102, -57.9523*in2m, -114.9700*in2m, -4.1151*in2m)
+node(103, -93.9523*in2m, -114.9700*in2m, 37.8004*in2m)
+node(104, -57.9523*in2m, -114.9700*in2m, 58.6392*in2m)
+node(201, -93.9523*in2m,  169.0300*in2m, -4.1151*in2m)
+node(202, -57.9523*in2m,  169.0300*in2m, -4.1151*in2m)
+node(203, -93.9523*in2m,  169.0300*in2m, 37.8004*in2m)
+node(204, -57.9523*in2m,  169.0300*in2m, 58.6392*in2m)
+
+for i in range (0,7):
+    node(301+i, -93.9523*in2m, (-80.9700+36.0*i)*in2m, -4.1151*in2m)
+    node(401+i, -57.9523*in2m, (-80.9700+36.0*i)*in2m, -4.1151*in2m)
+
 i=0;
 for j in range (0,6):
     node(501+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
@@ -94,10 +107,13 @@ node(800,  -69.2423*in2m, (-99.2500-15.72)*in2m, 52.1209*in2m)
 node(819,  -69.2423*in2m, (153.3100+15.72)*in2m, 52.1209*in2m)
 
 # define BOUNDARY CONDITIONS---------------------------------------------------
-fix(600, 1, 1, 1, 0, 0, 0);
-fix(619, 1, 0, 1, 0, 0, 0);
-fix(800, 1, 1, 1, 0, 0, 0);  
-fix(819, 1, 0, 1, 0, 0, 0);
+fix(101, 1, 1, 1, 0, 0, 0);
+fix(201, 1, 0, 1, 0, 0, 0);
+fix(102, 1, 1, 1, 0, 0, 0);  
+fix(202, 1, 0, 1, 0, 0, 0);
+for i in range (1,7):
+    fix(300+i, 0, 0, 1, 0, 0, 0);
+    fix(400+i, 0, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -143,6 +159,24 @@ for j in range (0,6):
     element('elasticBeamColumn', (24*i+18)*1000+j+1, *[902+i*700+j*3,  903+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', (24*i+19)*1000+j+1, *[501+i*700+j*3,  502+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
     element('elasticBeamColumn', (24*i+20)*1000+j+1, *[502+i*700+j*3,  503+i*700+j*3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+
+# reaction frame
+for i in range (1,3):
+    element('elasticBeamColumn', i*100+1, *[i*100+1, i*100+2], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+2, *[i*100+1, i*100+3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+3, *[i*100+2, i*100+4], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, purlinTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+4, *[600+(i-1)*19, i*100+3], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+5, *[i*100+3, 800+(i-1)*19], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+6, *[800+(i-1)*19, i*100+4], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+
+for i in range (1,7):
+    element('elasticBeamColumn', 300+i, *[300+i, 301+i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', 400+i, *[400+i, 401+i], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+
+element('elasticBeamColumn', 300, *[101, 301], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+element('elasticBeamColumn', 308, *[307, 201], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+element('elasticBeamColumn', 400, *[102, 401], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
+element('elasticBeamColumn', 408, *[407, 202], A_mf, Emf, Gmf, Jx_mf, Iy_mf, Iz_mf, rafterTransfTag, '-mass', mass_mf);
 
 # render the model
 vfo.createODB(model="solarPanel", loadcase="static", Nmodes=6, deltaT=1)
