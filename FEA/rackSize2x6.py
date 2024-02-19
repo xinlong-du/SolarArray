@@ -192,21 +192,21 @@ vecxz = [1.0, 0.0, 0.0];
 geomTransf('Linear', rfCTransfTag, *vecxz);
 
 for i in range (1,3):
-    element('elasticBeamColumn', i*100+1, *[i*100+1, i*100+2], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i*100+2, *[i*100+1, i*100+3], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i*100+3, *[i*100+2, i*100+4], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i*100+4, *[600+(i-1)*19, i*100+3], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i*100+5, *[i*100+3, 800+(i-1)*19], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', i*100+6, *[800+(i-1)*19, i*100+4], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', i*100+1, *[i*100+1, i*100+2], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
+    element('elasticBeamColumn', i*100+2, *[i*100+1, i*100+3], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
+    element('elasticBeamColumn', i*100+3, *[i*100+2, i*100+4], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
+    element('elasticBeamColumn', i*100+4, *[600+(i-1)*19, i*100+3], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
+    element('elasticBeamColumn', i*100+5, *[i*100+3, 800+(i-1)*19], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
+    element('elasticBeamColumn', i*100+6, *[800+(i-1)*19, i*100+4], A_W, Es, Gs, Jx_W, Iy_W, Iz_W, rfWTransfTag, '-mass', mass_W);
 
 for i in range (1,7):
-    element('elasticBeamColumn', 300+i, *[300+i, 301+i], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
-    element('elasticBeamColumn', 400+i, *[400+i, 401+i], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
+    element('elasticBeamColumn', 300+i, *[300+i, 301+i], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
+    element('elasticBeamColumn', 400+i, *[400+i, 401+i], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
 
-element('elasticBeamColumn', 300, *[101, 301], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
-element('elasticBeamColumn', 308, *[307, 201], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
-element('elasticBeamColumn', 400, *[102, 401], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
-element('elasticBeamColumn', 408, *[407, 202], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_mf);
+element('elasticBeamColumn', 300, *[101, 301], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
+element('elasticBeamColumn', 308, *[307, 201], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
+element('elasticBeamColumn', 400, *[102, 401], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
+element('elasticBeamColumn', 408, *[407, 202], A_C, Es, Gs, Jx_C, Iy_C, Iz_C, rfCTransfTag, '-mass', mass_C);
 
 # render the model
 vfo.createODB(model="solarPanel", loadcase="static", Nmodes=6, deltaT=1)
