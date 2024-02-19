@@ -12,3 +12,28 @@ plot(rot,force)
 xlabel('Twist/rad')
 ylabel('Force/kip')
 grid on
+
+%% test rig
+nodeDisp=load('test6PnodeDispRig.out');
+force=nodeDisp(:,1)/4448.2216153;
+
+nodeRec=[607,807,612,812,303,305,403,405]';
+nodeDispDiv=cell(length(nodeRec),1);
+for i=1:length(nodeRec)
+    nodeDispDiv{i}=nodeDisp(:,6*(i-1)+2:6*i+1);
+end
+
+disp607=39.3701*nodeDispDiv{1}(:,3)*cos(30/180*pi)-39.3701*nodeDispDiv{1}(:,1)*sin(30/180*pi);
+disp303=39.3701*nodeDispDiv{5}(:,3)*cos(30/180*pi)-39.3701*nodeDispDiv{5}(:,1)*sin(30/180*pi);
+
+figure
+plot(disp607,force)
+xlabel('Disp/in')
+ylabel('Force/kip')
+grid on
+
+figure
+plot(disp303,force)
+xlabel('Disp/in')
+ylabel('Force/kip')
+grid on

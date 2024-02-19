@@ -125,9 +125,13 @@ fix(101, 1, 1, 1, 0, 0, 0);
 fix(201, 1, 0, 1, 0, 0, 0);
 fix(102, 1, 1, 1, 0, 0, 0);  
 fix(202, 1, 0, 1, 0, 0, 0);
-for i in range (1,7):
-    fix(300+i, 0, 0, 1, 0, 0, 0);
-    fix(400+i, 0, 0, 1, 0, 0, 0);
+
+fix(301, 0, 0, 1, 0, 0, 0);
+fix(304, 0, 0, 1, 0, 0, 0);
+fix(307, 0, 0, 1, 0, 0, 0);
+fix(401, 0, 0, 1, 0, 0, 0);
+fix(404, 0, 0, 1, 0, 0, 0);
+fix(407, 0, 0, 1, 0, 0, 0);
 
 # define ELEMENTS--------------------------------------------------------------
 rafterTransfTag = 2;
@@ -228,17 +232,21 @@ f_p=-1.0;
 timeSeries('Linear',10000);
 pattern('Plain', 10000, 10000);
 load(607, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-load(807, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-load(612, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(807, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(612, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 load(812, *[f_m*math.sin(30/180*math.pi), 0.0, -f_m*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(303, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(305, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(403, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+load(405, *[f_p*math.sin(30/180*math.pi), 0.0, -f_p*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
 
 # Define RECORDERS ------------------------------------------------------------
 allNodeTags=getNodeTags();
 alleleTags=getEleTags();
 
 eleRec=list(range(501,513))+list(range(601,613));
-recorder('Element', '-file', f'{dataDir}/testAllCases2/test6PeleForceTwist.out', '-time', '-ele', *eleRec, 'localForces');
-recorder('Node', '-file', f'{dataDir}/testAllCases2/test6PnodeDispTwist.out', '-time', '-node', *[607,807,612,812], '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
+recorder('Element', '-file', f'{dataDir}/testAllCases2/test6PeleForceRig.out', '-time', '-ele', *eleRec, 'localForces');
+recorder('Node', '-file', f'{dataDir}/testAllCases2/test6PnodeDispRig.out', '-time', '-node', *[607,807,612,812,303,305,403,405], '-dof', *[1, 2, 3, 4, 5, 6], 'disp');
 
 # define ANALYSIS PARAMETERS---------------------------------------------------
 constraints('Plain');  # how it handles boundary conditions
@@ -249,7 +257,7 @@ algorithm('Linear');
 #integrator('LoadControl', 1)
 nodeTag=609;
 dof=3;
-incr=-0.000001;
+incr=-0.0005;
 integrator('DisplacementControl', nodeTag, dof, incr)
 analysis('Static');	# define type of analysis static or transient
 analyze(53);
@@ -266,6 +274,9 @@ for i in range (0,13):
     efLocEnd5xx[i]=eleResponse(i+500, 'localForces');
     efLocEnd6xx[i]=eleResponse(i+600, 'localForces');
 #%%
+nPurlin1 = [600,601,603,604,606,607,609,610,612,613,615,616,618,619]; #nodes of purlin # 1
+nPurlin2 = [800,801,803,804,806,807,809,810,812,813,815,816,818,819]; #nodes of purlin # 2
+
 moLocEnd5xx=[None]*14;
 moLocEnd6xx=[None]*14;
 for i in range (0,13):
