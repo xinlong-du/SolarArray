@@ -187,8 +187,8 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     uniaxialMaterial('Parallel', 106, *[12,13,14])
     
     # define NODES-----------------------------------------------------------------
-    yRack=[0.0, 265.3600*in2m, 464.8600*in2m, 730.2200*in2m];
-    for i in range(1,5):
+    yRack=[22.5300*in2m, 285.0900*in2m];
+    for i in range(1,3):
         # north post
         node(100*i+1,             0.0, yRack[i-1],          0.0)
         node(100*i+2,             0.0, yRack[i-1],       7*in2m)
@@ -206,7 +206,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     
     # purlins and modules
     for i in range (0,2):
-        for j in range (0,22):
+        for j in range (0,12):
             node(501+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-99.2500+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
             node(502+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-78.6200+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
             node(503+700*i+3*j, (-123.7500+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (20.5313+43.2185*i)*in2m)
@@ -230,18 +230,13 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
             node(1103+700*i+3*j, (-69.2423+74.5730*i)*in2m, (-57.9900+42.26*j)*in2m, (52.1209+43.2185*i)*in2m)
     
     # intersection of external braces
-    node(1901, 0.0, 132.6800*in2m, 51.6250*in2m)
-    node(1902, 0.0, 597.5400*in2m, 51.6250*in2m)
+    node(1901, 0.0, 153.8100*in2m, 51.6250*in2m)
     
     # define BOUNDARY CONDITIONS---------------------------------------------------
     fix(101, 1, 1, 1, 1, 1, 1);  
     fix(105, 1, 1, 1, 1, 1, 1);
     fix(201, 1, 1, 1, 1, 1, 1);  
     fix(205, 1, 1, 1, 1, 1, 1);
-    fix(301, 1, 1, 1, 1, 1, 1);  
-    fix(305, 1, 1, 1, 1, 1, 1);
-    fix(401, 1, 1, 1, 1, 1, 1);  
-    fix(405, 1, 1, 1, 1, 1, 1);
     
     # define ELEMENTS--------------------------------------------------------------
     postTransfTag = 1;
@@ -268,7 +263,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     vecx2 = [0.0, -1.0, 0]; #local x-axis for spring, module frame on the right side of the bolt
     vecyp = [-40.0211, 0.0000, 69.0560]; #vector in the local x-y plane for the element
     
-    for i in range(0,4):
+    for i in range(0,2):
         # north post                 ID           nodeI      nodeJ                            TBD for mass, release can be omitted for fixed BC
         element('elasticBeamColumn', 101+100*i, *[101+100*i, 102+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
         element('elasticBeamColumn', 102+100*i, *[102+100*i, 103+100*i], A_po, Es, Gs, Jx_po, Iy_po, Iz_po, postTransfTag, '-mass', mass_po);
@@ -287,25 +282,22 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
         element('elasticBeamColumn', 112+100*i, *[103+100*i, 107+100*i], A_ib, Es, Gs, Jx_ib, Iy_ib, Iz_ib, ibTransfTag, '-mass', mass_ib, '-releasez', 3, 'releasey', 3);
     
     # purlins
-    nPurlin=[[0]*70]*4; #nodes of purlins
+    nPurlin=[[0]*38]*4; #nodes of purlins
     rowPurlin=[1001,1101,1701,1801];
     nRafter=[11,10,9,8];
     for i in range (0,4):
-        nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+66));
-        nPurlin[i].insert(59,400+nRafter[i])
-        nPurlin[i].insert(40,300+nRafter[i])
-        nPurlin[i].insert(26,200+nRafter[i])
-        nPurlin[i].insert(7,100+nRafter[i])
+        nPurlin[i] = list(range(rowPurlin[i],rowPurlin[i]+36));
+        nPurlin[i].insert(28,200+nRafter[i])
+        nPurlin[i].insert(8,100+nRafter[i])
     
     for i in range (0,4):
-        for j in range (0,34):
+        for j in range (0,37):
             #                            elemID         nodeI          nodeJ
             element('elasticBeamColumn', i*100+501+j, *[nPurlin[i][j], nPurlin[i][j+1]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
-            element('elasticBeamColumn', i*100+501+j+35, *[nPurlin[i][j+35], nPurlin[i][j+1+35]], A_pu, Es, Gs, Jx_pu, Iy_pu, Iz_pu, purlinTransfTag, '-mass', mass_pu);
     
     # modules and module frames
     for i in range (0,2):
-        for j in range (0,22):
+        for j in range (0,12):
             #                    elemID               node1          node2          node3          node4 counter-clockwise
             element('ShellMITC4',(24*i+1)*1000+j+1, *[501+i*700+j*3, 601+i*700+j*3, 602+i*700+j*3, 502+i*700+j*3], moduleSecTag)
             element('ShellMITC4',(24*i+2)*1000+j+1, *[601+i*700+j*3, 701+i*700+j*3, 702+i*700+j*3, 602+i*700+j*3], moduleSecTag)
@@ -337,8 +329,6 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     for i in range(0,2):
         element('elasticBeamColumn', 49000+1000*i+1, *[(i+1)*100+3, 1901], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
         element('elasticBeamColumn', 49000+1000*i+2, *[(i+1)*100+4, 1901], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-        element('elasticBeamColumn', 49000+1000*i+3, *[(i+3)*100+3, 1902], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
-        element('elasticBeamColumn', 49000+1000*i+4, *[(i+3)*100+4, 1902], A_eb, Es, Gs, Jx_eb, Iy_eb, Iz_eb, ebTransfTag, '-mass', mass_eb, '-releasez', 1, 'releasey', 1);
     
     allNodeTags=getNodeTags();
     alleleTags=getEleTags();
@@ -352,12 +342,12 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     omega = np.sqrt(eigenValues);
     freq = omega/(2*math.pi);
     
-    # vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
-    # vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
-    # vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
-    # vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
-    # vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
-    # vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
+    vfo.plot_modeshape(modenumber=1, scale=5); #plot mode shape 1
+    vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
+    vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
+    vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
+    vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+    vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
     
     # vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
     # vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
@@ -382,7 +372,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     pattern('Plain', 10000, 10000);
     
     for i in range (0,2):
-        for j in range (0,22):
+        for j in range (0,12):
             load(501+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
             load(502+i*700+j*3, *[0.0, 0.0, g_mEd+g_mfMidEW, 0.0, 0.0, 0.0]);
             load(503+i*700+j*3, *[0.0, 0.0, g_mCo+g_mfCorne, 0.0, 0.0, 0.0]);
