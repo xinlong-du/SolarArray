@@ -346,15 +346,8 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     vfo.plot_modeshape(modenumber=2, scale=5); #plot mode shape 2
     vfo.plot_modeshape(modenumber=3, scale=5); #plot mode shape 3
     vfo.plot_modeshape(modenumber=4, scale=5); #plot mode shape 4
-    vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
-    vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
-    
-    # vfo.plot_modeshape(modenumber=7, scale=5); #plot mode shape 7
-    # vfo.plot_modeshape(modenumber=8, scale=5); #plot mode shape 8
-    # vfo.plot_modeshape(modenumber=9, scale=5); #plot mode shape 9
-    # vfo.plot_modeshape(modenumber=10, scale=5); #plot mode shape 10
-    # vfo.plot_modeshape(modenumber=11, scale=5); #plot mode shape 11
-    # vfo.plot_modeshape(modenumber=12, scale=5); #plot mode shape 12
+    # vfo.plot_modeshape(modenumber=5, scale=5); #plot mode shape 5
+    # vfo.plot_modeshape(modenumber=6, scale=5); #plot mode shape 6
     
     #%% gravity loads
     #module frame, 0.1 is used to account for 10 steps in analyze(10)
@@ -409,37 +402,64 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     dt=dtNorm*L/U;
     rho_air=1.226;
     p=0.5*rho_air*U*U*Cp[1000:None,:];
-    x=L*np.array([0.125/2+0.25/2,0.25,0.25,0.25/2+0.125/2]);
-    y=L*np.array([0.125/2+0.5/2,0.5/2+0.75/2,0.75/2+1/2,1/2+1.25/2,1.25/2+1/2,1/2+0.75/2,0.75/2+0.125/2]);
-    A_trib=np.outer(x, y);
-    A_trib=np.reshape(A_trib,(1,28),order='F');
-    #A_trib=np.repeat(A_trib,np.shape(p)[0],axis=0);
-    Force=np.multiply(p,A_trib);
-    Force=Force.T.tolist()
+    f_m=84.0*in2m*41.26*in2m*p;
     
-    nodesTapEd=[list(range(1601,1606))+list(range(1401,1406)),list(range(1401,1406))+list(range(1201,1206)),list(range(901,906))+list(range(701,706)),list(range(701,706))+list(range(501,506)),
-                list(range(1606,1613))+list(range(1406,1413)),list(range(1406,1413))+list(range(1206,1213)),list(range(906,913))+list(range(706,713)),list(range(706,713))+list(range(506,513)),
-                list(range(1613,1624))+list(range(1413,1424)),list(range(1413,1424))+list(range(1213,1224)),list(range(913,924))+list(range(713,724)),list(range(713,724))+list(range(513,524)),
-                list(range(1624,1637))+list(range(1424,1437)),list(range(1424,1437))+list(range(1224,1237)),list(range(924,937))+list(range(724,737)),list(range(724,737))+list(range(524,537)),
-                list(range(1637,1651))+list(range(1437,1451)),list(range(1437,1451))+list(range(1237,1251)),list(range(937,951))+list(range(737,751)),list(range(737,751))+list(range(537,551)),
-                list(range(1651,1661))+list(range(1451,1461)),list(range(1451,1461))+list(range(1251,1261)),list(range(951,961))+list(range(751,761)),list(range(751,761))+list(range(551,561)),
-                list(range(1661,1667))+list(range(1461,1467)),list(range(1461,1467))+list(range(1261,1267)),list(range(961,967))+list(range(761,767)),list(range(761,767))+list(range(561,567))];
-    nodesTapIn=[list(range(1501,1506)),list(range(1301,1306)),list(range(801,806)),list(range(601,606)),
-                list(range(1506,1513)),list(range(1306,1313)),list(range(806,813)),list(range(606,613)),
-                list(range(1513,1524)),list(range(1313,1324)),list(range(813,824)),list(range(613,624)),
-                list(range(1524,1537)),list(range(1324,1337)),list(range(824,837)),list(range(624,637)),
-                list(range(1537,1551)),list(range(1337,1351)),list(range(837,851)),list(range(637,651)),
-                list(range(1551,1561)),list(range(1351,1361)),list(range(851,861)),list(range(651,661)),
-                list(range(1561,1567)),list(range(1361,1367)),list(range(861,867)),list(range(661,667))];
-    for i in range(0,28):
-        timeSeries('Path',i,'-dt',dt,'-values',*Force[i],'-prependZero');
-        pattern('Plain',i,i);
-        fact=0.25/len(nodesTapEd[27-i]);
-        for j in nodesTapEd[27-i]:
-            load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-        fact=0.5/len(nodesTapIn[27-i]);
-        for j in nodesTapIn[27-i]:
-            load(j, *[fact*math.sin(30/180*math.pi), 0.0, -fact*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+    p_m=[None]*24;
+    p_m[0]=(f_m[:,0]+f_m[:,1])/2.0;
+    p_m[1]=(f_m[:,2]+f_m[:,3])/2.0;
+    p_m[2]=(f_m[:,0]+f_m[:,1])/2.0;
+    p_m[3]=(f_m[:,2]+f_m[:,3])/2.0;
+    
+    p_m[4]=(f_m[:,4]+f_m[:,5])/2.0;
+    p_m[5]=(f_m[:,6]+f_m[:,7])/2.0;
+    p_m[6]=(f_m[:,4]+f_m[:,5])/2.0;
+    p_m[7]=(f_m[:,6]+f_m[:,7])/2.0;
+    
+    p_m[8]=(f_m[:,8]+f_m[:,9])/2.0;
+    p_m[9]=(f_m[:,10]+f_m[:,11])/2.0;
+    p_m[10]=(f_m[:,8]+f_m[:,9])/2.0;
+    p_m[11]=(f_m[:,10]+f_m[:,11])/2.0;
+    p_m[12]=(f_m[:,8]+f_m[:,9])/2.0;
+    p_m[13]=(f_m[:,10]+f_m[:,11])/2.0;
+    p_m[14]=(f_m[:,8]+f_m[:,9])/2.0;
+    p_m[15]=(f_m[:,10]+f_m[:,11])/2.0;
+    
+    p_m[16]=(f_m[:,12]+f_m[:,13])/2.0;
+    p_m[17]=(f_m[:,14]+f_m[:,15])/2.0;
+    p_m[18]=(f_m[:,12]+f_m[:,13])/2.0;
+    p_m[19]=(f_m[:,14]+f_m[:,15])/2.0;
+    p_m[20]=(f_m[:,12]+f_m[:,13])/2.0;
+    p_m[21]=(f_m[:,14]+f_m[:,15])/2.0;
+    p_m[22]=(f_m[:,12]+f_m[:,13])/2.0;
+    p_m[23]=(f_m[:,14]+f_m[:,15])/2.0;
+    
+    p_mList=[l.tolist() for l in p_m];
+    f_mCo=1.0/32;     #corner, 8 in total for one module
+    f_mEd=1.0/32*2;   #edge, 8 in total
+    f_mIn=1.0/32*4;   #internal, 2 in total
+    
+    # +Tilt
+    k=0;
+    for j in range (0,12):
+        for i in range (1,-1,-1):
+            timeSeries('Path',k,'-dt',dt,'-values',*p_mList[k],'-prependZero');
+            pattern('Plain',k,k);
+            load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(701+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(702+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(703+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            k=k+1;
     
     # define RECORDERS ------------------------------------------------------------
     nodeRec=list(range(1701,1734))+list(range(1801,1834))+list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
