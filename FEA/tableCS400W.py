@@ -404,7 +404,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     p=0.5*rho_air*U*U*Cp[1000:None,:];
     f_m=84.0*in2m*41.26*in2m*p;
     
-    p_m=[None]*24;
+    p_m=[None]*24; #use a mean pressure for each module
     p_m[0]=(f_m[:,0]+f_m[:,1])/2.0;
     p_m[1]=(f_m[:,2]+f_m[:,3])/2.0;
     p_m[2]=(f_m[:,0]+f_m[:,1])/2.0;
@@ -434,9 +434,9 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     p_m[23]=(f_m[:,14]+f_m[:,15])/2.0;
     
     p_mList=[l.tolist() for l in p_m];
-    f_mCo=1.0/32;     #corner, 8 in total for one module
+    f_mCo=1.0/32;     #corner, 4 in total for one module
     f_mEd=1.0/32*2;   #edge, 8 in total
-    f_mIn=1.0/32*4;   #internal, 2 in total
+    f_mIn=1.0/32*4;   #internal, 3 in total
     
     # +Tilt
     k=0;
@@ -444,27 +444,27 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
         for i in range (1,-1,-1):
             timeSeries('Path',k,'-dt',dt,'-values',*p_mList[k],'-prependZero');
             pattern('Plain',k,k);
-            load(501+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(502+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(503+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(601+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(602+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(603+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(701+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(702+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(703+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(801+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(802+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(803+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(901+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(902+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
-            load(903+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(501+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(502+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(503+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(601+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(602+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(603+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(701+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(702+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(703+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(801+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(802+i*700+j*3, *[f_mIn*math.sin(30/180*math.pi), 0.0, -f_mIn*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(803+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(901+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(902+i*700+j*3, *[f_mEd*math.sin(30/180*math.pi), 0.0, -f_mEd*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
+            load(903+i*700+j*3, *[f_mCo*math.sin(30/180*math.pi), 0.0, -f_mCo*math.cos(30/180*math.pi), 0.0, 0.0, 0.0]);
             k=k+1;
     
     # define RECORDERS ------------------------------------------------------------
-    nodeRec=list(range(1701,1734))+list(range(1801,1834))+list(range(1301,1334))+list(range(1401,1434))+list(range(1501,1534));
-    eleRec=list(range(701,735))+list(range(801,835));
-    springRec=list(range(21001,21023))+list(range(22001,22023))+list(range(23001,23023))+list(range(24001,24023))+list(range(45001,45023))+list(range(46001,46023))+list(range(47001,47023))+list(range(48001,48023));
+    nodeRec=list(range(1701,1737))+list(range(1801,1837))+list(range(1301,1337))+list(range(1401,1437))+list(range(1501,1537));
+    eleRec=list(range(701,738))+list(range(801,838));
+    springRec=list(range(45001,45013))+list(range(46001,46013))+list(range(47001,47013))+list(range(48001,48013));
     recorder('Node', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'nodeDisp.out', '-time', '-node', *nodeRec, '-dof', *[1, 2, 3, 4, 5, 6,], 'disp');
     recorder('Element', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'eleForce.out', '-time', '-ele', *eleRec, 'localForces');
     recorder('Element', '-file', f'{dataDir}/testAllCases3/'+'dir'+dirID+'spd'+spdID+'springResp.out', '-time', '-ele', *springRec, 'deformationsANDforces');
@@ -511,6 +511,7 @@ def runDynamicAnalysis(Cp,U,dtNorm,dirID,spdID):
     # nf1813=ef813[:,6:12]+ef814[:,0:6];
 
 #%% load wind tunnel test DATA
+#this is for the south most row (first row for pressure, last row for suction)
 CpList=[None]*12;
 dtNormList=[None]*12;
 filename = "../../../RWDI/Wind Tunnel Data/tilt_n30deg.hdf5"
@@ -522,11 +523,17 @@ with h5py.File(filename, "r") as f:
     a_group_key90 = list(f.keys())[3]
     # get the object names in the group and returns as a list
     objNames = list(f[a_group_key0])
-    # preferred methods to get dataset values
-    CpList[0] = f[a_group_key0]['Row1'][()]  # returns as a numpy array
-    CpList[1] = f[a_group_key30]['Row1'][()]
-    CpList[2] = f[a_group_key60]['Row1'][()]
-    CpList[3] = f[a_group_key90]['Row1'][()]
+    # switch columns of Cp to account for different pressure tap ID numbering for positive and negative tilts
+    # the code for applying wind forces are for positive tilt, so need to switch columns for negative tilts
+    idx=[3,2,1,0,7,6,5,4,11,10,9,8,15,14,13,12,19,18,17,16,23,22,21,20,27,26,25,24];
+    Cp0 = f[a_group_key0]['Row1'][()]  # returns as a numpy array
+    CpList[0] = Cp0[:,idx]
+    Cp1 = f[a_group_key30]['Row1'][()]
+    CpList[1] = Cp1[:,idx]
+    Cp2 = f[a_group_key60]['Row1'][()]
+    CpList[2] = Cp2[:,idx]
+    Cp3 = f[a_group_key90]['Row1'][()]
+    CpList[3] = Cp3[:,idx]
     dtNormList[0] = f[a_group_key0]['dtNorm'][()]
     dtNormList[1] = f[a_group_key30]['dtNorm'][()]
     dtNormList[2] = f[a_group_key60]['dtNorm'][()]
